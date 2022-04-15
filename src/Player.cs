@@ -1,3 +1,4 @@
+using DodgeTheCreeps;
 using Godot;
 using GodotAnalysers;
 
@@ -17,7 +18,7 @@ public partial class Player : Area2D
         base._Ready();
         this.FillMembers();
 
-        this.Connect("body_entered", this, nameof(OnPlayerBodyEntered));
+        this.Connect(CommonSignals.BodyEntered, this, nameof(OnPlayerBodyEntered));
         screenSize = GetViewportRect().Size;
         Hide();
     }

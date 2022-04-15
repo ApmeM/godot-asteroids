@@ -1,3 +1,4 @@
+using DodgeTheCreeps;
 using Godot;
 using GodotAnalysers;
 
@@ -12,8 +13,8 @@ public partial class HUD : CanvasLayer
         base._Ready();
         this.FillMembers();
 
-        this.startButton.Connect("pressed", this, nameof(OnStartButtonPressed));
-        this.messageTimer.Connect("timeout", this, nameof(OnMessageTimerTimeout));
+        this.startButton.Connect(CommonSignals.Pressed, this, nameof(OnStartButtonPressed));
+        this.messageTimer.Connect(CommonSignals.Timeout, this, nameof(OnMessageTimerTimeout));
     }
 
     public void ShowMessage(string text)
@@ -28,7 +29,7 @@ public partial class HUD : CanvasLayer
     {
         ShowMessage("Game Over");
 
-        await ToSignal(this.messageTimer, "timeout");
+        await ToSignal(this.messageTimer, CommonSignals.Timeout);
 
         this.messageLabel.Text = "Dodge the\nCreeps!";
         this.messageLabel.Show();

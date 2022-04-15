@@ -1,3 +1,4 @@
+using DodgeTheCreeps;
 using Godot;
 using GodotAnalysers;
 
@@ -9,7 +10,7 @@ public partial class Mob : RigidBody2D
         base._Ready();
         this.FillMembers();
 
-        this.visibility.Connect("screen_exited", this, nameof(OnVisibilityScreenExited));
+        this.visibility.Connect(CommonSignals.ScreenExited, this, nameof(OnVisibilityScreenExited));
 
         this.animatedSprite.Playing = true;
         string[] mobTypes = this.animatedSprite.Frames.GetAnimationNames();

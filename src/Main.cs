@@ -1,3 +1,4 @@
+using DodgeTheCreeps;
 using Godot;
 using GodotAnalysers;
 
@@ -14,9 +15,9 @@ public partial class Main : Node
         base._Ready();
         this.FillMembers();
 
-        this.mobTimer.Connect("timeout", this, nameof(OnMobTimerTimeout));
-        this.scoreTimer.Connect("timeout", this, nameof(OnScoreTimerTimeout));
-        this.startTimer.Connect("timeout", this, nameof(OnStartTimerTimeout));
+        this.mobTimer.Connect(CommonSignals.Timeout, this, nameof(OnMobTimerTimeout));
+        this.scoreTimer.Connect(CommonSignals.Timeout, this, nameof(OnScoreTimerTimeout));
+        this.startTimer.Connect(CommonSignals.Timeout, this, nameof(OnStartTimerTimeout));
         this.hUD.Connect(nameof(HUD.StartGame), this, nameof(NewGame));
         this.player.Connect(nameof(Player.Hit), this, nameof(GameOver));
         GD.Randomize();
