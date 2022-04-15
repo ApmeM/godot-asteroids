@@ -1,0 +1,13 @@
+<Project Sdk="Godot.NET.Sdk/3.3.0">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <RootNamespace>DodgeTheCreeps</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="GodotAnalysers" Version="1.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="GodotAnalysersAttribute" Version="1.0.0" />
+  </ItemGroup>
+</Project>

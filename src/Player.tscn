@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Player.cs" type="Script" id=1]
+[ext_resource path="res://art/kenney/kenney.playerShip2_blue.atlastex" type="Texture" id=2]
+[ext_resource path="res://art/kenney/kenney.playerShip3_red.atlastex" type="Texture" id=3]
+[ext_resource path="res://art/kenney/kenney.playerShip1_red.atlastex" type="Texture" id=4]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "right",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ) ],
+"loop": true,
+"name": "up",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 27.3777
+height = 14.0303
+
+[node name="Player" type="Area2D"]
+z_index = 10
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+scale = Vector2( 0.5, 0.5 )
+frames = SubResource( 1 )
+animation = "right"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[node name="Trail" type="CPUParticles2D" parent="."]
+show_behind_parent = true
+z_index = -1
+amount = 10
+speed_scale = 2.0
+local_coords = false
+texture = ExtResource( 2 )
