@@ -67,29 +67,14 @@ public partial class Game : Node2D
 
     private void OnMobTimerTimeout()
     {
-        // Note: Normally it is best to use explicit types rather than the `var`
-        // keyword. However, var is acceptable to use here because the types are
-        // obviously PathFollow2D and Mob, since they appear later on the line.
-
-        // Choose a random location on Path2D.
         this.mobSpawnLocation.Offset = GD.Randi();
-
-        // Create a Mob instance and add it to the scene.
-        var mob = (Mob)mobScene.Instance();
-        this.AddChild(mob);
-
-        // Set the mob's direction perpendicular to the path direction.
-        float direction = this.mobSpawnLocation.Rotation + Mathf.Pi / 2;
-
-        // Set the mob's position to a random location.
-        mob.Position = this.mobSpawnLocation.Position;
-
-        // Add some randomness to the direction.
-        direction += (float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
-        mob.Rotation = direction;
-
-        // Choose the velocity for the mob.
+        var direction = this.mobSpawnLocation.Rotation + (float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
         var velocity = new Vector2((float)GD.RandRange(150.0, 250.0), 0);
+
+        var mob = (Mob)mobScene.Instance();
+        mob.Position = this.mobSpawnLocation.Position;
+        mob.Rotation = direction;
         mob.LinearVelocity = velocity.Rotated(direction);
+        this.AddChild(mob);
     }
 }

@@ -20,7 +20,6 @@ public partial class Player : Area2D
 
         this.Connect(CommonSignals.BodyEntered, this, nameof(OnPlayerBodyEntered));
         screenSize = GetViewportRect().Size;
-        Hide();
     }
 
     public override void _Process(float delta)
@@ -50,45 +49,25 @@ public partial class Player : Area2D
         if (velocity.Length() > 0)
         {
             velocity = velocity.Normalized() * speed;
-            this.animatedSprite.Play();
-        }
-        else
-        {
-            this.animatedSprite.Stop();
+            this.Rotation = velocity.Angle();
         }
 
-        Position += velocity * delta;
-        Position = new Vector2(
+        this.Position += velocity * delta;
+        this.Position = new Vector2(
             x: Mathf.Clamp(Position.x, 0, screenSize.x),
             y: Mathf.Clamp(Position.y, 0, screenSize.y)
         );
-
-        if (velocity.x != 0)
-        {
-            this.animatedSprite.Animation = "right";
-            // See the note below about boolean assignment.
-            this.animatedSprite.FlipH = velocity.x < 0;
-            this.animatedSprite.FlipV = false;
-        }
-        else if (velocity.y != 0)
-        {
-            this.animatedSprite.Animation = "up";
-            this.animatedSprite.FlipV = velocity.y > 0;
-        }
     }
 
     public void Start(Vector2 pos)
     {
         Position = pos;
-        Show();
         this.collisionShape2D.Disabled = false;
     }
 
     private void OnPlayerBodyEntered(PhysicsBody2D body)
     {
-        Hide(); // Player disappears after being hit.
         EmitSignal(nameof(Hit));
-        // Must be deferred as we can't change physics properties on a physics callback.
         this.collisionShape2D.SetDeferred("disabled", true);
     }
 }
