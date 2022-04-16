@@ -68,3 +68,7 @@ text = "Start"
 [node name="MessageTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 240, 360 )
+current = true

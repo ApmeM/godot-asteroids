@@ -22,6 +22,7 @@ public partial class Menu : Node2D
         this.scoreLabel.Text = score.ToString();
         this.messageLabel.Text = "Game Over";
         this.messageTimer.Start();
+        this.camera2D.Current = true;
     }
 
     private void OnStartButtonPressed()

@@ -10,6 +10,8 @@ public partial class Game : Node2D
 
     [Export]
     public PackedScene mobScene;
+    [Export]
+    public PackedScene blockScene;
 
     public int score;
 
@@ -34,6 +36,8 @@ public partial class Game : Node2D
         this.music.Stop();
         this.deathSound.Play();
 
+        this.camera2D.Current = false;
+
         this.EmitSignal(nameof(GameOver), this.score);
     }
 
@@ -42,7 +46,44 @@ public partial class Game : Node2D
         this.GetTree().CallGroup("mobs", "queue_free");
         this.score = 0;
 
-        this.player.Start(this.startPosition.Position);
+        var points = this.mobPath.Curve.GetBakedPoints();
+        var rect = new Rect2(points[0], Vector2.Zero);
+        foreach (var point in points)
+        {
+            rect = rect.Expand(point);
+        }
+
+        this.player.Start(this.startPosition.Position, rect);
+
+
+        for (var x = rect.Position.x; x < rect.End.x + 101; x+=100)
+        {
+            Block block;
+
+            block = (Block)blockScene.Instance();
+            block.Position = new Vector2(x, rect.Position.y - 100);
+            this.AddChild(block);
+
+            block = (Block)blockScene.Instance();
+            block.Position = new Vector2(x, rect.End.y + 100);
+            this.AddChild(block);
+        }
+
+        for (var y = rect.Position.y; y < rect.End.y + 101; y+=100)
+        {
+            Block block;
+
+            block = (Block)blockScene.Instance();
+            block.Position = new Vector2(rect.Position.x - 100, y);
+            this.AddChild(block);
+
+            block = (Block)blockScene.Instance();
+            block.Position = new Vector2(rect.End.x + 100, y);
+            this.AddChild(block);
+        }
+
+
+        this.camera2D.Current = true;
 
         this.startTimer.Start();
 
@@ -68,7 +109,7 @@ public partial class Game : Node2D
     private void OnMobTimerTimeout()
     {
         this.mobSpawnLocation.Offset = GD.Randi();
-        var direction = this.mobSpawnLocation.Rotation + (float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
+        var direction = this.mobSpawnLocation.Rotation + Mathf.Pi / 2 + (float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
         var velocity = new Vector2((float)GD.RandRange(150.0, 250.0), 0);
 
         var mob = (Mob)mobScene.Instance();

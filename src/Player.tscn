@@ -4,11 +4,12 @@
 [ext_resource path="res://art/kenney/kenney.enemyGreen2.atlastex" type="Texture" id=2]
 
 [sub_resource type="CapsuleShape2D" id=2]
-radius = 27.3777
-height = 14.0303
+radius = 42.0
+height = 24.0
 
-[node name="Player" type="Area2D"]
+[node name="Player" type="RigidBody2D"]
 z_index = 10
+gravity_scale = 0.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true

@@ -1,14 +1,18 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Mob.cs" type="Script" id=1]
 [ext_resource path="res://art/kenney/kenney.enemyBlack3.atlastex" type="Texture" id=4]
+
+[sub_resource type="PhysicsMaterial" id=3]
+friction = 0.0
+bounce = 1.0
 
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 52.0
 height = 0.0
 
 [node name="Mob" type="RigidBody2D" groups=["mobs"]]
-collision_mask = 0
+physics_material_override = SubResource( 3 )
 gravity_scale = 0.0
 script = ExtResource( 1 )
 __meta__ = {
