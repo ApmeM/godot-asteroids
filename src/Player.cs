@@ -9,7 +9,16 @@ public partial class Player : RigidBody2D
     public delegate void Hit();
 
     [Export]
-    public int speed = 400;
+    public int Force = 3000;
+
+    [Export]
+    public int Torque = 100000;
+
+    [Export]
+    public int MaxSpeed = 500;
+
+    [Export]
+    public int MaxAngularSpeed = 2;
 
     public Rect2 fieldSize;
 
@@ -28,22 +37,43 @@ public partial class Player : RigidBody2D
 
         if (Input.IsActionPressed("move_right"))
         {
-            this.AppliedTorque = 10000;
+            this.AppliedTorque = this.Torque;
         }
 
         if (Input.IsActionPressed("move_left"))
         {
-            this.AppliedTorque = -10000;
+            this.AppliedTorque = -this.Torque;
         }
 
         if (Input.IsActionPressed("move_down"))
         {
-            this.AppliedForce = -Vector2.Right.Rotated(this.Rotation) * 1000;
+            this.AppliedForce = -Vector2.Right.Rotated(this.Rotation) * Force;
         }
 
         if (Input.IsActionPressed("move_up"))
         {
-            this.AppliedForce = Vector2.Right.Rotated(this.Rotation) * 1000;
+            this.AppliedForce = Vector2.Right.Rotated(this.Rotation) * Force;
+        }
+    }
+
+    public override void _IntegrateForces(Physics2DDirectBodyState state)
+    {
+        base._IntegrateForces(state);
+
+
+        if (state.LinearVelocity.LengthSquared() > MaxSpeed * MaxSpeed)
+        {
+            state.LinearVelocity = state.LinearVelocity.Normalized() * MaxSpeed;
+        }
+
+        if (state.AngularVelocity > MaxAngularSpeed)
+        {
+            state.AngularVelocity = MaxAngularSpeed;
+        }
+
+        if (state.AngularVelocity < -MaxAngularSpeed)
+        {
+            state.AngularVelocity = -MaxAngularSpeed;
         }
     }
 

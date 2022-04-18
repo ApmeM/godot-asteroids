@@ -63,3 +63,8 @@ move_down={
 , Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":1,"axis_value":1.0,"script":null)
  ]
 }
+
+[physics]
+
+2d/default_linear_damp=0.0
+2d/default_angular_damp=0.0
