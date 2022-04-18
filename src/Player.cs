@@ -20,7 +20,10 @@ public partial class Player : RigidBody2D
     [Export]
     public int MaxAngularSpeed = 2;
 
-    public Rect2 fieldSize;
+    private Rect2 fieldSize;
+    private Vector2 initialPosition;
+    private bool initialize = false;
+
 
     public override void _Ready()
     {
@@ -60,6 +63,14 @@ public partial class Player : RigidBody2D
     {
         base._IntegrateForces(state);
 
+        if (initialize)
+        {
+            initialize = false;
+
+            state.Transform = new Transform2D(0, initialPosition);
+            state.LinearVelocity = Vector2.Zero;
+            state.AngularVelocity = 0;
+        }
 
         if (state.LinearVelocity.LengthSquared() > MaxSpeed * MaxSpeed)
         {
@@ -80,7 +91,8 @@ public partial class Player : RigidBody2D
     public void Start(Vector2 pos, Rect2 fieldSize)
     {
         this.fieldSize = fieldSize;
-        Position = pos;
+        this.initialPosition = pos;
+        this.initialize = true;
         this.collisionShape2D.Disabled = false;
     }
 

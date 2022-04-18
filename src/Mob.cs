@@ -10,11 +10,6 @@ public partial class Mob : RigidBody2D
         base._Ready();
         this.FillMembers();
 
-        this.visibility.Connect(CommonSignals.ScreenExited, this, nameof(OnVisibilityScreenExited));
-    }
-
-    private void OnVisibilityScreenExited()
-    {
-        QueueFree();
+        this.AddToGroup(Constants.MinimapIconEnemy);
     }
 }

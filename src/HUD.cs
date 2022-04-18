@@ -1,17 +1,26 @@
 using DodgeTheCreeps;
 using Godot;
 using GodotAnalysers;
+using System;
 
 [SceneReference("HUD.tscn")]
-public partial class HUD : Node2D
+public partial class HUD : CanvasLayer
 {
     [Signal]
     public delegate void StartGame();
+
+    [Export]
+    public NodePath PlayerPath;
 
     public override void _Ready()
     {
         base._Ready();
         this.FillMembers();
+
+        if (this.PlayerPath != null)
+        {
+            this.minimap.PlayerPath = this.GetNode(this.PlayerPath).GetPath();
+        }
 
         this.messageTimer.Connect(CommonSignals.Timeout, this, nameof(OnMessageTimerTimeout));
     }
@@ -31,5 +40,10 @@ public partial class HUD : Node2D
     private void OnMessageTimerTimeout()
     {
         this.messageLabel.Hide();
+    }
+    
+    public void SetMapSize(Rect2 rect)
+    {
+        this.minimap.SetMapSize(rect);
     }
 }

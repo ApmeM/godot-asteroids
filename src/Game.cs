@@ -87,6 +87,7 @@ public partial class Game : Node2D
 
         this.startTimer.Start();
 
+        this.hUD.SetMapSize(rect);
         this.hUD.UpdateScore(score);
         this.hUD.ShowMessage("Get Ready!");
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Mob.cs" type="Script" id=1]
-[ext_resource path="res://art/kenney/kenney.enemyBlack3.atlastex" type="Texture" id=4]
+[ext_resource path="res://art/ships/kenney.enemyBlack3.atlastex" type="Texture" id=4]
 
 [sub_resource type="PhysicsMaterial" id=3]
 friction = 0.0
@@ -11,7 +11,7 @@ bounce = 1.0
 radius = 52.0
 height = 0.0
 
-[node name="Mob" type="RigidBody2D" groups=["mobs"]]
+[node name="Mob" type="RigidBody2D"]
 physics_material_override = SubResource( 3 )
 gravity_scale = 0.0
 script = ExtResource( 1 )
@@ -26,6 +26,3 @@ texture = ExtResource( 4 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
 shape = SubResource( 2 )
-
-[node name="Visibility" type="VisibilityNotifier2D" parent="."]
-scale = Vector2( 4.95, 5.1 )
