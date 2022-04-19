@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://art/ships/kenney.meteorBrown_big1.atlastex" type="Texture" id=1]
+[ext_resource path="res://art/ships/ships.meteorBrown_big1.tres" type="Texture" id=1]
 [ext_resource path="res://Block.cs" type="Script" id=2]
 
 [sub_resource type="PhysicsMaterial" id=2]

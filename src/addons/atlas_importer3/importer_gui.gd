@@ -138,7 +138,7 @@ func _saveAtlas():
 		dir.list_dir_begin()
 		var f = dir.get_next()
 		while f.length():				
-			if f.begins_with(str(_getFileName(sourceText.text), ".")) and f.ends_with(".atlastex") and dir.file_exists(f):
+			if f.begins_with(str(_getFileName(sourceText.text), ".")) and f.ends_with(".tres") and dir.file_exists(f):
 				print("remove: ",f)
 				print(dir.remove(f)==OK)
 			f = dir.get_next()
@@ -146,8 +146,8 @@ func _saveAtlas():
 	
 	for s in atlas.sprites:
 		var atex = AtlasTexture.new()
-		var ap = str(tarDir, "/", _getFileName(sourceText.text), ".", _getFileName(s.name),".atlastex")		
-		if not ResourceLoader.has(ap):
+		var ap = str(tarDir, "/", _getFileName(sourceText.text), ".", _getFileName(s.name),".tres")		
+		if not ResourceLoader.exists(ap):
 			atex.set_path(ap)
 		else:
 			atex.take_over_path(ap)
@@ -179,7 +179,7 @@ func _loadAtlasTex(metaPath, atlas):
 	var tex = null
 	if path.begins_with("res://"):
 		path = path.substr(6,path.length()-6)	
-	if ResourceLoader.has(path):
+	if ResourceLoader.exists(path):
 		tex = ResourceLoader.load(path)
 	else:
 		tex = ImageTexture.new()

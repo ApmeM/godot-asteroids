@@ -1,0 +1,9 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=2]
+
+[ext_resource path="res://art/ships.png" type="Texture" id=1]
+
+[resource]
+resource_name = "meteorBrown_med3"
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 237, 452, 45, 40 )
