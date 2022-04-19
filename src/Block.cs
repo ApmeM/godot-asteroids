@@ -1,10 +1,10 @@
 using DodgeTheCreeps;
-using Godot;
 using GodotAnalysers;
-using System;
+using Godot;
+
 
 [SceneReference("Block.tscn")]
-public partial class Block : RigidBody2D
+public partial class Block
 {
     public override void _Ready()
     {

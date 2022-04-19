@@ -4,7 +4,7 @@ using GodotAnalysers;
 using System;
 
 [SceneReference("HUD.tscn")]
-public partial class HUD : CanvasLayer
+public partial class HUD
 {
     [Signal]
     public delegate void StartGame();

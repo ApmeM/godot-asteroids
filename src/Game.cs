@@ -3,7 +3,7 @@ using Godot;
 using GodotAnalysers;
 
 [SceneReference("Game.tscn")]
-public partial class Game : Node2D
+public partial class Game
 {
     [Signal]
     public delegate void GameOver(int score);

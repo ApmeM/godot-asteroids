@@ -2,7 +2,7 @@ using Godot;
 using GodotAnalysers;
 
 [SceneReference("Main.tscn")]
-public partial class Main : Node
+public partial class Main
 {
     public override void _Ready()
     {

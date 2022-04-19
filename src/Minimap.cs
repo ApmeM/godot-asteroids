@@ -4,7 +4,7 @@ using Godot.Collections;
 using GodotAnalysers;
 
 [SceneReference("Minimap.tscn")]
-public partial class Minimap : MarginContainer
+public partial class Minimap
 {
     [Export]
     public NodePath PlayerPath;

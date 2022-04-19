@@ -3,7 +3,7 @@ using Godot;
 using GodotAnalysers;
 
 [SceneReference("Player.tscn")]
-public partial class Player : RigidBody2D
+public partial class Player
 {
     [Signal]
     public delegate void Hit();
