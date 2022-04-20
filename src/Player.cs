@@ -20,6 +20,12 @@ public partial class Player
     [Export]
     public int MaxAngularSpeed = 2;
 
+    [Export]
+    public PackedScene Bullet;
+
+    [Export]
+    public NodePath Field;
+
     private Rect2 fieldSize;
     private Vector2 initialPosition;
     private bool initialize = false;
@@ -56,6 +62,18 @@ public partial class Player
         if (Input.IsActionPressed("move_up"))
         {
             this.AppliedForce = Vector2.Right.Rotated(this.Rotation) * Force;
+        }
+    }
+
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        base._UnhandledInput(@event);
+        if (@event.IsActionPressed("ui_select"))
+        {
+            var bullet = (Node2D)Bullet.Instance();
+            bullet.GlobalPosition = this.endOfGun.GlobalPosition;
+            bullet.Rotation = this.Rotation;
+            this.GetNode(this.Field).AddChild(bullet);
         }
     }
 

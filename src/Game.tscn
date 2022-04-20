@@ -28,6 +28,7 @@ __meta__ = {
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 position = Vector2( 712, 368 )
+Field = NodePath("..")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 
@@ -53,9 +54,6 @@ stream = ExtResource( 5 )
 
 [node name="DeathSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
-
-[node name="Block" parent="." instance=ExtResource( 7 )]
-position = Vector2( 1152, 608 )
 
 [node name="HUD" parent="." instance=ExtResource( 4 )]
 PlayerPath = NodePath("../Player")

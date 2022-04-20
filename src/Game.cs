@@ -56,7 +56,7 @@ public partial class Game
 
     public void NewGame()
     {
-        this.GetTree().CallGroup("mobs", "queue_free");
+        this.GetTree().CallGroup(Constants.DynamicGameObject, "queue_free");
         this.score = 0;
 
         var points = this.mobPath.Curve.GetBakedPoints();

@@ -11,5 +11,6 @@ public partial class Block
         this.FillMembers();
 
         this.AddToGroup(Constants.MinimapIconBlock);
+        this.AddToGroup(Constants.DynamicGameObject);
     }
 }
