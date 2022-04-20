@@ -25,8 +25,21 @@ public partial class Game
         this.startTimer.Connect(CommonSignals.Timeout, this, nameof(OnStartTimerTimeout));
         this.hUD.Connect(nameof(HUD.StartGame), this, nameof(NewGame));
         this.player.Connect(nameof(Player.Hit), this, nameof(PlayerHit));
+        this.Connect(CommonSignals.VisibilityChanged, this, nameof(VisibilityChanged));
 
         GD.Randomize();
+    }
+
+    private void VisibilityChanged()
+    {
+        if (this.Visible)
+        {
+            this.hUD.Show();
+        }
+        else
+        {
+            this.hUD.Hide();
+        }
     }
 
     private void PlayerHit()

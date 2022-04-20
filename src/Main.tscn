@@ -10,4 +10,3 @@ script = ExtResource( 1 )
 [node name="Menu" parent="." instance=ExtResource( 8 )]
 
 [node name="Game" parent="." instance=ExtResource( 7 )]
-visible = false

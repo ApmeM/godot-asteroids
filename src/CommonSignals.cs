@@ -6,5 +6,6 @@
         public static string Timeout = "timeout";
         public static string ScreenExited = "screen_exited";
         public static string BodyEntered = "body_entered";
+        public static string VisibilityChanged = "visibility_changed";
     }
 }

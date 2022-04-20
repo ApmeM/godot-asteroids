@@ -18,30 +18,6 @@ public partial class Menu
         this.messageTimer.Connect(CommonSignals.Timeout, this, nameof(OnMessageTimerTimeout));
     }
 
-    public void Show()
-    {
-        foreach (Node2D item in this.GetChildren().OfType<Node2D>())
-        {
-            item.Show();
-        }
-        foreach (Control item in this.GetChildren().OfType<Control>())
-        {
-            item.Show();
-        }
-    }
-
-    public void Hide()
-    {
-        foreach (var item in this.GetChildren().OfType<Node2D>())
-        {
-            item.Hide();
-        }
-        foreach (Control item in this.GetChildren().OfType<Control>())
-        {
-            item.Hide();
-        }
-    }
-
     public void GameOver(int score)
     {
         this.scoreLabel.Text = score.ToString();
