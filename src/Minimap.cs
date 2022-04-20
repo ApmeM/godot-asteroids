@@ -1,4 +1,4 @@
-using DodgeTheCreeps;
+using DodgeTheCreeps.Utils;
 using Godot;
 using Godot.Collections;
 using GodotAnalysers;

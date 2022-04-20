@@ -1,7 +1,6 @@
-using DodgeTheCreeps;
+using DodgeTheCreeps.Utils;
 using GodotAnalysers;
 using Godot;
-
 
 [SceneReference("Block.tscn")]
 public partial class Block

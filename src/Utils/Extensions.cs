@@ -1,7 +1,7 @@
 ﻿using Godot;
 using System.Linq;
 
-namespace DodgeTheCreeps
+namespace DodgeTheCreeps.Utils
 {
     public static class Extensions
     {

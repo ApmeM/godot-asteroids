@@ -1,4 +1,4 @@
-﻿namespace DodgeTheCreeps
+﻿namespace DodgeTheCreeps.Utils
 {
     public class Constants
     {
