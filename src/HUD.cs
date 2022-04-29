@@ -1,7 +1,6 @@
 using DodgeTheCreeps.Utils;
 using Godot;
 using GodotAnalysers;
-using System;
 
 [SceneReference("HUD.tscn")]
 public partial class HUD
@@ -11,6 +10,9 @@ public partial class HUD
 
     [Export]
     public NodePath PlayerPath;
+
+    private bool isLeftPressed = false;
+    private bool isRightPressed = false;
 
     public override void _Ready()
     {
@@ -23,6 +25,33 @@ public partial class HUD
         }
 
         this.messageTimer.Connect(CommonSignals.Timeout, this, nameof(OnMessageTimerTimeout));
+    }
+
+    public override void _Process(float delta)
+    {
+        base._Process(delta);
+
+        if (leftButton.IsPressed() && !isLeftPressed)
+        {
+            isLeftPressed = true;
+            Input.ActionPress("move_left");
+        }
+        else if (!leftButton.IsPressed() && isLeftPressed)
+        {
+            isLeftPressed = false;
+            Input.ActionRelease("move_left");
+        }
+
+        if (rightButton.IsPressed() && !isRightPressed)
+        {
+            isRightPressed = true;
+            Input.ActionPress("move_right");
+        }
+        else if (!rightButton.IsPressed() && isRightPressed)
+        {
+            isRightPressed = false;
+            Input.ActionRelease("move_right");
+        }
     }
 
     public void ShowMessage(string text)

@@ -1,6 +1,7 @@
 using DodgeTheCreeps.Utils;
 using Godot;
 using GodotAnalysers;
+using System;
 
 [SceneReference("Player.tscn")]
 public partial class Player
@@ -37,6 +38,7 @@ public partial class Player
         this.FillMembers();
 
         this.Connect(CommonSignals.BodyEntered, this, nameof(OnPlayerBodyEntered));
+        this.shootTimer.Connect(CommonSignals.Timeout, this, nameof(OnPlayerShoot));
     }
 
     public override void _PhysicsProcess(float delta)
@@ -54,27 +56,7 @@ public partial class Player
             this.AppliedTorque = -this.Torque;
         }
 
-        if (Input.IsActionPressed("move_down"))
-        {
-            this.AppliedForce = -Vector2.Right.Rotated(this.Rotation) * Force;
-        }
-
-        if (Input.IsActionPressed("move_up"))
-        {
-            this.AppliedForce = Vector2.Right.Rotated(this.Rotation) * Force;
-        }
-    }
-
-    public override void _UnhandledInput(InputEvent @event)
-    {
-        base._UnhandledInput(@event);
-        if (@event.IsActionPressed("ui_select"))
-        {
-            var bullet = (Node2D)Bullet.Instance();
-            bullet.GlobalPosition = this.endOfGun.GlobalPosition;
-            bullet.Rotation = this.Rotation;
-            this.GetNode(this.Field).AddChild(bullet);
-        }
+        this.AppliedForce = Vector2.Right.Rotated(this.Rotation) * Force;
     }
 
     public override void _IntegrateForces(Physics2DDirectBodyState state)
@@ -112,6 +94,14 @@ public partial class Player
         this.initialPosition = pos;
         this.initialize = true;
         this.collisionShape2D.Disabled = false;
+    }
+
+    private void OnPlayerShoot()
+    {
+        var bullet = (Node2D)Bullet.Instance();
+        bullet.GlobalPosition = this.endOfGun.GlobalPosition;
+        bullet.Rotation = this.Rotation;
+        this.GetNode(this.Field).AddChild(bullet);
     }
 
     private void OnPlayerBodyEntered(PhysicsBody2D body)
