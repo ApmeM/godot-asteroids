@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Game.cs" type="Script" id=1]
 [ext_resource path="res://Mob.tscn" type="PackedScene" id=2]
@@ -7,11 +7,6 @@
 [ext_resource path="res://art/House In a Forest Loop.ogg" type="AudioStream" id=5]
 [ext_resource path="res://art/gameover.wav" type="AudioStream" id=6]
 [ext_resource path="res://Block.tscn" type="PackedScene" id=7]
-
-[sub_resource type="Curve2D" id=1]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1408, 0, 0, 0, 0, 0, 1408, 768, 0, 0, 0, 0, 0, 768, 0, 0, 0, 0, 0, 0 )
-}
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 1 )
@@ -27,7 +22,7 @@ __meta__ = {
 }
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-position = Vector2( 712, 368 )
+position = Vector2( 240, 288 )
 Field = NodePath("..")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -40,14 +35,6 @@ wait_time = 0.5
 [node name="StartTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
-
-[node name="StartPosition" type="Position2D" parent="."]
-position = Vector2( 704, 424 )
-
-[node name="MobPath" type="Path2D" parent="."]
-curve = SubResource( 1 )
-
-[node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )

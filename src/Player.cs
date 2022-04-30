@@ -13,7 +13,7 @@ public partial class Player
     public int Force = 3000;
 
     [Export]
-    public int Torque = 100000;
+    public int Torque = 200000;
 
     [Export]
     public int MaxSpeed = 500;

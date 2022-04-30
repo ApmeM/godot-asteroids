@@ -11,6 +11,7 @@ public partial class Minimap
     
     private Vector2 fieldScale;
     private Dictionary<Node2D, Node2D> knownMarkers = new Dictionary<Node2D, Node2D>();
+    private Dictionary<Node2D, Node2D> newKnownMarkers = new Dictionary<Node2D, Node2D>();
 
     public override void _Ready()
     {
@@ -35,6 +36,7 @@ public partial class Minimap
         this.playerMarker.Rotation = player.Rotation;
 
         var minimapEnemies = this.GetTree().GetNodesInGroup(Constants.MinimapIconEnemy);
+
         foreach (Node2D enemy in minimapEnemies)
         {
             if (!knownMarkers.ContainsKey(enemy))
@@ -42,10 +44,15 @@ public partial class Minimap
                 var newEnemyMarker = (Node2D)this.enemyMarker.Duplicate();
                 this.field.AddChild(newEnemyMarker);
                 newEnemyMarker.Show();
-                knownMarkers[enemy] = newEnemyMarker;
+                newKnownMarkers[enemy] = newEnemyMarker;
+            }
+            else
+            {
+                newKnownMarkers[enemy] = knownMarkers[enemy];
+                knownMarkers.Remove(enemy);
             }
 
-            var marker = knownMarkers[enemy];
+            var marker = newKnownMarkers[enemy];
             marker.Position = (enemy.Position - player.Position) * this.fieldScale + this.field.RectSize / 2;
             if (field.GetRect().HasPoint(marker.Position))
             {
@@ -70,10 +77,15 @@ public partial class Minimap
                 var newBlockMarker = (Node2D)this.blockMarker.Duplicate();
                 this.field.AddChild(newBlockMarker);
                 newBlockMarker.Show();
-                knownMarkers[block] = newBlockMarker;
+                newKnownMarkers[block] = newBlockMarker;
+            }
+            else
+            {
+                newKnownMarkers[block] = knownMarkers[block];
+                knownMarkers.Remove(block);
             }
 
-            var marker = knownMarkers[block];
+            var marker = newKnownMarkers[block];
             marker.Position = (block.Position - player.Position) * this.fieldScale + this.field.RectSize / 2;
             if (field.GetRect().HasPoint(marker.Position))
             {
@@ -84,6 +96,16 @@ public partial class Minimap
                 marker.Visible = false;
             }
         }
+
+        foreach (var removedMarkers in knownMarkers.Values)
+        {
+            removedMarkers.QueueFree();
+        }
+        knownMarkers.Clear();
+
+        var tmpKnownMarkers = newKnownMarkers;
+        newKnownMarkers = knownMarkers;
+        knownMarkers = tmpKnownMarkers;
     }
 
     public void SetMapSize(Rect2 rect)

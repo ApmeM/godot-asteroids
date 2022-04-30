@@ -9,5 +9,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="GodotAnalysersAttribute" Version="1.1.0" />
+    <PackageReference Include="MazeGenerators" Version="2.3.0" />
   </ItemGroup>
 </Project>

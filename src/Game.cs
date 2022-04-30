@@ -15,6 +15,10 @@ public partial class Game
 
     public int score;
 
+    private const int pathSize = 5;
+
+    private Vector2 mobSpawnLocation;
+
     public override void _Ready()
     {
         base._Ready();
@@ -59,42 +63,36 @@ public partial class Game
         this.GetTree().CallGroup(Constants.DynamicGameObject, "queue_free");
         this.score = 0;
 
-        var points = this.mobPath.Curve.GetBakedPoints();
-        var rect = new Rect2(points[0], Vector2.Zero);
-        foreach (var point in points)
-        {
-            rect = rect.Expand(point);
-        }
+        var rect = new Rect2(Vector2.Zero, Vector2.Zero);
+        
+        var map = MazeGeneratorWrapper.Generate();
+        var startPosition = Vector2.Zero;
+        for (var x = 0; x < map.GetLength(0); x++)
+            for (var y = 0; y < map.GetLength(0); y++)
+            {
+                rect = rect.Expand(new Vector2(x * 100 * pathSize + pathSize * 50, y * 100 * pathSize + pathSize * 50));
 
-        this.player.Start(this.startPosition.Position, rect);
+                if (map[x, y] != 1)
+                {
+                    if (startPosition == Vector2.Zero)
+                    {
+                        startPosition = new Vector2(x * 100 * pathSize + pathSize * 50, y * 100 * pathSize + pathSize * 50);
+                    }
 
+                    mobSpawnLocation = new Vector2(x * 100 * pathSize + pathSize * 50, y * 100 * pathSize + pathSize * 50);
+                    continue;
+                }
 
-        for (var x = rect.Position.x; x < rect.End.x + 101; x+=100)
-        {
-            Block block;
+                for (var x2 = 0; x2 < pathSize; x2++)
+                    for (var y2 = 0; y2 < pathSize; y2++)
+                    {
+                        var block = (Block)blockScene.Instance();
+                        block.Position = new Vector2(x * 100 * pathSize + x2 * 100, y * 100 * pathSize + y2 * 100);
+                        this.AddChild(block);
+                    }
+            }
 
-            block = (Block)blockScene.Instance();
-            block.Position = new Vector2(x, rect.Position.y - 100);
-            this.AddChild(block);
-
-            block = (Block)blockScene.Instance();
-            block.Position = new Vector2(x, rect.End.y + 100);
-            this.AddChild(block);
-        }
-
-        for (var y = rect.Position.y; y < rect.End.y + 101; y+=100)
-        {
-            Block block;
-
-            block = (Block)blockScene.Instance();
-            block.Position = new Vector2(rect.Position.x - 100, y);
-            this.AddChild(block);
-
-            block = (Block)blockScene.Instance();
-            block.Position = new Vector2(rect.End.x + 100, y);
-            this.AddChild(block);
-        }
-
+        this.player.Start(startPosition, rect);
 
         this.camera2D.Current = true;
 
@@ -122,12 +120,11 @@ public partial class Game
 
     private void OnMobTimerTimeout()
     {
-        this.mobSpawnLocation.Offset = GD.Randi();
-        var direction = this.mobSpawnLocation.Rotation + Mathf.Pi / 2 + (float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
+        var direction = (this.player.Position - this.mobSpawnLocation).Angle();
         var velocity = new Vector2((float)GD.RandRange(150.0, 250.0), 0);
 
         var mob = (Mob)mobScene.Instance();
-        mob.Position = this.mobSpawnLocation.Position;
+        mob.Position = this.mobSpawnLocation;
         mob.Rotation = direction;
         mob.LinearVelocity = velocity.Rotated(direction);
         this.AddChild(mob);
