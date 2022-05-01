@@ -56,6 +56,16 @@ public partial class Player
             this.AppliedTorque = -this.Torque;
         }
 
+        //if (Input.IsActionPressed("move_down"))
+        //{
+        //    this.AppliedForce = -Vector2.Right.Rotated(this.Rotation) * Force;
+        //}
+
+        //if (Input.IsActionPressed("move_up"))
+        //{
+        //    this.AppliedForce = Vector2.Right.Rotated(this.Rotation) * Force;
+        //}
+
         this.AppliedForce = Vector2.Right.Rotated(this.Rotation) * Force;
     }
 

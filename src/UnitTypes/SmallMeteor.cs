@@ -1,13 +1,11 @@
+using DodgeTheCreeps.UnitTypes;
 using DodgeTheCreeps.Utils;
 using Godot;
 using GodotAnalysers;
 
-[SceneReference("Mob.tscn")]
-public partial class Mob
+[SceneReference("SmallMeteor.tscn")]
+public partial class SmallMeteor : IHitable
 {
-    [Export]
-    public PackedScene Bullet;
-
     public override void _Ready()
     {
         base._Ready();
@@ -15,5 +13,10 @@ public partial class Mob
 
         this.AddToGroup(Constants.MinimapIconEnemy);
         this.AddToGroup(Constants.DynamicGameObject);
+    }
+
+    public void Hit(Node2D byNode)
+    {
+        this.QueueFree();
     }
 }

@@ -37,9 +37,9 @@ __meta__ = {
 
 [node name="MessageLabel" type="Label" parent="."]
 margin_left = 7.0
-margin_top = 321.0
+margin_top = 198.0
 margin_right = 473.0
-margin_bottom = 399.0
+margin_bottom = 276.0
 custom_fonts/font = SubResource( 2 )
 text = "Get ready!"
 align = 1

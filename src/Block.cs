@@ -1,9 +1,10 @@
 using DodgeTheCreeps.Utils;
 using GodotAnalysers;
 using Godot;
+using DodgeTheCreeps.UnitTypes;
 
 [SceneReference("Block.tscn")]
-public partial class Block
+public partial class Block: IHitable
 {
     public override void _Ready()
     {
@@ -12,5 +13,9 @@ public partial class Block
 
         this.AddToGroup(Constants.MinimapIconBlock);
         this.AddToGroup(Constants.DynamicGameObject);
+    }
+
+    public void Hit(Node2D byNode)
+    {
     }
 }

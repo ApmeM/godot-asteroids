@@ -1,6 +1,7 @@
 using DodgeTheCreeps.Utils;
 using Godot;
 using GodotAnalysers;
+using System.Linq;
 
 [SceneReference("Game.tscn")]
 public partial class Game
@@ -9,22 +10,17 @@ public partial class Game
     public delegate void GameOver(int score);
 
     [Export]
-    public PackedScene mobScene;
-    [Export]
     public PackedScene blockScene;
 
     public int score;
 
-    private const int pathSize = 5;
-
-    private Vector2 mobSpawnLocation;
+    private const int pathSize = 1;
 
     public override void _Ready()
     {
         base._Ready();
         this.FillMembers();
 
-        this.mobTimer.Connect(CommonSignals.Timeout, this, nameof(OnMobTimerTimeout));
         this.scoreTimer.Connect(CommonSignals.Timeout, this, nameof(OnScoreTimerTimeout));
         this.startTimer.Connect(CommonSignals.Timeout, this, nameof(OnStartTimerTimeout));
         this.hUD.Connect(nameof(HUD.StartGame), this, nameof(NewGame));
@@ -48,7 +44,6 @@ public partial class Game
 
     private void PlayerHit()
     {
-        this.mobTimer.Stop();
         this.scoreTimer.Stop();
         this.music.Stop();
         this.deathSound.Play();
@@ -63,23 +58,16 @@ public partial class Game
         this.GetTree().CallGroup(Constants.DynamicGameObject, "queue_free");
         this.score = 0;
 
-        var rect = new Rect2(Vector2.Zero, Vector2.Zero);
-        
-        var map = MazeGeneratorWrapper.Generate();
-        var startPosition = Vector2.Zero;
-        for (var x = 0; x < map.GetLength(0); x++)
-            for (var y = 0; y < map.GetLength(0); y++)
+        var maze = MazeGeneratorWrapper.DefaultInstance;
+        maze.GenerateLevel1();
+        var startPosition = maze.State.StartPosition * 100 * pathSize + Vector2.One * 50 * pathSize;
+        var rect = new Rect2(Vector2.Zero, new Vector2(maze.State.Map.GetLength(0) * 100 * pathSize + pathSize * 50, maze.State.Map.GetLength(1) * 100 * pathSize + pathSize * 50));
+
+        for (var x = 0; x < maze.State.Map.GetLength(0); x++)
+            for (var y = 0; y < maze.State.Map.GetLength(1); y++)
             {
-                rect = rect.Expand(new Vector2(x * 100 * pathSize + pathSize * 50, y * 100 * pathSize + pathSize * 50));
-
-                if (map[x, y] != 1)
+                if (maze.State.Map[x, y] != 1)
                 {
-                    if (startPosition == Vector2.Zero)
-                    {
-                        startPosition = new Vector2(x * 100 * pathSize + pathSize * 50, y * 100 * pathSize + pathSize * 50);
-                    }
-
-                    mobSpawnLocation = new Vector2(x * 100 * pathSize + pathSize * 50, y * 100 * pathSize + pathSize * 50);
                     continue;
                 }
 
@@ -91,6 +79,20 @@ public partial class Game
                         this.AddChild(block);
                     }
             }
+
+        foreach (var unitItem in maze.State.UnitsList)
+        {
+            var mobSpawnLocation = maze.State.UnitsList.First().Key * 100 * pathSize + Vector2.One * 50 * pathSize;
+
+            var direction = (this.player.Position - mobSpawnLocation).Angle();
+            var velocity = new Vector2((float)GD.RandRange(150.0, 250.0), 0);
+
+            var mob = unitItem.Value.CreateUnit();
+            mob.Position = mobSpawnLocation;
+            mob.Rotation = direction;
+            mob.LinearVelocity = velocity.Rotated(direction);
+            this.AddChild(mob);
+        }
 
         this.player.Start(startPosition, rect);
 
@@ -107,7 +109,6 @@ public partial class Game
 
     private void OnStartTimerTimeout()
     {
-        this.mobTimer.Start();
         this.scoreTimer.Start();
     }
 
@@ -116,17 +117,5 @@ public partial class Game
         this.score++;
 
         this.hUD.UpdateScore(score);
-    }
-
-    private void OnMobTimerTimeout()
-    {
-        var direction = (this.player.Position - this.mobSpawnLocation).Angle();
-        var velocity = new Vector2((float)GD.RandRange(150.0, 250.0), 0);
-
-        var mob = (Mob)mobScene.Instance();
-        mob.Position = this.mobSpawnLocation;
-        mob.Rotation = direction;
-        mob.LinearVelocity = velocity.Rotated(direction);
-        this.AddChild(mob);
     }
 }

@@ -1,3 +1,4 @@
+using DodgeTheCreeps.UnitTypes;
 using DodgeTheCreeps.Utils;
 using Godot;
 using GodotAnalysers;
@@ -6,7 +7,7 @@ using GodotAnalysers;
 public partial class Bullet
 {
     [Export]
-    public float Speed = 1000;
+    public float Speed = 2000;
 
     public override void _Ready()
     {
@@ -19,14 +20,14 @@ public partial class Bullet
 
     private void Hit(Node body)
     {
-        GD.Print($"Hit {body.GetType()}");
-        if (!(body is Mob bullet))
+        if (!(body is IHitable hitable))
         {
             return;
         }
 
+        hitable.Hit(this);
+
         this.QueueFree();
-        bullet.QueueFree();
     }
 
     private void LifetimeTimeout()
