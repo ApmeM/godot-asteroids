@@ -9,6 +9,9 @@ public partial class Bullet
     [Export]
     public float Speed = 2000;
 
+    [Export]
+    public PackedScene Explosion;
+
     public override void _Ready()
     {
         base._Ready();
@@ -26,6 +29,10 @@ public partial class Bullet
         }
 
         hitable.Hit(this);
+
+        var explosion = (Node2D)Explosion.Instance();
+        explosion.Position = this.Position;
+        this.GetParent().AddChild(explosion);
 
         this.QueueFree();
     }

@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://art/ships/ships.laserRed03.tres" type="Texture" id=1]
 [ext_resource path="res://Bullet.cs" type="Script" id=2]
+[ext_resource path="res://Explosion.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 4.0
@@ -11,6 +12,7 @@ height = 30.0
 collision_layer = 0
 collision_mask = 2
 script = ExtResource( 2 )
+Explosion = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
 rotation = 1.5708
