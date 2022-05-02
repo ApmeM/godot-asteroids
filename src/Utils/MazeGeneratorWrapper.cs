@@ -23,20 +23,30 @@ namespace DodgeTheCreeps.Utils
 
         public void GenerateLevel1()
         {
-            generatorSettings.Height = 11;
-            generatorSettings.Width = 11;
+            generatorSettings.Height = 21;
+            generatorSettings.Width = 27;
             generatorSettings.MazeText =
-            "###########\n" +
-            "#.........#\n" +
-            "#.........#\n" +
-            "#.........#\n" +
-            "#...###...#\n" +
-            "#...###...#\n" +
-            "#...###...#\n" +
-            "#.........#\n" +
-            "#.........#\n" +
-            "#.........#\n" +
-            "###########\n";
+            "###########################\n" +
+            "#.........................#\n" +
+            "#.........................#\n" +
+            "#.........................#\n" +
+            "#.........................#\n" +
+            "#.........................#\n" +
+            "#.........................#\n" +
+            "#.........................#\n" +
+            "#..####..#..###....####...#\n" +
+            "#..#........#..#...#......#\n" +
+            "#..###...#..###....####...#\n" +
+            "#..#.....#..#..#...#......#\n" +
+            "#..#.....#..#...#..####..##\n" +
+            "#.........................#\n" +
+            "#.........................#\n" +
+            "#.........................#\n" +
+            "#.........................#\n" +
+            "#.........................#\n" +
+            "#.........................#\n" +
+            "#.........................#\n" +
+            "###########################\n";
 
             CommonAlgorithm.GenerateField(generatorResult, generatorSettings);
             StringParserAlgorithm.Parse(generatorResult, generatorSettings);
@@ -44,9 +54,9 @@ namespace DodgeTheCreeps.Utils
             this.State.Map = generatorResult.Paths;
             this.State.StartPosition = new Godot.Vector2(5, 2);
             this.State.UnitsList.Clear();
-            this.State.UnitsList[new Godot.Vector2(5, 8)] = UnitType.LargeMeteor;
-            this.State.UnitsList[new Godot.Vector2(2, 8)] = UnitType.LargeMeteor;
-            this.State.UnitsList[new Godot.Vector2(8, 8)] = UnitType.LargeMeteor;
+            this.State.UnitsList[new Godot.Vector2(2, 16)] = UnitType.LargeMeteor;
+            this.State.UnitsList[new Godot.Vector2(11, 16)] = UnitType.BlackHole;
+            this.State.UnitsList[new Godot.Vector2(20, 16)] = UnitType.LargeMeteor;
         }
     }
 }

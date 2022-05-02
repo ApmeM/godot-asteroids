@@ -6,6 +6,8 @@ using DodgeTheCreeps.UnitTypes;
 [SceneReference("Block.tscn")]
 public partial class Block: IHitable
 {
+    public bool IsDead => false;
+
     public override void _Ready()
     {
         base._Ready();

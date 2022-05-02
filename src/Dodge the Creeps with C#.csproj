@@ -11,4 +11,7 @@
     <PackageReference Include="GodotAnalysersAttribute" Version="1.1.0" />
     <PackageReference Include="MazeGenerators" Version="2.3.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Bonus\" />
+  </ItemGroup>
 </Project>

@@ -6,6 +6,8 @@ using GodotAnalysers;
 [SceneReference("Meteor.tscn")]
 public partial class Meteor: IHitable
 {
+    public bool IsDead { get; private set; }
+
     public override void _Ready()
     {
         base._Ready();
@@ -17,6 +19,8 @@ public partial class Meteor: IHitable
 
     public void Hit(Node2D byNode)
     {
+        this.IsDead = true;
+
         Vector2 direction;
         var meteor = UnitType.SmallMeteor.CreateUnit();
         direction = (this.Position - byNode.Position).Rotated(-Mathf.Pi / 2).Normalized();
@@ -25,7 +29,6 @@ public partial class Meteor: IHitable
         this.GetParent().AddChild(meteor);
 
         meteor = UnitType.SmallMeteor.CreateUnit();
-        meteor.Position = this.Position;
         direction = (this.Position - byNode.Position).Rotated(Mathf.Pi / 2).Normalized();
         meteor.LinearVelocity = direction * (float)GD.RandRange(250.0, 350.0);
         meteor.Position = this.Position + direction * 50;

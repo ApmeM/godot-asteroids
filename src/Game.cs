@@ -82,7 +82,7 @@ public partial class Game
 
         foreach (var unitItem in maze.State.UnitsList)
         {
-            var mobSpawnLocation = maze.State.UnitsList.First().Key * 100 * pathSize + Vector2.One * 50 * pathSize;
+            var mobSpawnLocation = unitItem.Key * 100 * pathSize + Vector2.One * 50 * pathSize;
 
             var direction = (this.player.Position - mobSpawnLocation).Angle();
             var velocity = new Vector2((float)GD.RandRange(150.0, 250.0), 0);

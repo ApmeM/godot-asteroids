@@ -7,6 +7,7 @@ namespace DodgeTheCreeps.Utils
         LargeMeteor,
         Meteor,
         SmallMeteor,
+        BlackHole,
     }
 
     public static class UnitTypeCreator

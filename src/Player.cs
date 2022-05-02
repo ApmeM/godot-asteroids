@@ -1,10 +1,11 @@
+using DodgeTheCreeps.UnitTypes;
 using DodgeTheCreeps.Utils;
 using Godot;
 using GodotAnalysers;
 using System;
 
 [SceneReference("Player.tscn")]
-public partial class Player
+public partial class Player : IBonusCollector
 {
     [Signal]
     public delegate void Hit();
@@ -30,7 +31,7 @@ public partial class Player
     private Rect2 fieldSize;
     private Vector2 initialPosition;
     private bool initialize = false;
-
+    private int powerUp = 0;
 
     public override void _Ready()
     {
@@ -108,15 +109,82 @@ public partial class Player
 
     private void OnPlayerShoot()
     {
-        var bullet = (Node2D)Bullet.Instance();
-        bullet.GlobalPosition = this.endOfGun.GlobalPosition;
-        bullet.Rotation = this.Rotation;
-        this.GetNode(this.Field).AddChild(bullet);
+        Node2D bullet;
+        switch (this.powerUp)
+        {
+            case 0:
+                bullet = (Node2D)Bullet.Instance();
+                bullet.GlobalPosition = this.endOfGun.GlobalPosition;
+                bullet.Rotation = this.Rotation;
+                this.GetNode(this.Field).AddChild(bullet);
+                break;
+            case 1:
+                bullet = (Node2D)Bullet.Instance();
+                bullet.GlobalPosition = this.endOfGun.GlobalPosition + Vector2.Down.Rotated(this.Rotation) * 20;
+                bullet.Rotation = this.Rotation;
+                this.GetNode(this.Field).AddChild(bullet);
+
+                bullet = (Node2D)Bullet.Instance();
+                bullet.GlobalPosition = this.endOfGun.GlobalPosition - Vector2.Down.Rotated(this.Rotation) * 20;
+                bullet.Rotation = this.Rotation;
+                this.GetNode(this.Field).AddChild(bullet);
+                break;
+            case 2:
+                bullet = (Node2D)Bullet.Instance();
+                bullet.GlobalPosition = this.endOfGun.GlobalPosition + Vector2.Down.Rotated(this.Rotation) * 20;
+                bullet.Rotation = this.Rotation;
+                this.GetNode(this.Field).AddChild(bullet);
+
+                bullet = (Node2D)Bullet.Instance();
+                bullet.GlobalPosition = this.endOfGun.GlobalPosition - Vector2.Down.Rotated(this.Rotation) * 20;
+                bullet.Rotation = this.Rotation;
+                this.GetNode(this.Field).AddChild(bullet);
+
+                bullet = (Node2D)Bullet.Instance();
+                bullet.GlobalPosition = this.endOfGun.GlobalPosition + Vector2.Right.Rotated(this.Rotation) * 20;
+                bullet.Rotation = this.Rotation;
+                this.GetNode(this.Field).AddChild(bullet);
+                break;
+            default:
+                bullet = (Node2D)Bullet.Instance();
+                bullet.GlobalPosition = this.endOfGun.GlobalPosition + Vector2.Down.Rotated(this.Rotation) * 20;
+                bullet.Rotation = this.Rotation;
+                this.GetNode(this.Field).AddChild(bullet);
+
+                bullet = (Node2D)Bullet.Instance();
+                bullet.GlobalPosition = this.endOfGun.GlobalPosition + Vector2.Down.Rotated(this.Rotation) * 20;
+                bullet.Rotation = this.Rotation + Mathf.Pi / 8;
+                this.GetNode(this.Field).AddChild(bullet);
+
+                bullet = (Node2D)Bullet.Instance();
+                bullet.GlobalPosition = this.endOfGun.GlobalPosition - Vector2.Down.Rotated(this.Rotation) * 20;
+                bullet.Rotation = this.Rotation;
+                this.GetNode(this.Field).AddChild(bullet);
+
+                bullet = (Node2D)Bullet.Instance();
+                bullet.GlobalPosition = this.endOfGun.GlobalPosition - Vector2.Down.Rotated(this.Rotation) * 20;
+                bullet.Rotation = this.Rotation - Mathf.Pi / 8;
+                this.GetNode(this.Field).AddChild(bullet);
+
+                bullet = (Node2D)Bullet.Instance();
+                bullet.GlobalPosition = this.endOfGun.GlobalPosition + Vector2.Right.Rotated(this.Rotation) * 20;
+                bullet.Rotation = this.Rotation;
+                this.GetNode(this.Field).AddChild(bullet);
+                break;
+        }
     }
 
     private void OnPlayerBodyEntered(PhysicsBody2D body)
     {
         EmitSignal(nameof(Hit));
         this.collisionShape2D.SetDeferred("disabled", true);
+    }
+
+    public void Collect(BonusType bonus)
+    {
+        if (bonus == BonusType.Booster)
+        {
+            this.powerUp++;
+        }
     }
 }

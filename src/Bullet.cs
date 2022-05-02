@@ -28,6 +28,11 @@ public partial class Bullet
             return;
         }
 
+        if (hitable.IsDead)
+        {
+            return;
+        }
+
         hitable.Hit(this);
 
         var explosion = (Node2D)Explosion.Instance();

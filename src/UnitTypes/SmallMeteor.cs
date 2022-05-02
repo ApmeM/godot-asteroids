@@ -6,6 +6,8 @@ using GodotAnalysers;
 [SceneReference("SmallMeteor.tscn")]
 public partial class SmallMeteor : IHitable
 {
+    public bool IsDead { get; private set; }
+
     public override void _Ready()
     {
         base._Ready();
@@ -17,6 +19,12 @@ public partial class SmallMeteor : IHitable
 
     public void Hit(Node2D byNode)
     {
+        IsDead = true;
+
+        var bonus = BonusType.Booster.CreateBonus();
+        bonus.Position = this.Position;
+        this.GetParent().AddChild(bonus);
+
         this.QueueFree();
     }
 }
