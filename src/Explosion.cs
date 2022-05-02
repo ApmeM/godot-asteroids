@@ -9,11 +9,11 @@ public partial class Explosion
     public override void _Ready()
     {
         this.FillMembers();
-
-        this.lifetime.Connect(CommonSignals.Timeout, this, nameof(LifetimeOver));
+        this.animationPlayer.Play("Boom");
+        this.animationPlayer.Connect(CommonSignals.AnimationFinished, this, nameof(LifetimeAnimationFinished));
     }
 
-    private void LifetimeOver()
+    private void LifetimeAnimationFinished(string animationName)
     {
         this.QueueFree();
     }
