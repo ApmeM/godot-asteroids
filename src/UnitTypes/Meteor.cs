@@ -26,13 +26,13 @@ public partial class Meteor: IHitable
         direction = (this.Position - byNode.Position).Rotated(-Mathf.Pi / 2).Normalized();
         meteor.LinearVelocity = direction * (float)GD.RandRange(250.0, 350.0);
         meteor.Position = this.Position - direction * 50;
-        this.GetParent().AddChild(meteor);
+        this.GetParent().CallDeferred("add_child", meteor);
 
         meteor = UnitType.SmallMeteor.CreateUnit();
         direction = (this.Position - byNode.Position).Rotated(Mathf.Pi / 2).Normalized();
         meteor.LinearVelocity = direction * (float)GD.RandRange(250.0, 350.0);
         meteor.Position = this.Position + direction * 50;
-        this.GetParent().AddChild(meteor);
+        this.GetParent().CallDeferred("add_child", meteor);
 
         this.QueueFree();
     }

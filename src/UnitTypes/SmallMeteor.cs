@@ -23,7 +23,7 @@ public partial class SmallMeteor : IHitable
 
         var bonus = BonusType.Booster.CreateBonus();
         bonus.Position = this.Position;
-        this.GetParent().AddChild(bonus);
+        this.GetParent().CallDeferred("add_child", bonus);
 
         this.QueueFree();
     }
