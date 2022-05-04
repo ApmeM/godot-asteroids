@@ -12,8 +12,6 @@ public partial class Game
     [Export]
     public PackedScene blockScene;
 
-    public int score;
-
     private const int pathSize = 1;
 
     public override void _Ready()
@@ -21,9 +19,6 @@ public partial class Game
         base._Ready();
         this.FillMembers();
 
-        this.scoreTimer.Connect(CommonSignals.Timeout, this, nameof(OnScoreTimerTimeout));
-        this.startTimer.Connect(CommonSignals.Timeout, this, nameof(OnStartTimerTimeout));
-        this.hUD.Connect(nameof(HUD.StartGame), this, nameof(NewGame));
         this.player.Connect(nameof(Player.Hit), this, nameof(PlayerHit));
         this.Connect(CommonSignals.VisibilityChanged, this, nameof(VisibilityChanged));
 
@@ -44,19 +39,17 @@ public partial class Game
 
     private void PlayerHit()
     {
-        this.scoreTimer.Stop();
         this.music.Stop();
         this.deathSound.Play();
 
         this.camera2D.Current = false;
 
-        this.EmitSignal(nameof(GameOver), this.score);
+        this.EmitSignal(nameof(GameOver), 0);
     }
 
     public void NewGame()
     {
         this.GetTree().CallGroup(Constants.DynamicGameObject, "queue_free");
-        this.score = 0;
 
         var maze = MazeGeneratorWrapper.DefaultInstance;
         maze.GenerateLevel1();
@@ -98,24 +91,10 @@ public partial class Game
 
         this.camera2D.Current = true;
 
-        this.startTimer.Start();
-
+        this.hUD.SetScore(0);
         this.hUD.SetMapSize(rect);
-        this.hUD.UpdateScore(score);
         this.hUD.ShowMessage("Get Ready!");
 
         this.music.Play();
-    }
-
-    private void OnStartTimerTimeout()
-    {
-        this.scoreTimer.Start();
-    }
-
-    private void OnScoreTimerTimeout()
-    {
-        this.score++;
-
-        this.hUD.UpdateScore(score);
     }
 }

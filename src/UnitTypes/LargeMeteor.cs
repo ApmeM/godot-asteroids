@@ -6,6 +6,8 @@ using GodotAnalysers;
 [SceneReference("LargeMeteor.tscn")]
 public partial class LargeMeteor : IHitable
 {
+    private Communicator communicator;
+
     public bool IsDead { get; private set; }
 
     public override void _Ready()
@@ -13,8 +15,11 @@ public partial class LargeMeteor : IHitable
         base._Ready();
         this.FillMembers();
 
+        this.communicator = GetNode<Communicator>("/root/Communicator");
+
         this.AddToGroup(Constants.MinimapIconEnemy);
         this.AddToGroup(Constants.DynamicGameObject);
+        this.AddToGroup(Constants.GameTarget);
     }
 
     public void Hit(Node2D byNode)
@@ -33,6 +38,8 @@ public partial class LargeMeteor : IHitable
         meteor.LinearVelocity = direction * (float)GD.RandRange(250.0, 350.0);
         meteor.Position = this.Position + direction * 50;
         this.GetParent().CallDeferred("add_child", meteor);
+
+        this.communicator.EmitSignal(nameof(Communicator.ScoreAdded), 100);
 
         this.QueueFree();
     }

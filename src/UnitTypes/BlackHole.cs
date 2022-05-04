@@ -9,11 +9,14 @@ public partial class BlackHole : IHitable
 {
     public bool IsDead { get; private set; }
     private int LifeLeft = 20;
+    private Communicator communicator;
 
     public override void _Ready()
     {
         base._Ready();
         this.FillMembers();
+
+        this.communicator = GetNode<Communicator>("/root/Communicator");
 
         this.AddToGroup(Constants.MinimapIconEnemy);
         this.AddToGroup(Constants.DynamicGameObject);
@@ -51,6 +54,7 @@ public partial class BlackHole : IHitable
 
         if (IsDead)
         {
+            this.communicator.EmitSignal(nameof(Communicator.ScoreAdded), 1000);
             this.QueueFree();
         }
     }

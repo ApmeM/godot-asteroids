@@ -1,23 +1,27 @@
 using DodgeTheCreeps.Utils;
 using Godot;
 using GodotAnalysers;
+using System;
 
 [SceneReference("HUD.tscn")]
 public partial class HUD
 {
-    [Signal]
-    public delegate void StartGame();
-
     [Export]
     public NodePath PlayerPath;
 
     private bool isLeftPressed = false;
     private bool isRightPressed = false;
+    private Communicator communicator;
+
+    private int score = 0;
 
     public override void _Ready()
     {
         base._Ready();
         this.FillMembers();
+
+        this.communicator = GetNode<Communicator>("/root/Communicator");
+        this.communicator.Connect(nameof(Communicator.ScoreAdded), this, nameof(UpdateScore));
 
         if (this.PlayerPath != null)
         {
@@ -62,9 +66,10 @@ public partial class HUD
         this.messageTimer.Start();
     }
 
-    public void UpdateScore(int score)
+    public void UpdateScore(int scoreAdded)
     {
-        this.scoreLabel.Text = score.ToString();
+        this.score += scoreAdded;
+        this.scoreLabel.Text = this.score.ToString();
     }
     private void OnMessageTimerTimeout()
     {
@@ -74,5 +79,11 @@ public partial class HUD
     public void SetMapSize(Rect2 rect)
     {
         this.minimap.SetMapSize(rect);
+    }
+
+    public void SetScore(int score)
+    {
+        this.score = 0;
+        UpdateScore(score);
     }
 }

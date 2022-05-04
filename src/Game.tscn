@@ -26,12 +26,6 @@ Field = NodePath("..")
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2( 2, 2 )
 
-[node name="ScoreTimer" type="Timer" parent="."]
-
-[node name="StartTimer" type="Timer" parent="."]
-wait_time = 2.0
-one_shot = true
-
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
 
