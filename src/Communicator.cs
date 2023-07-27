@@ -1,7 +1,15 @@
 using Godot;
+using GodotAnalysers;
 
-public class Communicator : Node
+[SceneReference("Communicator.tscn")]
+public partial class Communicator : Node
 {
+    public override void _Ready()
+    {
+        base._Ready();
+        this.FillMembers();
+    }
+
     [Signal]
     public delegate void ScoreAdded(int score);
 }

@@ -6,43 +6,125 @@ on:
       - '**.md'
     branches:
       - 'master'
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  packages: read
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
-  export_game:
+  build:
     runs-on: ubuntu-latest
-    name: Export Game Job
+    name: Build artifacts
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3.1.0
+        with:
+          fetch-depth: 0
 
-    - name: Checkout
-      uses: actions/checkout@v2.3.1
-      with:
-        fetch-depth: 0
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 2.2.108
+          source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-    - name: Setup nuget
-      uses: nuget/setup-nuget@v1
-      with:
-        nuget-version: 'latest'
+      - name: Restore packages
+        run: |
+          dotnet restore "./src/Asteroids.sln"
 
-    - name: Restore packages with nuget
-      run: |
-        nuget sources add -Name github -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json -UserName ${{ github.repository_owner }} -Password ${{secrets.GITHUB_TOKEN}}
-        nuget restore "./src/Dodge the Creeps with C#.sln"
+      - name: Update presets config
+        env:
+          RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+        run: |
+          sed -i "s/RELEASE_KEYSTORE_PASSWORD_PLACEHOLDER/$RELEASE_KEYSTORE_PASSWORD/" ./src/export_presets.cfg 
+          sed -i "s/version\/code=1/version\/code=$GITHUB_RUN_NUMBER/" ./src/export_presets.cfg 
+          sed -i "s/version\/name=\"1.0.0\"/version\/name=\"1.$GITHUB_RUN_NUMBER.0\"/" ./src/export_presets.cfg 
 
-    - name: Export game
-      uses: firebelley/godot-export@v3.0.0
-      with:
-        godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/3.4.2/mono/Godot_v3.4.2-stable_mono_linux_headless_64.zip
-        godot_export_templates_download_url: https://downloads.tuxfamily.org/godotengine/3.4.2/mono/Godot_v3.4.2-stable_mono_export_templates.tpz
-        relative_project_path: ./src/
-        relative_export_path: ./build/
-        create_release: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Export game
+        id: export
+        uses: firebelley/godot-export@v4.4.0
+        with:
+          godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/3.5.1/mono/Godot_v3.5.1-stable_mono_linux_headless_64.zip
+          godot_export_templates_download_url: https://downloads.tuxfamily.org/godotengine/3.5.1/mono/Godot_v3.5.1-stable_mono_export_templates.tpz
+          relative_project_path: ./src/
+          export_debug: false
+          use_preset_export_path: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ${{ steps.export.outputs.build_directory }}/HTML5
 
-    - name: Deploy
-      uses: JamesIves/github-pages-deploy-action@4.1.1
-      with:
-        branch: gh-pages
-        folder: ./build/HTML5
-        git-config-name: Autodeploy
-        git-config-email: autodeploy@noreply.github.com
+      - name: Upload html artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: html5
+          path: ${{ steps.export.outputs.build_directory }}/HTML5
+
+      - name: Upload android artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: android
+          path: ${{ steps.export.outputs.build_directory }}/Android
+
+      - name: Upload windows artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows
+          path: ${{ steps.export.outputs.build_directory }}/Windows Desktop
+
+      - name: Upload linux x11 artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux
+          path: ${{ steps.export.outputs.build_directory }}/LinuxX11
+
+  deploy_html5:
+    needs: build
+    name: Deploy to github pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
+
+  deploy_android:
+    needs: build
+    name: Deploy to google play
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: android
+          path: ./android
+
+      - name: Deploy to Google Play
+        uses: r0adkll/upload-google-play@v1
+        if: "${{ env.SERVICE_ACCOUNT_JSON != ''}}"
+        env:
+          SERVICE_ACCOUNT_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: org.apmem.games.Asteroids
+          releaseFiles: ./android/Asteroids.apk
+          track: production
+          status: completed

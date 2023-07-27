@@ -20,7 +20,7 @@ public partial class HUD
         base._Ready();
         this.FillMembers();
 
-        this.communicator = GetNode<Communicator>("/root/Communicator");
+        this.communicator = GetNode<Communicator>("/root/Main/Communicator");
         this.communicator.Connect(nameof(Communicator.ScoreAdded), this, nameof(UpdateScore));
 
         if (this.PlayerPath != null)

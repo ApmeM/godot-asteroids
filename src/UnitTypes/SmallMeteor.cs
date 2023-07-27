@@ -15,7 +15,7 @@ public partial class SmallMeteor : IHitable
         base._Ready();
         this.FillMembers();
 
-        this.communicator = GetNode<Communicator>("/root/Communicator");
+        this.communicator = GetNode<Communicator>("/root/Main/Communicator");
 
         this.AddToGroup(Constants.MinimapIconEnemy);
         this.AddToGroup(Constants.DynamicGameObject);

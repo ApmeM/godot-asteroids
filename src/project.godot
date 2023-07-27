@@ -10,7 +10,7 @@ config_version=4
 
 [application]
 
-config/name="Dodge the Creeps with C#"
+config/name="Asteroids"
 config/description="This is a simple game where your character must move
 and avoid the enemies for as long as possible.
 
@@ -19,10 +19,6 @@ tutorial in the documentation, but ported to C#. For more details,
 consider following the tutorial in the documentation."
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
-
-[autoload]
-
-Communicator="*res://Communicator.cs"
 
 [display]
 
@@ -67,6 +63,10 @@ move_down={
 , Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":1,"axis_value":1.0,"script":null)
  ]
 }
+
+[mono]
+
+project/assembly_name="Asteroids"
 
 [physics]
 
