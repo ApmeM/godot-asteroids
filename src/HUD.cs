@@ -69,7 +69,7 @@ public partial class HUD
     public void UpdateScore(int scoreAdded)
     {
         this.score += scoreAdded;
-        this.scoreLabel.Text = this.score.ToString();
+        this.scoreLabel.Value = this.score;
     }
     private void OnMessageTimerTimeout()
     {

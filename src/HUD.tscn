@@ -1,15 +1,12 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://HUD.cs" type="Script" id=1]
 [ext_resource path="res://fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://Minimap.tscn" type="PackedScene" id=3]
+[ext_resource path="res://gd-minimap/Minimap.tscn" type="PackedScene" id=3]
+[ext_resource path="res://gd-countingLabel/CountingLabel.tscn" type="PackedScene" id=4]
 [ext_resource path="res://art/ui/ui.crossair_red.tres" type="Texture" id=5]
 [ext_resource path="res://art/ui/ui.crossair_blueOutline.tres" type="Texture" id=6]
-
-[sub_resource type="DynamicFont" id=1]
-size = 64
-use_mipmaps = true
-font_data = ExtResource( 2 )
+[ext_resource path="res://gd-theme/UITheme.tres" type="Theme" id=7]
 
 [sub_resource type="DynamicFont" id=2]
 size = 64
@@ -22,18 +19,15 @@ radius = 17.0
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource( 1 )
 
-[node name="ScoreLabel" type="Label" parent="."]
+[node name="ScoreLabel" parent="." instance=ExtResource( 4 )]
 anchor_left = 1.0
-anchor_right = 1.0
+anchor_bottom = 0.0
 margin_left = -160.0
-margin_bottom = 159.0
-custom_fonts/font = SubResource( 1 )
-text = "0
-"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+margin_right = -80.0
+margin_bottom = 71.0
+rect_scale = Vector2( 2, 2 )
+theme = ExtResource( 7 )
+AnimationTime = 1
 
 [node name="MessageLabel" type="Label" parent="."]
 margin_left = 7.0

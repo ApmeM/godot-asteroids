@@ -95,6 +95,6 @@ public partial class Game
         this.hUD.SetMapSize(rect);
         this.hUD.ShowMessage("Get Ready!");
 
-        this.music.Play();
+        //this.music.Play();
     }
 }
