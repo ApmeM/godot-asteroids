@@ -1,88 +1,56 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://HUD.cs" type="Script" id=1]
-[ext_resource path="res://fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://gd-timerLabel/TimerLabel.tscn" type="PackedScene" id=2]
 [ext_resource path="res://gd-minimap/Minimap.tscn" type="PackedScene" id=3]
 [ext_resource path="res://gd-countingLabel/CountingLabel.tscn" type="PackedScene" id=4]
-[ext_resource path="res://art/ui/ui.crossair_red.tres" type="Texture" id=5]
-[ext_resource path="res://art/ui/ui.crossair_blueOutline.tres" type="Texture" id=6]
+[ext_resource path="res://gd-joystick/Joystick.tscn" type="PackedScene" id=5]
 [ext_resource path="res://gd-theme/UITheme.tres" type="Theme" id=7]
-
-[sub_resource type="DynamicFont" id=2]
-size = 64
-use_mipmaps = true
-font_data = ExtResource( 2 )
-
-[sub_resource type="CircleShape2D" id=3]
-radius = 17.0
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource( 1 )
 
-[node name="ScoreLabel" parent="." instance=ExtResource( 4 )]
-anchor_left = 1.0
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="TopContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 480.0
+margin_bottom = 150.0
+
+[node name="TopLeftPlaceholder" type="Control" parent="VBoxContainer/TopContainer"]
+margin_right = 161.0
+margin_bottom = 150.0
+size_flags_horizontal = 3
+
+[node name="Minimap" parent="VBoxContainer/TopContainer" instance=ExtResource( 3 )]
+margin_left = 165.0
+margin_right = 315.0
+rect_min_size = Vector2( 150, 150 )
+
+[node name="ScoreLabel" parent="VBoxContainer/TopContainer" instance=ExtResource( 4 )]
+anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = -160.0
-margin_right = -80.0
-margin_bottom = 71.0
-rect_scale = Vector2( 2, 2 )
+margin_left = 319.0
+margin_right = 480.0
+margin_bottom = 150.0
+size_flags_horizontal = 3
 theme = ExtResource( 7 )
 AnimationTime = 1
 
-[node name="MessageLabel" type="Label" parent="."]
-margin_left = 7.0
-margin_top = 198.0
-margin_right = 473.0
-margin_bottom = 276.0
-custom_fonts/font = SubResource( 2 )
-text = "Get ready!"
+[node name="TimerLabel" parent="VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 341.0
+margin_right = 480.0
+margin_bottom = 379.0
+size_flags_vertical = 6
+theme = ExtResource( 7 )
+text = "Get Ready"
 align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="MessageTimer" type="Timer" parent="."]
-wait_time = 2.0
-one_shot = true
+[node name="BottomContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 570.0
+margin_right = 480.0
+margin_bottom = 720.0
 
-[node name="Minimap" parent="." instance=ExtResource( 3 )]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -76.5
-margin_right = 76.5
-margin_bottom = 145.0
-
-[node name="ShootButtonConainer" type="Control" parent="."]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -100.0
-margin_top = -100.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="RightButton" type="TouchScreenButton" parent="ShootButtonConainer"]
-scale = Vector2( 3, 3 )
-normal = ExtResource( 6 )
-pressed = ExtResource( 5 )
-shape = SubResource( 3 )
-visibility_mode = 1
-
-[node name="Control" type="Control" parent="."]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_top = -100.0
-margin_right = 100.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="LeftButton" type="TouchScreenButton" parent="Control"]
-scale = Vector2( 3, 3 )
-normal = ExtResource( 6 )
-pressed = ExtResource( 5 )
-shape = SubResource( 3 )
-visibility_mode = 1
+[node name="Joystick" parent="VBoxContainer/BottomContainer" instance=ExtResource( 5 )]

@@ -9,11 +9,7 @@ radius = 42.0
 height = 24.0
 
 [node name="Player" type="RigidBody2D"]
-z_index = 10
 collision_layer = 5
-gravity_scale = 0.0
-linear_damp = 5.0
-angular_damp = 5.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true

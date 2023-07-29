@@ -45,29 +45,17 @@ public partial class Player : IBonusCollector
     public override void _PhysicsProcess(float delta)
     {
         this.AppliedForce = Vector2.Zero;
-        this.AppliedTorque = 0;
 
-        if (Input.IsActionPressed("move_right"))
+        var vector = Input.GetVector("move_left", "move_right", "move_up", "move_down");
+        if (vector == Vector2.Zero)
         {
-            this.AppliedTorque = this.Torque;
+            return;
         }
 
-        if (Input.IsActionPressed("move_left"))
-        {
-            this.AppliedTorque = -this.Torque;
-        }
-
-        //if (Input.IsActionPressed("move_down"))
-        //{
-        //    this.AppliedForce = -Vector2.Right.Rotated(this.Rotation) * Force;
-        //}
-
-        //if (Input.IsActionPressed("move_up"))
-        //{
-        //    this.AppliedForce = Vector2.Right.Rotated(this.Rotation) * Force;
-        //}
-
-        this.AppliedForce = Vector2.Right.Rotated(this.Rotation) * Force;
+        var rotation = this.Transform.x;
+        var angle = rotation.AngleTo(vector);
+        this.Rotation += Mathf.Clamp(angle, -10 * delta, 10 * delta);
+        this.AppliedForce = this.Transform.x * Force;
     }
 
     public override void _IntegrateForces(Physics2DDirectBodyState state)
@@ -80,6 +68,11 @@ public partial class Player : IBonusCollector
 
             state.Transform = new Transform2D(0, initialPosition);
             state.LinearVelocity = Vector2.Zero;
+        }
+
+        var vector = Input.GetVector("move_left", "move_right", "move_up", "move_down");
+        if (vector != Vector2.Zero)
+        {
             state.AngularVelocity = 0;
         }
 
@@ -115,60 +108,60 @@ public partial class Player : IBonusCollector
             case 0:
                 bullet = (Node2D)Bullet.Instance();
                 bullet.GlobalPosition = this.endOfGun.GlobalPosition;
-                bullet.Rotation = this.Rotation;
+                bullet.GlobalRotation = this.GlobalRotation;
                 this.GetNode(this.Field).AddChild(bullet);
                 break;
             case 1:
                 bullet = (Node2D)Bullet.Instance();
                 bullet.GlobalPosition = this.endOfGun.GlobalPosition + Vector2.Down.Rotated(this.Rotation) * 20;
-                bullet.Rotation = this.Rotation;
+                bullet.GlobalRotation = this.GlobalRotation;
                 this.GetNode(this.Field).AddChild(bullet);
 
                 bullet = (Node2D)Bullet.Instance();
                 bullet.GlobalPosition = this.endOfGun.GlobalPosition - Vector2.Down.Rotated(this.Rotation) * 20;
-                bullet.Rotation = this.Rotation;
+                bullet.GlobalRotation = this.GlobalRotation;
                 this.GetNode(this.Field).AddChild(bullet);
                 break;
             case 2:
                 bullet = (Node2D)Bullet.Instance();
                 bullet.GlobalPosition = this.endOfGun.GlobalPosition + Vector2.Down.Rotated(this.Rotation) * 20;
-                bullet.Rotation = this.Rotation;
+                bullet.GlobalRotation = this.GlobalRotation;
                 this.GetNode(this.Field).AddChild(bullet);
 
                 bullet = (Node2D)Bullet.Instance();
                 bullet.GlobalPosition = this.endOfGun.GlobalPosition - Vector2.Down.Rotated(this.Rotation) * 20;
-                bullet.Rotation = this.Rotation;
+                bullet.GlobalRotation = this.GlobalRotation;
                 this.GetNode(this.Field).AddChild(bullet);
 
                 bullet = (Node2D)Bullet.Instance();
                 bullet.GlobalPosition = this.endOfGun.GlobalPosition + Vector2.Right.Rotated(this.Rotation) * 20;
-                bullet.Rotation = this.Rotation;
+                bullet.GlobalRotation = this.GlobalRotation;
                 this.GetNode(this.Field).AddChild(bullet);
                 break;
             default:
                 bullet = (Node2D)Bullet.Instance();
                 bullet.GlobalPosition = this.endOfGun.GlobalPosition + Vector2.Down.Rotated(this.Rotation) * 20;
-                bullet.Rotation = this.Rotation;
+                bullet.GlobalRotation = this.GlobalRotation;
                 this.GetNode(this.Field).AddChild(bullet);
 
                 bullet = (Node2D)Bullet.Instance();
                 bullet.GlobalPosition = this.endOfGun.GlobalPosition + Vector2.Down.Rotated(this.Rotation) * 20;
-                bullet.Rotation = this.Rotation + Mathf.Pi / 8;
+                bullet.GlobalRotation = this.GlobalRotation + Mathf.Pi / 8;
                 this.GetNode(this.Field).AddChild(bullet);
 
                 bullet = (Node2D)Bullet.Instance();
                 bullet.GlobalPosition = this.endOfGun.GlobalPosition - Vector2.Down.Rotated(this.Rotation) * 20;
-                bullet.Rotation = this.Rotation;
+                bullet.GlobalRotation = this.GlobalRotation;
                 this.GetNode(this.Field).AddChild(bullet);
 
                 bullet = (Node2D)Bullet.Instance();
                 bullet.GlobalPosition = this.endOfGun.GlobalPosition - Vector2.Down.Rotated(this.Rotation) * 20;
-                bullet.Rotation = this.Rotation - Mathf.Pi / 8;
+                bullet.GlobalRotation = this.GlobalRotation - Mathf.Pi / 8;
                 this.GetNode(this.Field).AddChild(bullet);
 
                 bullet = (Node2D)Bullet.Instance();
                 bullet.GlobalPosition = this.endOfGun.GlobalPosition + Vector2.Right.Rotated(this.Rotation) * 20;
-                bullet.Rotation = this.Rotation;
+                bullet.GlobalRotation = this.GlobalRotation;
                 this.GetNode(this.Field).AddChild(bullet);
                 break;
         }

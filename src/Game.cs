@@ -91,9 +91,7 @@ public partial class Game
 
         this.camera2D.Current = true;
 
-        this.hUD.SetScore(0);
-        this.hUD.SetMapSize(rect);
-        this.hUD.ShowMessage("Get Ready!");
+        this.hUD.Start(rect);
 
         //this.music.Play();
     }
