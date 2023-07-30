@@ -4,11 +4,9 @@ using Godot;
 using GodotAnalysers;
 
 [SceneReference("Meteor.tscn")]
-public partial class Meteor: IHitable
+public partial class Meteor : IHitable
 {
     private Communicator communicator;
-
-    public bool IsDead { get; private set; }
 
     public override void _Ready()
     {
@@ -24,7 +22,8 @@ public partial class Meteor: IHitable
 
     public void Hit(Node2D byNode)
     {
-        this.IsDead = true;
+        this.CollisionLayer = 0;
+        this.Layers = 0;
 
         Vector2 direction;
         var meteor = UnitType.SmallMeteor.CreateUnit();

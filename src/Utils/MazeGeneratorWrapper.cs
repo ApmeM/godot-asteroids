@@ -91,9 +91,9 @@ namespace DodgeTheCreeps.Utils
             this.State.Map = generatorResult.Paths;
             this.State.StartPosition = new Godot.Vector2(3, 3);
             this.State.UnitsList.Clear();
-            this.State.UnitsList[new Godot.Vector2(2, 16)] = UnitType.LargeMeteor;
-            this.State.UnitsList[new Godot.Vector2(11, 16)] = UnitType.BlackHole;
-            this.State.UnitsList[new Godot.Vector2(20, 26)] = UnitType.LargeMeteor;
+            this.State.UnitsList[new Godot.Vector2(23, 1)] = UnitType.LargeMeteor;
+            this.State.UnitsList[new Godot.Vector2(23, 17)] = UnitType.BlackHole;
+            this.State.UnitsList[new Godot.Vector2(1, 17)] = UnitType.LargeMeteor;
         }
     }
 }

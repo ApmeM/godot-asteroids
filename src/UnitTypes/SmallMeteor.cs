@@ -8,8 +8,6 @@ public partial class SmallMeteor : IHitable
 {
     private Communicator communicator;
 
-    public bool IsDead { get; private set; }
-
     public override void _Ready()
     {
         base._Ready();
@@ -24,7 +22,8 @@ public partial class SmallMeteor : IHitable
 
     public void Hit(Node2D byNode)
     {
-        IsDead = true;
+        this.CollisionLayer = 0;
+        this.Layers = 0;
 
         var bonus = BonusType.Booster.CreateBonus();
         bonus.Position = this.Position;

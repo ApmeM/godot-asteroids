@@ -21,7 +21,6 @@ public partial class Gun
 
     private void OnPlayerShoot()
     {
-        GD.Print(this.Field);
         var bullet = (Node2D)Bullet.Instance();
 
         this.GetNode(this.Field).AddChild(bullet);

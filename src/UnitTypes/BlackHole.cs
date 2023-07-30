@@ -2,8 +2,6 @@ using DodgeTheCreeps.UnitTypes;
 using DodgeTheCreeps.Utils;
 using Godot;
 using GodotAnalysers;
-using GodotRts.Presentation.Utils;
-using System;
 
 [SceneReference("BlackHole.tscn")]
 public partial class BlackHole : IHitable
@@ -51,10 +49,11 @@ public partial class BlackHole : IHitable
     {
         LifeLeft--;
 
-        IsDead = LifeLeft == 0;
-
-        if (IsDead)
+        if (LifeLeft == 0)
         {
+            this.CollisionLayer = 0;
+            this.Layers = 0;
+
             this.communicator.EmitSignal(nameof(Communicator.ScoreAdded), 1000);
             this.QueueFree();
         }

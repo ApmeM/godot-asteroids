@@ -8,8 +8,6 @@ public partial class LargeMeteor : IHitable
 {
     private Communicator communicator;
 
-    public bool IsDead { get; private set; }
-
     public override void _Ready()
     {
         base._Ready();
@@ -24,7 +22,8 @@ public partial class LargeMeteor : IHitable
 
     public void Hit(Node2D byNode)
     {
-        this.IsDead = true;
+        this.CollisionLayer = 0;
+        this.Layers = 0;
 
         Vector2 direction;
         var meteor = UnitType.Meteor.CreateUnit();

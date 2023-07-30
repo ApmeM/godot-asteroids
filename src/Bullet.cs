@@ -23,17 +23,10 @@ public partial class Bullet
 
     private void Hit(Node body)
     {
-        if (!(body is IHitable hitable))
+        if (body is IHitable hit)
         {
-            return;
+            hit.Hit(this);
         }
-
-        if (hitable.IsDead)
-        {
-            return;
-        }
-
-        hitable.Hit(this);
 
         var explosion = (Node2D)Explosion.Instance();
         explosion.Position = this.Position;
