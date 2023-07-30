@@ -7,7 +7,6 @@ using GodotAnalysers;
 public partial class BlackHole : IHitable
 {
     public bool IsDead { get; private set; }
-    private int LifeLeft = 20;
     private Communicator communicator;
 
     public override void _Ready()
@@ -47,15 +46,16 @@ public partial class BlackHole : IHitable
 
     public void Hit(Node2D byNode)
     {
-        LifeLeft--;
-
-        if (LifeLeft == 0)
+        this.lifeProgress.Value--;
+        if (this.lifeProgress.Value > 0)
         {
-            this.CollisionLayer = 0;
-            this.Layers = 0;
-
-            this.communicator.EmitSignal(nameof(Communicator.ScoreAdded), 1000);
-            this.QueueFree();
+            return;
         }
+
+        this.CollisionLayer = 0;
+        this.Layers = 0;
+
+        this.communicator.EmitSignal(nameof(Communicator.ScoreAdded), 1000);
+        this.QueueFree();
     }
 }

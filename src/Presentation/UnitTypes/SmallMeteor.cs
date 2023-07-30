@@ -24,6 +24,12 @@ public partial class SmallMeteor : IHitable
 
     public void Hit(Node2D byNode)
     {
+        this.lifeProgress.Value--;
+        if (this.lifeProgress.Value > 0)
+        {
+            return;
+        }
+
         this.CollisionLayer = 0;
         this.Layers = 0;
 
