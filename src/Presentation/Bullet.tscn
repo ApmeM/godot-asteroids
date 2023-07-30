@@ -1,18 +1,47 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Presentation/Bullet.cs" type="Script" id=1]
-[ext_resource path="res://Presentation/Explosion.tscn" type="PackedScene" id=2]
+[ext_resource path="res://art/ships/ships.laserRed11.tres" type="Texture" id=2]
 [ext_resource path="res://art/ships/ships.laserBlue15.tres" type="Texture" id=3]
+[ext_resource path="res://art/ships/ships.laserRed09.tres" type="Texture" id=4]
+[ext_resource path="res://art/ships/ships.laserRed08.tres" type="Texture" id=5]
+[ext_resource path="res://art/ships/ships.laserRed10.tres" type="Texture" id=6]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 4.0
 height = 30.0
 
+[sub_resource type="Animation" id=2]
+resource_name = "Boom"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite2:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 2 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 4 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite2:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 45.0 ]
+}
+
 [node name="Bullet" type="Area2D"]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource( 1 )
-Explosion = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
@@ -25,3 +54,12 @@ autostart = true
 [node name="Sprite" type="Sprite" parent="."]
 rotation = 1.5708
 texture = ExtResource( 3 )
+
+[node name="Sprite2" type="Sprite" parent="."]
+visible = false
+rotation = 0.785398
+texture = ExtResource( 4 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+playback_speed = 5.0
+anims/Boom = SubResource( 2 )

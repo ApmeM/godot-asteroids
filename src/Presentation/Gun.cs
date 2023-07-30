@@ -35,7 +35,6 @@ public partial class Gun
         this.GetNode(this.Field).AddChild(bullet);
         bullet.GlobalPosition = this.endOfGun.GlobalPosition;
         bullet.GlobalRotation = this.GlobalRotation;
-        bullet.Scale = new Vector2(1, 1 + power / 5);
         bullet.Power = power;
     }
 

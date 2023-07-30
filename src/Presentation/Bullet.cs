@@ -19,6 +19,8 @@ public partial class Bullet
         base._Ready();
         this.FillMembers();
 
+        this.sprite.Scale = new Vector2(1, 1 + Power / 2f);
+
         this.lifetime.Connect(CommonSignals.Timeout, this, nameof(LifetimeTimeout));
         this.Connect(CommonSignals.BodyEntered, this, nameof(Hit));
     }
@@ -30,14 +32,21 @@ public partial class Bullet
             hit.Hit(this);
         }
 
-        var explosion = (Node2D)Explosion.Instance();
-        explosion.Position = this.Position;
-        this.GetParent().AddChild(explosion);
-
-        this.QueueFree();
+        this.Speed = 0;
+        this.CollisionLayer = 0;
+        this.CollisionMask = 0;
+        this.sprite.Hide();
+        this.sprite2.Show();
+        this.animationPlayer.Play("Boom");
+        this.animationPlayer.Connect(CommonSignals.AnimationFinished, this, nameof(LifetimeAnimationFinished));
     }
 
     private void LifetimeTimeout()
+    {
+        this.QueueFree();
+    }
+
+    private void LifetimeAnimationFinished(string animationName)
     {
         this.QueueFree();
     }
