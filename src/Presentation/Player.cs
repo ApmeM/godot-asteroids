@@ -27,7 +27,6 @@ public partial class Player : IBonusCollector
     private Rect2 fieldSize;
     private Vector2 initialPosition;
     private bool initialize = false;
-    private int powerUp = 0;
 
     public override void _Ready()
     {
@@ -35,6 +34,8 @@ public partial class Player : IBonusCollector
         this.FillMembers();
 
         this.Connect(CommonSignals.BodyEntered, this, nameof(OnPlayerBodyEntered));
+
+        this.guns.ClearChildren();
     }
 
     public override void _Process(float delta)
@@ -110,32 +111,47 @@ public partial class Player : IBonusCollector
         this.collisionShape2D.SetDeferred("disabled", true);
     }
 
-    private void AddGun(Vector2 position)
+    private void AddGun(Vector2 position, float rotation = 0)
     {
         var gun = (Gun)Gun.Instance();
         this.guns.AddChild(gun);
         gun.Position = position;
+        gun.Rotation = rotation;
         gun.Field = this.GetNode(this.Field).GetPath();
     }
 
     public void Collect(BonusType bonus)
     {
-        if (bonus == BonusType.Booster)
+        switch (bonus)
         {
-            this.powerUp++;
-            this.guns.ClearChildren();
-            switch (this.powerUp)
-            {
-                case 1:
-                    this.AddGun(new Vector2(35, -20));
-                    this.AddGun(new Vector2(35, 20));
-                    break;
-                default:
-                    this.AddGun(new Vector2(60, 0));
-                    this.AddGun(new Vector2(35, -20));
-                    this.AddGun(new Vector2(35, 20));
-                    break;
-            }
+            case BonusType.Weapon:
+                switch (this.guns.GetChildCount())
+                {
+                    case 1:
+                        AddGun(new Vector2(35, -20));
+                        break;
+                    case 2:
+                        AddGun(new Vector2(35, 20));
+                        break;
+                    case 3:
+                        AddGun(new Vector2(30, 35), Mathf.Pi / 18);
+                        break;
+                    case 4:
+                        AddGun(new Vector2(30, -35), -Mathf.Pi / 18);
+                        break;
+                    case 5:
+                        AddGun(new Vector2(10, 45), Mathf.Pi / 18);
+                        break;
+                    case 6:
+                        AddGun(new Vector2(10, -45), -Mathf.Pi / 18);
+                        break;
+                }
+                break;
+            case BonusType.RapidFire:
+                foreach(Gun gun in this.guns.GetChildren()){
+                    gun.IncreaseShootSpeed();
+                }
+                break;
         }
     }
 }

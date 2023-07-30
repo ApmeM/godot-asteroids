@@ -24,6 +24,7 @@ position = Vector2( 240, 360 )
 Field = NodePath("..")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
+current = true
 zoom = Vector2( 2, 2 )
 
 [node name="Music" type="AudioStreamPlayer" parent="."]

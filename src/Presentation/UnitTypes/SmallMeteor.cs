@@ -1,5 +1,6 @@
 using DodgeTheCreeps.UnitTypes;
 using DodgeTheCreeps.Utils;
+using FateRandom;
 using Godot;
 using GodotAnalysers;
 
@@ -7,6 +8,7 @@ using GodotAnalysers;
 public partial class SmallMeteor : IHitable
 {
     private Communicator communicator;
+    private Fate fate = Fate.GlobalFate;
 
     public override void _Ready()
     {
@@ -25,9 +27,12 @@ public partial class SmallMeteor : IHitable
         this.CollisionLayer = 0;
         this.Layers = 0;
 
-        var bonus = BonusType.Booster.CreateBonus();
-        bonus.Position = this.Position;
-        this.GetParent().CallDeferred("add_child", bonus);
+        if (fate.Chance(20))
+        {
+            var bonus = fate.Choose<BonusType>(BonusType.Weapon, BonusType.RapidFire).CreateBonus();
+            bonus.Position = this.Position;
+            this.GetParent().CallDeferred("add_child", bonus);
+        }
 
         this.communicator.EmitSignal(nameof(Communicator.ScoreAdded), 1);
 

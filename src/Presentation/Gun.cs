@@ -21,10 +21,24 @@ public partial class Gun
 
     private void OnPlayerShoot()
     {
+        if (Field == null)
+        {
+            GD.PrintErr("Field not set.");
+            return;
+        }
+
         var bullet = (Node2D)Bullet.Instance();
 
         this.GetNode(this.Field).AddChild(bullet);
         bullet.GlobalPosition = this.endOfGun.GlobalPosition;
         bullet.GlobalRotation = this.GlobalRotation;
+    }
+
+    public void IncreaseShootSpeed()
+    {
+        if (this.shootTimer.WaitTime > 0.19f)
+        {
+            this.shootTimer.WaitTime -= 0.1f;
+        }
     }
 }

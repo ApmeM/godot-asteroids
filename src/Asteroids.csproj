@@ -4,14 +4,12 @@
     <RootNamespace>DodgeTheCreeps</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="FateRandom" Version="1.0.0" />
     <PackageReference Include="GodotAnalysers" Version="1.6.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="GodotAnalysersAttribute" Version="1.6.4" />
     <PackageReference Include="MazeGenerators" Version="2.3.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Bonus\" />
   </ItemGroup>
 </Project>

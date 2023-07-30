@@ -3,8 +3,8 @@ using DodgeTheCreeps.Utils;
 using Godot;
 using GodotAnalysers;
 
-[SceneReference("Booster.tscn")]
-public partial class Booster
+[SceneReference("Weapon.tscn")]
+public partial class Weapon
 {
     public override void _Ready()
     {
@@ -20,7 +20,7 @@ public partial class Booster
             return;
         }
 
-        bonusCollector.Collect(BonusType.Booster);
+        bonusCollector.Collect(BonusType.Weapon);
 
         this.QueueFree();
     }

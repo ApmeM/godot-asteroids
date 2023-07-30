@@ -16,41 +16,42 @@ anchor_bottom = 1.0
 mouse_filter = 2
 
 [node name="TopContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 480.0
+margin_right = 1024.0
 margin_bottom = 150.0
 
 [node name="TopLeftPlaceholder" type="Control" parent="VBoxContainer/TopContainer"]
-margin_right = 161.0
+margin_right = 433.0
 margin_bottom = 150.0
 size_flags_horizontal = 3
 
 [node name="Minimap" parent="VBoxContainer/TopContainer" instance=ExtResource( 4 )]
-margin_left = 165.0
-margin_right = 315.0
+margin_left = 437.0
+margin_right = 587.0
 rect_min_size = Vector2( 150, 150 )
 
 [node name="ScoreLabel" parent="VBoxContainer/TopContainer" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 319.0
-margin_right = 480.0
+margin_left = 591.0
+margin_right = 1024.0
 margin_bottom = 150.0
 size_flags_horizontal = 3
 theme = ExtResource( 6 )
 AnimationTime = 1
 
 [node name="TimerLabel" parent="VBoxContainer" instance=ExtResource( 3 )]
-margin_top = 341.0
-margin_right = 480.0
-margin_bottom = 379.0
+margin_top = 356.0
+margin_right = 1024.0
+margin_bottom = 394.0
 size_flags_vertical = 6
 theme = ExtResource( 6 )
 text = "Get Ready"
 align = 1
 
 [node name="BottomContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 570.0
-margin_right = 480.0
-margin_bottom = 720.0
+margin_top = 600.0
+margin_right = 1024.0
+margin_bottom = 600.0
 
 [node name="Joystick" parent="VBoxContainer/BottomContainer" instance=ExtResource( 1 )]
+visible = false

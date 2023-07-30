@@ -19,6 +19,31 @@ Gun = ExtResource( 2 )
 
 [node name="Guns" type="Node2D" parent="."]
 
+[node name="Gun" parent="Guns" instance=ExtResource( 2 )]
+position = Vector2( 35, -20 )
+
+[node name="Gun2" parent="Guns" instance=ExtResource( 2 )]
+position = Vector2( 35, 20 )
+
+[node name="Gun3" parent="Guns" instance=ExtResource( 2 )]
+position = Vector2( 40, 0 )
+
+[node name="Gun4" parent="Guns" instance=ExtResource( 2 )]
+position = Vector2( 30, 35 )
+rotation = 0.174533
+
+[node name="Gun5" parent="Guns" instance=ExtResource( 2 )]
+position = Vector2( 30, -35 )
+rotation = -0.174533
+
+[node name="Gun6" parent="Guns" instance=ExtResource( 2 )]
+position = Vector2( 10, -45 )
+rotation = -0.174533
+
+[node name="Gun7" parent="Guns" instance=ExtResource( 2 )]
+position = Vector2( 10, 45 )
+rotation = 0.174533
+
 [node name="Sprite" type="Sprite" parent="."]
 rotation = -1.5708
 texture = ExtResource( 3 )
