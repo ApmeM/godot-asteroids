@@ -14,7 +14,7 @@ namespace DodgeTheCreeps.Utils
     {
         public static RigidBody2D CreateUnit(this UnitType unitType)
         {
-            return (RigidBody2D)ResourceLoader.Load<PackedScene>($"res://UnitTypes/{unitType}.tscn").Instance();
+            return (RigidBody2D)ResourceLoader.Load<PackedScene>($"res://Presentation/UnitTypes/{unitType}.tscn").Instance();
         }
     }
 }

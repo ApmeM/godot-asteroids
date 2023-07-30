@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://art/ships/ships.laserRed10.tres" type="Texture" id=1]
-[ext_resource path="res://Explosion.cs" type="Script" id=2]
+[ext_resource path="res://Presentation/Explosion.cs" type="Script" id=2]
 [ext_resource path="res://art/ships/ships.laserRed09.tres" type="Texture" id=3]
 [ext_resource path="res://art/ships/ships.laserRed11.tres" type="Texture" id=4]
 [ext_resource path="res://art/ships/ships.laserRed08.tres" type="Texture" id=5]

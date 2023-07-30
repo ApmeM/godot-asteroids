@@ -1,15 +1,15 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Game.cs" type="Script" id=1]
-[ext_resource path="res://Player.tscn" type="PackedScene" id=3]
-[ext_resource path="res://HUD.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Presentation/Game.cs" type="Script" id=1]
+[ext_resource path="res://Presentation/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Presentation/UnitTypes/Block.tscn" type="PackedScene" id=3]
+[ext_resource path="res://art/gameover.wav" type="AudioStream" id=4]
 [ext_resource path="res://art/House In a Forest Loop.ogg" type="AudioStream" id=5]
-[ext_resource path="res://art/gameover.wav" type="AudioStream" id=6]
-[ext_resource path="res://UnitTypes/Block.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Presentation/HUD.tscn" type="PackedScene" id=6]
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 1 )
-blockScene = ExtResource( 7 )
+blockScene = ExtResource( 3 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -19,7 +19,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Player" parent="." instance=ExtResource( 3 )]
+[node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 240, 360 )
 Field = NodePath("..")
 
@@ -30,7 +30,7 @@ zoom = Vector2( 2, 2 )
 stream = ExtResource( 5 )
 
 [node name="DeathSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 6 )
+stream = ExtResource( 4 )
 
-[node name="HUD" parent="." instance=ExtResource( 4 )]
+[node name="HUD" parent="." instance=ExtResource( 6 )]
 PlayerPath = NodePath("../Player")

@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Player.cs" type="Script" id=1]
-[ext_resource path="res://art/ships/ships.enemyGreen2.tres" type="Texture" id=2]
-[ext_resource path="res://Gun.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Presentation/Player.cs" type="Script" id=1]
+[ext_resource path="res://Presentation/Gun.tscn" type="PackedScene" id=2]
+[ext_resource path="res://art/ships/ships.enemyGreen2.tres" type="Texture" id=3]
 
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 42.0
@@ -15,13 +15,13 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
-Gun = ExtResource( 4 )
+Gun = ExtResource( 2 )
 
 [node name="Guns" type="Node2D" parent="."]
 
 [node name="Sprite" type="Sprite" parent="."]
 rotation = -1.5708
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )

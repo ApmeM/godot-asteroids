@@ -1,14 +1,14 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://HUD.cs" type="Script" id=1]
-[ext_resource path="res://gd-timerLabel/TimerLabel.tscn" type="PackedScene" id=2]
-[ext_resource path="res://gd-minimap/Minimap.tscn" type="PackedScene" id=3]
-[ext_resource path="res://gd-countingLabel/CountingLabel.tscn" type="PackedScene" id=4]
-[ext_resource path="res://gd-joystick/Joystick.tscn" type="PackedScene" id=5]
-[ext_resource path="res://gd-theme/UITheme.tres" type="Theme" id=7]
+[ext_resource path="res://gd-joystick/Joystick.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Presentation/HUD.cs" type="Script" id=2]
+[ext_resource path="res://gd-timerLabel/TimerLabel.tscn" type="PackedScene" id=3]
+[ext_resource path="res://gd-minimap/Minimap.tscn" type="PackedScene" id=4]
+[ext_resource path="res://gd-countingLabel/CountingLabel.tscn" type="PackedScene" id=5]
+[ext_resource path="res://gd-theme/UITheme.tres" type="Theme" id=6]
 
 [node name="HUD" type="CanvasLayer"]
-script = ExtResource( 1 )
+script = ExtResource( 2 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
@@ -24,27 +24,27 @@ margin_right = 161.0
 margin_bottom = 150.0
 size_flags_horizontal = 3
 
-[node name="Minimap" parent="VBoxContainer/TopContainer" instance=ExtResource( 3 )]
+[node name="Minimap" parent="VBoxContainer/TopContainer" instance=ExtResource( 4 )]
 margin_left = 165.0
 margin_right = 315.0
 rect_min_size = Vector2( 150, 150 )
 
-[node name="ScoreLabel" parent="VBoxContainer/TopContainer" instance=ExtResource( 4 )]
+[node name="ScoreLabel" parent="VBoxContainer/TopContainer" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 319.0
 margin_right = 480.0
 margin_bottom = 150.0
 size_flags_horizontal = 3
-theme = ExtResource( 7 )
+theme = ExtResource( 6 )
 AnimationTime = 1
 
-[node name="TimerLabel" parent="VBoxContainer" instance=ExtResource( 2 )]
+[node name="TimerLabel" parent="VBoxContainer" instance=ExtResource( 3 )]
 margin_top = 341.0
 margin_right = 480.0
 margin_bottom = 379.0
 size_flags_vertical = 6
-theme = ExtResource( 7 )
+theme = ExtResource( 6 )
 text = "Get Ready"
 align = 1
 
@@ -53,4 +53,4 @@ margin_top = 570.0
 margin_right = 480.0
 margin_bottom = 720.0
 
-[node name="Joystick" parent="VBoxContainer/BottomContainer" instance=ExtResource( 5 )]
+[node name="Joystick" parent="VBoxContainer/BottomContainer" instance=ExtResource( 1 )]
