@@ -20,11 +20,6 @@ consider following the tutorial in the documentation."
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
 
-[display]
-
-window/size/width=480
-window/size/height=720
-
 [editor_plugins]
 
 enabled=PoolStringArray( "res://addons/atlas_importer3/plugin.cfg" )
@@ -74,5 +69,6 @@ project/assembly_name="Asteroids"
 
 [physics]
 
+2d/default_gravity_vector=Vector2( 0, 0 )
 2d/default_linear_damp=0.0
 2d/default_angular_damp=0.0

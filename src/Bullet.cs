@@ -7,7 +7,7 @@ using GodotAnalysers;
 public partial class Bullet
 {
     [Export]
-    public float Speed = 2000;
+    public float Speed = 1500;
 
     [Export]
     public PackedScene Explosion;

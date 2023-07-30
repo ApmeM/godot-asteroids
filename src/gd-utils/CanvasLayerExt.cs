@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace DodgeTheCreeps.Utils
 {
-    public static class Extensions
+    public static class CanvasLayerExt
     {
         public static void Show(this CanvasLayer layer)
         {

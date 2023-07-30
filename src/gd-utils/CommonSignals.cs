@@ -1,4 +1,4 @@
-namespace GodotRts.Presentation.Utils
+namespace DodgeTheCreeps.Utils
 {
     public class CommonSignals
     {
