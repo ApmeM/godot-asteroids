@@ -1,3 +1,4 @@
+using System;
 using DodgeTheCreeps.Utils;
 using Godot;
 using GodotAnalysers;
@@ -10,6 +11,8 @@ public partial class Gun
 
     [Export]
     public NodePath Field;
+
+    private int power = 1;
 
     public override void _Ready()
     {
@@ -27,11 +30,13 @@ public partial class Gun
             return;
         }
 
-        var bullet = (Node2D)Bullet.Instance();
+        var bullet = (Bullet)Bullet.Instance();
 
         this.GetNode(this.Field).AddChild(bullet);
         bullet.GlobalPosition = this.endOfGun.GlobalPosition;
         bullet.GlobalRotation = this.GlobalRotation;
+        bullet.Scale = new Vector2(1, 1 + power / 5);
+        bullet.Power = power;
     }
 
     public void IncreaseShootSpeed()
@@ -39,6 +44,14 @@ public partial class Gun
         if (this.shootTimer.WaitTime > 0.19f)
         {
             this.shootTimer.WaitTime -= 0.1f;
+        }
+    }
+
+    internal void IncreaseShootPower()
+    {
+        if (power < 5)
+        {
+            power++;
         }
     }
 }

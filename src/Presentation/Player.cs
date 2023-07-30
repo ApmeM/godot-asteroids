@@ -148,8 +148,17 @@ public partial class Player : IBonusCollector
                 }
                 break;
             case BonusType.RapidFire:
-                foreach(Gun gun in this.guns.GetChildren()){
+                foreach (Gun gun in this.guns.GetChildren())
+                {
                     gun.IncreaseShootSpeed();
+                }
+                break;
+            case BonusType.Power:
+                {
+                    foreach (Gun gun in this.guns.GetChildren())
+                    {
+                        gun.IncreaseShootPower();
+                    }
                 }
                 break;
         }

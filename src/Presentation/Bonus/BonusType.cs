@@ -5,7 +5,8 @@ namespace DodgeTheCreeps.Utils
     public enum BonusType
     {
         Weapon,
-        RapidFire
+        RapidFire,
+        Power
     }
 
     public static class BonusTypeCreator

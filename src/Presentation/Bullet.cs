@@ -12,6 +12,8 @@ public partial class Bullet
     [Export]
     public PackedScene Explosion;
 
+    public int Power;
+
     public override void _Ready()
     {
         base._Ready();

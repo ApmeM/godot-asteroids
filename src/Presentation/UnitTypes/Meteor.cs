@@ -22,9 +22,9 @@ public partial class Meteor : IHitable
         this.AddToGroup(Constants.GameTarget);
     }
 
-    public void Hit(Node2D byNode)
+    public void Hit(Bullet byNode)
     {
-        this.lifeProgress.Value--;
+        this.lifeProgress.Value -= byNode.Power;
         if (this.lifeProgress.Value > 0)
         {
             return;
@@ -48,7 +48,7 @@ public partial class Meteor : IHitable
 
         if (fate.Chance(20))
         {
-            var bonus = fate.Choose<BonusType>(BonusType.Weapon, BonusType.RapidFire).CreateBonus();
+            var bonus = fate.Choose<BonusType>(BonusType.Weapon, BonusType.RapidFire, BonusType.Power).CreateBonus();
             bonus.Position = this.Position;
             this.GetParent().CallDeferred("add_child", bonus);
         }

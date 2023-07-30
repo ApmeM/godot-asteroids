@@ -44,9 +44,9 @@ public partial class BlackHole : IHitable
         mob.LinearVelocity = velocity.Rotated(direction);
     }
 
-    public void Hit(Node2D byNode)
+    public void Hit(Bullet byNode)
     {
-        this.lifeProgress.Value--;
+        this.lifeProgress.Value -= byNode.Power;
         if (this.lifeProgress.Value > 0)
         {
             return;
