@@ -1,6 +1,7 @@
 using DodgeTheCreeps.Utils;
 using Godot;
 using GodotAnalysers;
+using System.Collections.Generic;
 using System.Linq;
 
 [SceneReference("Game.tscn")]
@@ -12,7 +13,16 @@ public partial class Game
     [Export]
     public PackedScene blockScene;
 
+    private MazeGeneratorWrapper maze;
     private const int pathSize = 1;
+    private float timePassed = 0;
+    private List<MazeGeneratorWrapper.Unit> UnitsList;
+    private List<MazeGeneratorWrapper.Unit> unitsListToDelete = new List<MazeGeneratorWrapper.Unit>();
+
+    public Game()
+    {
+        maze = MazeGeneratorWrapper.DefaultInstance;
+    }
 
     public override void _Ready()
     {
@@ -37,6 +47,43 @@ public partial class Game
         }
     }
 
+    public override void _Process(float delta)
+    {
+        base._Process(delta);
+
+        if (UnitsList == null)
+        {
+            return;
+        }
+
+        this.unitsListToDelete.Clear();
+        this.timePassed += delta;
+        foreach (var unitItem in this.UnitsList)
+        {
+            if (unitItem.SpawnTime > this.timePassed)
+            {
+                continue;
+            }
+
+            this.unitsListToDelete.Add(unitItem);
+            var mobSpawnLocation = unitItem.Position * 100 * pathSize + Vector2.One * 50 * pathSize;
+
+            var direction = (this.player.Position - mobSpawnLocation).Angle();
+            var velocity = new Vector2((float)GD.RandRange(150.0, 250.0), 0);
+
+            var mob = unitItem.UnitType.CreateUnit();
+            mob.Position = mobSpawnLocation;
+            mob.Rotation = direction;
+            mob.LinearVelocity = velocity.Rotated(direction);
+            this.AddChild(mob);
+        }
+
+        foreach (var unitItem in this.unitsListToDelete)
+        {
+            UnitsList.Remove(unitItem);
+        }
+    }
+
     private void PlayerHit()
     {
         this.music.Stop();
@@ -51,15 +98,14 @@ public partial class Game
     {
         this.GetTree().CallGroup(Constants.DynamicGameObject, "queue_free");
 
-        var maze = MazeGeneratorWrapper.DefaultInstance;
-        maze.GenerateLevel1();
-        var startPosition = maze.State.StartPosition * 100 * pathSize + Vector2.One * 50 * pathSize;
-        var rect = new Rect2(Vector2.Zero, new Vector2(maze.State.Map.GetLength(0) * 100 * pathSize + pathSize * 50, maze.State.Map.GetLength(1) * 100 * pathSize + pathSize * 50));
+        this.timePassed = 0;
 
-        for (var x = 0; x < maze.State.Map.GetLength(0); x++)
-            for (var y = 0; y < maze.State.Map.GetLength(1); y++)
+        var state = maze.GenerateLevel1();
+
+        for (var x = 0; x < state.Map.GetLength(0); x++)
+            for (var y = 0; y < state.Map.GetLength(1); y++)
             {
-                if (maze.State.Map[x, y] != 1)
+                if (state.Map[x, y] != 1)
                 {
                     continue;
                 }
@@ -73,20 +119,10 @@ public partial class Game
                     }
             }
 
-        foreach (var unitItem in maze.State.UnitsList)
-        {
-            var mobSpawnLocation = unitItem.Key * 100 * pathSize + Vector2.One * 50 * pathSize;
+        this.UnitsList = state.UnitsList;
 
-            var direction = (this.player.Position - mobSpawnLocation).Angle();
-            var velocity = new Vector2((float)GD.RandRange(150.0, 250.0), 0);
-
-            var mob = unitItem.Value.CreateUnit();
-            mob.Position = mobSpawnLocation;
-            mob.Rotation = direction;
-            mob.LinearVelocity = velocity.Rotated(direction);
-            this.AddChild(mob);
-        }
-
+        var startPosition = state.StartPosition * 100 * pathSize + Vector2.One * 50 * pathSize;
+        var rect = new Rect2(Vector2.Zero, new Vector2(state.Map.GetLength(0) * 100 * pathSize + pathSize * 50, state.Map.GetLength(1) * 100 * pathSize + pathSize * 50));
         this.player.Start(startPosition, rect);
 
         this.camera2D.Current = true;
