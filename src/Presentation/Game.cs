@@ -15,7 +15,6 @@ public partial class Game
 
     private MazeGeneratorWrapper maze;
     private const int pathSize = 1;
-    private float timePassed = 0;
     private List<MazeGeneratorWrapper.Unit> UnitsList;
     private List<MazeGeneratorWrapper.Unit> unitsListToDelete = new List<MazeGeneratorWrapper.Unit>();
 
@@ -57,10 +56,10 @@ public partial class Game
         }
 
         this.unitsListToDelete.Clear();
-        this.timePassed += delta;
+        this.hUD.Progress += delta;
         foreach (var unitItem in this.UnitsList)
         {
-            if (unitItem.SpawnTime > this.timePassed)
+            if (unitItem.SpawnTime > this.hUD.Progress)
             {
                 continue;
             }
@@ -98,7 +97,7 @@ public partial class Game
     {
         this.GetTree().CallGroup(Constants.DynamicGameObject, "queue_free");
 
-        this.timePassed = 0;
+        this.hUD.Progress = 0;
 
         var state = maze.GenerateLevel1();
 
@@ -120,6 +119,7 @@ public partial class Game
             }
 
         this.UnitsList = state.UnitsList;
+        this.hUD.MaxProgress = this.UnitsList[this.UnitsList.Count - 1].SpawnTime;
 
         var startPosition = state.StartPosition * 100 * pathSize + Vector2.One * 50 * pathSize;
         var rect = new Rect2(Vector2.Zero, new Vector2(state.Map.GetLength(0) * 100 * pathSize + pathSize * 50, state.Map.GetLength(1) * 100 * pathSize + pathSize * 50));

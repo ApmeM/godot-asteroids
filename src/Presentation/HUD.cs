@@ -9,6 +9,18 @@ public partial class HUD
 
     private Communicator communicator;
 
+    public double MaxProgress
+    {
+        get => this.gameProgressBar.MaxValue;
+        set => this.gameProgressBar.MaxValue = value;
+    }
+
+    public double Progress
+    {
+        get => this.gameProgressBar.Value;
+        set => this.gameProgressBar.Value = value;
+    }
+
     public override void _Ready()
     {
         base._Ready();
