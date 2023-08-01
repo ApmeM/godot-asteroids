@@ -58,7 +58,7 @@ public partial class Player : IBonusCollector
         var rotation = this.Transform.x;
         var angle = rotation.AngleTo(vector);
         this.Rotation += Mathf.Clamp(angle, -10 * delta, 10 * delta);
-        this.AppliedForce = this.Transform.x * Force;
+        this.AppliedForce = vector * Force;
     }
 
     public override void _IntegrateForces(Physics2DDirectBodyState state)
