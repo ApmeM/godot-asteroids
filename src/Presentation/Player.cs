@@ -49,7 +49,7 @@ public partial class Player : IBonusCollector
     {
         this.AppliedForce = Vector2.Zero;
 
-        var vector = Input.GetVector("move_left", "move_right", "move_up", "move_down");
+        var vector = BugFixExt.InputGetVector("move_left", "move_right", "move_up", "move_down");
         if (vector == Vector2.Zero)
         {
             return;
@@ -75,7 +75,8 @@ public partial class Player : IBonusCollector
             this.AddGun(new Vector2(40, 0));
         }
 
-        var vector = Input.GetVector("move_left", "move_right", "move_up", "move_down");
+        var vector = BugFixExt.InputGetVector("move_left", "move_right", "move_up", "move_down", 0.01f);
+
         if (vector != Vector2.Zero)
         {
             state.AngularVelocity = 0;
