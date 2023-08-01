@@ -72,7 +72,7 @@ public partial class Player : IBonusCollector
             state.Transform = new Transform2D(0, initialPosition);
             state.LinearVelocity = Vector2.Zero;
             this.guns.ClearChildren();
-            this.AddGun(new Vector2(40, 0));
+            this.Collect(BonusType.Weapon);
         }
 
         var vector = BugFixExt.InputGetVector("move_left", "move_right", "move_up", "move_down", 0.01f);
@@ -128,23 +128,23 @@ public partial class Player : IBonusCollector
             case BonusType.Weapon:
                 switch (this.guns.GetChildCount())
                 {
+                    case 0:
+                        // this.AddGun(new Vector2(40, 0));
+                        this.AddGun(new Vector2(35, -20));
+                        this.AddGun(new Vector2(35, 20));
+                        break;
                     case 1:
-                        AddGun(new Vector2(35, -20));
+                        // this.AddGun(new Vector2(35, -20));
                         break;
                     case 2:
-                        AddGun(new Vector2(35, 20));
+                        // this.AddGun(new Vector2(35, 20));
+                        this.AddGun(new Vector2(40, 0));
                         break;
                     case 3:
-                        AddGun(new Vector2(30, 35), Mathf.Pi / 18);
+                        this.AddGun(new Vector2(30, 35), Mathf.Pi / 18);
                         break;
                     case 4:
-                        AddGun(new Vector2(30, -35), -Mathf.Pi / 18);
-                        break;
-                    case 5:
-                        AddGun(new Vector2(10, 45), Mathf.Pi / 18);
-                        break;
-                    case 6:
-                        AddGun(new Vector2(10, -45), -Mathf.Pi / 18);
+                        this.AddGun(new Vector2(30, -35), -Mathf.Pi / 18);
                         break;
                 }
                 break;
