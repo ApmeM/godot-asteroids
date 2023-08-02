@@ -8,13 +8,14 @@ namespace DodgeTheCreeps.Utils
         Meteor,
         SmallMeteor,
         BlackHole,
+        MeteorGroup,
     }
 
     public static class UnitTypeCreator
     {
-        public static RigidBody2D CreateUnit(this UnitType unitType)
+        public static T CreateUnit<T>(this UnitType unitType) where T : Node
         {
-            return (RigidBody2D)ResourceLoader.Load<PackedScene>($"res://Presentation/UnitTypes/{unitType}.tscn").Instance();
+            return (T)ResourceLoader.Load<PackedScene>($"res://Presentation/UnitTypes/{unitType}.tscn").Instance();
         }
     }
 }

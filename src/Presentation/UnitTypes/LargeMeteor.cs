@@ -34,13 +34,13 @@ public partial class LargeMeteor : IHitable
         this.Layers = 0;
 
         Vector2 direction;
-        var meteor = UnitType.Meteor.CreateUnit();
+        var meteor = UnitType.Meteor.CreateUnit<Meteor>();
         direction = (this.Position - byNode.Position).Rotated(-Mathf.Pi / 2).Normalized();
         meteor.LinearVelocity = direction * (float)GD.RandRange(250.0, 350.0);
         meteor.Position = this.Position - direction * 50;
         this.GetParent().CallDeferred("add_child", meteor);
 
-        meteor = UnitType.Meteor.CreateUnit();
+        meteor = UnitType.Meteor.CreateUnit<Meteor>();
         direction = (this.Position - byNode.Position).Rotated(Mathf.Pi / 2).Normalized();
         meteor.LinearVelocity = direction * (float)GD.RandRange(250.0, 350.0);
         meteor.Position = this.Position + direction * 50;

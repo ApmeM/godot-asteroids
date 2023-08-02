@@ -1,31 +1,34 @@
-using DodgeTheCreeps.UnitTypes;
 using DodgeTheCreeps.Utils;
 using Godot;
 using GodotAnalysers;
 
-[SceneReference("BlackHole.tscn")]
-public partial class BlackHole : IHitable
+[SceneReference("MeteorGroup.tscn")]
+public partial class MeteorGroup
 {
-    private Communicator communicator;
+    [Export]
+    public int NumberOfMeteors = 10;
 
     public override void _Ready()
     {
         base._Ready();
         this.FillMembers();
 
-        this.communicator = GetNode<Communicator>("/root/Main/Communicator");
-
-        this.AddToGroup(Constants.MinimapIconEnemy);
         this.AddToGroup(Constants.DynamicGameObject);
         this.timer.Connect(CommonSignals.Timeout, this, nameof(NextSpawn));
     }
 
     private void NextSpawn()
     {
+        if (NumberOfMeteors < 0)
+        {
+            this.QueueFree();
+        }
+
+        this.NumberOfMeteors--;
         this.pathFollow2D.Offset = GD.Randi();
 
         // Create a Mob instance and add it to the scene.
-        var mob = UnitType.LargeMeteor.CreateUnit<LargeMeteor>();
+        var mob = UnitType.SmallMeteor.CreateUnit<SmallMeteor>();
         this.GetParent().AddChild(mob);
 
         // Set the mob's direction perpendicular to the path direction.
@@ -41,20 +44,5 @@ public partial class BlackHole : IHitable
         // Choose the velocity for the mob.
         var velocity = new Vector2((float)GD.RandRange(250.0, 350.0), 0);
         mob.LinearVelocity = velocity.Rotated(direction);
-    }
-
-    public void Hit(Bullet byNode)
-    {
-        this.lifeProgress.Value -= byNode.Power;
-        if (this.lifeProgress.Value > 0)
-        {
-            return;
-        }
-
-        this.CollisionLayer = 0;
-        this.Layers = 0;
-
-        this.communicator.EmitSignal(nameof(Communicator.ScoreAdded), 1000);
-        this.QueueFree();
     }
 }

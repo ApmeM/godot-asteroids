@@ -1,6 +1,9 @@
-﻿using MazeGenerators;
+﻿using FateRandom;
+using MazeGenerators;
 using MazeGenerators.Utils;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DodgeTheCreeps.Utils
 {
@@ -13,9 +16,6 @@ namespace DodgeTheCreeps.Utils
             public float SpawnTime;
         }
 
-        private readonly GeneratorResult generatorResult = new GeneratorResult();
-        private readonly GeneratorSettings generatorSettings = new GeneratorSettings();
-
         public class MaseGeneratorWrapperState
         {
             public int[,] Map;
@@ -23,36 +23,29 @@ namespace DodgeTheCreeps.Utils
             public Godot.Vector2 StartPosition;
         }
 
+        private readonly GeneratorResult generatorResult = new GeneratorResult();
+        private readonly GeneratorSettings generatorSettings = new GeneratorSettings();
         private readonly MaseGeneratorWrapperState State = new MaseGeneratorWrapperState();
-
         public static readonly MazeGeneratorWrapper DefaultInstance = new MazeGeneratorWrapper();
 
         public MaseGeneratorWrapperState GenerateLevel1()
         {
-            generatorSettings.Height = 21;
-            generatorSettings.Width = 27;
-            generatorSettings.MazeText =
-            "###########################\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "#.........................#\n" +
-            "###########################\n";
+            const int size = 17;
+
+            generatorSettings.Height = size;
+            generatorSettings.Width = size;
+            generatorSettings.MazeText = "";
+            for (var x = 0; x < size; x++)
+            {
+                for (var y = 0; y < size; y++)
+                {
+                    if (x == 0 || y == 0 || x == size - 1 || y == size - 1)
+                        generatorSettings.MazeText += "#";
+                    else
+                        generatorSettings.MazeText += ".";
+                }
+                generatorSettings.MazeText += "\n";
+            }
 
             CommonAlgorithm.GenerateField(generatorResult, generatorSettings);
             StringParserAlgorithm.Parse(generatorResult, generatorSettings);
@@ -60,13 +53,15 @@ namespace DodgeTheCreeps.Utils
             this.State.Map = generatorResult.Paths;
             this.State.StartPosition = new Godot.Vector2(3, 3);
             this.State.UnitsList.Clear();
-            this.State.UnitsList.Add(new Unit { Position = new Godot.Vector2(23, 1), UnitType = UnitType.LargeMeteor, SpawnTime = 0 });
-            this.State.UnitsList.Add(new Unit { Position = new Godot.Vector2(1, 17), UnitType = UnitType.LargeMeteor, SpawnTime = 0 });
-            this.State.UnitsList.Add(new Unit { Position = new Godot.Vector2(23, 17), UnitType = UnitType.BlackHole, SpawnTime = 10 });
-            
-            this.State.UnitsList.Add(new Unit { Position = new Godot.Vector2(17, 10), UnitType = UnitType.BlackHole, SpawnTime = 40 });
-            this.State.UnitsList.Add(new Unit { Position = new Godot.Vector2(15, 10), UnitType = UnitType.BlackHole, SpawnTime = 40 });
-            this.State.UnitsList.Add(new Unit { Position = new Godot.Vector2(15, 12), UnitType = UnitType.BlackHole, SpawnTime = 40 });
+            for (var i = 0; i < 30; i++)
+            {
+                this.State.UnitsList.Add(new Unit
+                {
+                    Position = new Godot.Vector2(Fate.GlobalFate.NextInt(size - 4) + 2, Fate.GlobalFate.NextInt(size - 4) + 2),
+                    UnitType = Fate.GlobalFate.Choose(Enum.GetValues(typeof(UnitType)).Cast<UnitType>().ToArray()),
+                    SpawnTime = i * 3
+                });
+            }
 
             return this.State;
         }

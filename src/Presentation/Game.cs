@@ -15,8 +15,7 @@ public partial class Game
 
     private MazeGeneratorWrapper maze;
     private const int pathSize = 1;
-    private List<MazeGeneratorWrapper.Unit> UnitsList;
-    private List<MazeGeneratorWrapper.Unit> unitsListToDelete = new List<MazeGeneratorWrapper.Unit>();
+    private Queue<MazeGeneratorWrapper.Unit> UnitsList = new Queue<MazeGeneratorWrapper.Unit>();
 
     public Game()
     {
@@ -55,31 +54,34 @@ public partial class Game
             return;
         }
 
-        this.unitsListToDelete.Clear();
         this.hUD.Progress += delta;
-        foreach (var unitItem in this.UnitsList)
+        while (this.UnitsList.Count > 0 && this.UnitsList.Peek().SpawnTime < this.hUD.Progress)
         {
+            var unitItem = this.UnitsList.Dequeue();
             if (unitItem.SpawnTime > this.hUD.Progress)
             {
                 continue;
             }
 
-            this.unitsListToDelete.Add(unitItem);
             var mobSpawnLocation = unitItem.Position * 100 * pathSize + Vector2.One * 50 * pathSize;
+
+            if (mobSpawnLocation.DistanceSquaredTo(this.player.Position) < 40000)
+            {
+                continue;
+            }
 
             var direction = (this.player.Position - mobSpawnLocation).Angle();
             var velocity = new Vector2((float)GD.RandRange(150.0, 250.0), 0);
 
-            var mob = unitItem.UnitType.CreateUnit();
+            var mob = unitItem.UnitType.CreateUnit<Node2D>();
             mob.Position = mobSpawnLocation;
             mob.Rotation = direction;
-            mob.LinearVelocity = velocity.Rotated(direction);
-            this.AddChild(mob);
-        }
+            if (mob is RigidBody2D body)
+            {
+                body.LinearVelocity = velocity.Rotated(direction);
+            }
 
-        foreach (var unitItem in this.unitsListToDelete)
-        {
-            UnitsList.Remove(unitItem);
+            this.AddChild(mob);
         }
     }
 
@@ -118,8 +120,12 @@ public partial class Game
                     }
             }
 
-        this.UnitsList = state.UnitsList;
-        this.hUD.MaxProgress = this.UnitsList[this.UnitsList.Count - 1].SpawnTime;
+        this.UnitsList.Clear();
+        foreach (var unit in state.UnitsList)
+        {
+            this.UnitsList.Enqueue(unit);
+        }
+        this.hUD.MaxProgress = state.UnitsList[state.UnitsList.Count - 1].SpawnTime;
 
         var startPosition = state.StartPosition * 100 * pathSize + Vector2.One * 50 * pathSize;
         var rect = new Rect2(Vector2.Zero, new Vector2(state.Map.GetLength(0) * 100 * pathSize + pathSize * 50, state.Map.GetLength(1) * 100 * pathSize + pathSize * 50));
