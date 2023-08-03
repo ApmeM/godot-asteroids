@@ -1,4 +1,5 @@
-﻿using FateRandom;
+﻿using DodgeTheCreeps.Presentation.Utils.MapEvents;
+using FateRandom;
 using MazeGenerators;
 using MazeGenerators.Utils;
 using System;
@@ -9,17 +10,10 @@ namespace DodgeTheCreeps.Utils
 {
     public class MazeGeneratorWrapper
     {
-        public class Unit
-        {
-            public Godot.Vector2 Position;
-            public UnitType UnitType;
-            public float SpawnTime;
-        }
-
         public class MaseGeneratorWrapperState
         {
             public int[,] Map;
-            public readonly List<Unit> UnitsList = new List<Unit>();
+            public readonly List<IMapEvent> UnitsList = new List<IMapEvent>();
             public Godot.Vector2 StartPosition;
         }
 
@@ -55,7 +49,7 @@ namespace DodgeTheCreeps.Utils
             this.State.UnitsList.Clear();
             for (var i = 0; i < 30; i++)
             {
-                this.State.UnitsList.Add(new Unit
+                this.State.UnitsList.Add(new UnitSpawnMap
                 {
                     Position = new Godot.Vector2(Fate.GlobalFate.NextInt(size - 4) + 2, Fate.GlobalFate.NextInt(size - 4) + 2),
                     UnitType = Fate.GlobalFate.Choose(Enum.GetValues(typeof(UnitType)).Cast<UnitType>().ToArray()),

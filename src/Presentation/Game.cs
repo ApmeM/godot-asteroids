@@ -1,8 +1,8 @@
+using DodgeTheCreeps.Presentation.Utils.MapEvents;
 using DodgeTheCreeps.Utils;
 using Godot;
 using GodotAnalysers;
 using System.Collections.Generic;
-using System.Linq;
 
 [SceneReference("Game.tscn")]
 public partial class Game
@@ -15,7 +15,7 @@ public partial class Game
 
     private MazeGeneratorWrapper maze;
     private const int pathSize = 1;
-    private Queue<MazeGeneratorWrapper.Unit> UnitsList = new Queue<MazeGeneratorWrapper.Unit>();
+    private Queue<IMapEvent> UnitsList = new Queue<IMapEvent>();
 
     public Game()
     {
@@ -45,6 +45,8 @@ public partial class Game
         }
     }
 
+    private float progress = 0;
+
     public override void _Process(float delta)
     {
         base._Process(delta);
@@ -54,34 +56,12 @@ public partial class Game
             return;
         }
 
-        this.hUD.Progress += delta;
-        while (this.UnitsList.Count > 0 && this.UnitsList.Peek().SpawnTime < this.hUD.Progress)
+        progress += delta;
+        while (this.UnitsList.Count > 0 && this.UnitsList.Peek().IsReady(progress))
         {
             var unitItem = this.UnitsList.Dequeue();
-            if (unitItem.SpawnTime > this.hUD.Progress)
-            {
-                continue;
-            }
-
-            var mobSpawnLocation = unitItem.Position * 100 * pathSize + Vector2.One * 50 * pathSize;
-
-            if (mobSpawnLocation.DistanceSquaredTo(this.player.Position) < 40000)
-            {
-                continue;
-            }
-
-            var direction = (this.player.Position - mobSpawnLocation).Angle();
-            var velocity = new Vector2((float)GD.RandRange(150.0, 250.0), 0);
-
-            var mob = unitItem.UnitType.CreateUnit<Node2D>();
-            mob.Position = mobSpawnLocation;
-            mob.Rotation = direction;
-            if (mob is RigidBody2D body)
-            {
-                body.LinearVelocity = velocity.Rotated(direction);
-            }
-
-            this.AddChild(mob);
+            unitItem.Action(this.player.Position, pathSize, this);
+            this.hUD.Progress ++;
         }
     }
 
@@ -100,6 +80,7 @@ public partial class Game
         this.GetTree().CallGroup(Constants.DynamicGameObject, "queue_free");
 
         this.hUD.Progress = 0;
+        this.progress = 0;
 
         var state = maze.GenerateLevel1();
 
@@ -125,7 +106,8 @@ public partial class Game
         {
             this.UnitsList.Enqueue(unit);
         }
-        this.hUD.MaxProgress = state.UnitsList[state.UnitsList.Count - 1].SpawnTime;
+
+        this.hUD.MaxProgress = state.UnitsList.Count;
 
         var startPosition = state.StartPosition * 100 * pathSize + Vector2.One * 50 * pathSize;
         var rect = new Rect2(Vector2.Zero, new Vector2(state.Map.GetLength(0) * 100 * pathSize + pathSize * 50, state.Map.GetLength(1) * 100 * pathSize + pathSize * 50));
