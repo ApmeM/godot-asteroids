@@ -13,7 +13,7 @@ namespace DodgeTheCreeps.Utils
         public class MaseGeneratorWrapperState
         {
             public int[,] Map;
-            public readonly List<IMapEvent> UnitsList = new List<IMapEvent>();
+            public readonly List<MapEvent> UnitsList = new List<MapEvent>();
             public Godot.Vector2 StartPosition;
         }
 
@@ -49,11 +49,12 @@ namespace DodgeTheCreeps.Utils
             this.State.UnitsList.Clear();
             for (var i = 0; i < 30; i++)
             {
-                this.State.UnitsList.Add(new UnitSpawnMap
+                this.State.UnitsList.Add(new MapEvent
                 {
-                    Position = new Godot.Vector2(Fate.GlobalFate.NextInt(size - 4) + 2, Fate.GlobalFate.NextInt(size - 4) + 2),
-                    UnitType = Fate.GlobalFate.Choose(Enum.GetValues(typeof(UnitType)).Cast<UnitType>().ToArray()),
-                    SpawnTime = i * 3
+                    Condition = new TimeoutMapEventCondition(i * 3),
+                    Action = new SpawnUnitMapEventAction(new Godot.Vector2(Fate.GlobalFate.NextInt(size - 4) + 2, Fate.GlobalFate.NextInt(size - 4) + 2),
+                                                             Fate.GlobalFate.Choose(Enum.GetValues(typeof(UnitType)).Cast<UnitType>().ToArray())
+                    )
                 });
             }
 

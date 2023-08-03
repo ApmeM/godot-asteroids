@@ -15,7 +15,7 @@ public partial class Game
 
     private MazeGeneratorWrapper maze;
     private const int pathSize = 1;
-    private Queue<IMapEvent> UnitsList = new Queue<IMapEvent>();
+    private Queue<MapEvent> UnitsList = new Queue<MapEvent>();
 
     public Game()
     {
@@ -57,10 +57,10 @@ public partial class Game
         }
 
         progress += delta;
-        while (this.UnitsList.Count > 0 && this.UnitsList.Peek().IsReady(progress))
+        while (this.UnitsList.Count > 0 && this.UnitsList.Peek().Condition.IsReady(progress))
         {
             var unitItem = this.UnitsList.Dequeue();
-            unitItem.Action(this.player.Position, pathSize, this);
+            unitItem.Action.Action(this.player.Position, pathSize, this);
             this.hUD.Progress ++;
         }
     }

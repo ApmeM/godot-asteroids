@@ -3,17 +3,46 @@ using Godot;
 
 namespace DodgeTheCreeps.Presentation.Utils.MapEvents
 {
-    public interface IMapEvent
+    public class MapEvent
+    {
+        public IMapEventAction Action;
+        public IMapEventCondition Condition;
+    }
+
+    public interface IMapEventAction
     {
         void Action(Vector2 playerPosition, int pathSize, Node toAdd);
+    }
+    public interface IMapEventCondition
+    {
         bool IsReady(double progress);
     }
 
-    public class UnitSpawnMap : IMapEvent
+    public class TimeoutMapEventCondition : IMapEventCondition
     {
-        public Godot.Vector2 Position;
-        public UnitType UnitType;
+        public TimeoutMapEventCondition(float spawnTime)
+        {
+            SpawnTime = spawnTime;
+        }
+
         public float SpawnTime;
+
+        public bool IsReady(double progress)
+        {
+            return this.SpawnTime < progress;
+        }
+    }
+
+    public class SpawnUnitMapEventAction : IMapEventAction
+    {
+        public SpawnUnitMapEventAction(Vector2 position, UnitType unitType)
+        {
+            Position = position;
+            UnitType = unitType;
+        }
+        
+        public Vector2 Position;
+        public UnitType UnitType;
 
         public void Action(Vector2 playerPosition, int pathSize, Node toAdd)
         {
@@ -36,11 +65,6 @@ namespace DodgeTheCreeps.Presentation.Utils.MapEvents
             }
 
             toAdd.AddChild(mob);
-        }
-
-        public bool IsReady(double progress)
-        {
-            return this.SpawnTime < progress;
         }
     }
 }
