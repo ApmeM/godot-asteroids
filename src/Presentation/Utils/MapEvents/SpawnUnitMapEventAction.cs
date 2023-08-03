@@ -3,35 +3,6 @@ using Godot;
 
 namespace DodgeTheCreeps.Presentation.Utils.MapEvents
 {
-    public class MapEvent
-    {
-        public IMapEventAction Action;
-        public IMapEventCondition Condition;
-    }
-
-    public interface IMapEventAction
-    {
-        void Action(Vector2 playerPosition, int pathSize, Node toAdd);
-    }
-    public interface IMapEventCondition
-    {
-        bool IsReady(double progress);
-    }
-
-    public class TimeoutMapEventCondition : IMapEventCondition
-    {
-        public TimeoutMapEventCondition(float spawnTime)
-        {
-            SpawnTime = spawnTime;
-        }
-
-        public float SpawnTime;
-
-        public bool IsReady(double progress)
-        {
-            return this.SpawnTime < progress;
-        }
-    }
 
     public class SpawnUnitMapEventAction : IMapEventAction
     {
