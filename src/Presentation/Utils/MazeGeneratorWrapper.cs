@@ -51,7 +51,7 @@ namespace DodgeTheCreeps.Utils
             {
                 this.State.UnitsList.Add(new MapEvent
                 {
-                    Condition = new TimeoutMapEventCondition(i * 3),
+                    Condition = new NoUnitsCondition(),
                     Action = new SpawnUnitMapEventAction(new Godot.Vector2(Fate.GlobalFate.NextInt(size - 4) + 2, Fate.GlobalFate.NextInt(size - 4) + 2),
                                                              Fate.GlobalFate.Choose(Enum.GetValues(typeof(UnitType)).Cast<UnitType>().ToArray())
                     )

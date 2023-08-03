@@ -45,7 +45,7 @@ public partial class Game
         }
     }
 
-    private float progress = 0;
+    public float Progress = 0;
 
     public override void _Process(float delta)
     {
@@ -56,8 +56,8 @@ public partial class Game
             return;
         }
 
-        progress += delta;
-        while (this.UnitsList.Count > 0 && this.UnitsList.Peek().Condition.IsReady(progress))
+        Progress += delta;
+        while (this.UnitsList.Count > 0 && this.UnitsList.Peek().Condition.IsReady(this))
         {
             var unitItem = this.UnitsList.Dequeue();
             unitItem.Action.Action(this.player.Position, pathSize, this);
@@ -80,7 +80,7 @@ public partial class Game
         this.GetTree().CallGroup(Constants.DynamicGameObject, "queue_free");
 
         this.hUD.Progress = 0;
-        this.progress = 0;
+        this.Progress = 0;
 
         var state = maze.GenerateLevel1();
 

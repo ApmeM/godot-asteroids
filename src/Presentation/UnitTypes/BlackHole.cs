@@ -17,6 +17,7 @@ public partial class BlackHole : IHitable
 
         this.AddToGroup(Constants.MinimapIconEnemy);
         this.AddToGroup(Constants.DynamicGameObject);
+        this.AddToGroup(Constants.EnemyUnit);
         this.timer.Connect(CommonSignals.Timeout, this, nameof(NextSpawn));
     }
 

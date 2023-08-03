@@ -19,7 +19,7 @@ public partial class SmallMeteor : IHitable
 
         this.AddToGroup(Constants.MinimapIconEnemy);
         this.AddToGroup(Constants.DynamicGameObject);
-        this.AddToGroup(Constants.GameTarget);
+        this.AddToGroup(Constants.EnemyUnit);
     }
 
     public void Hit(Bullet byNode)

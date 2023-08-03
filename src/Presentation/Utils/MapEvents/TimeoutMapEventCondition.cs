@@ -9,9 +9,9 @@ namespace DodgeTheCreeps.Presentation.Utils.MapEvents
 
         public float SpawnTime;
 
-        public bool IsReady(double progress)
+        public bool IsReady(Game game)
         {
-            return this.SpawnTime < progress;
+            return this.SpawnTime < game.Progress;
         }
     }
 }
