@@ -4,11 +4,11 @@ namespace DodgeTheCreeps.Utils
 {
     public enum UnitType
     {
-        LargeMeteor,
-        Meteor,
         SmallMeteor,
-        BlackHole,
+        Meteor,
+        LargeMeteor,
         MeteorGroup,
+        BlackHole,
     }
 
     public static class UnitTypeCreator
