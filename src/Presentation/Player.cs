@@ -22,9 +22,8 @@ public partial class Player : IBonusCollector
     [Export]
     public PackedScene Gun;
     [Export]
-    public NodePath Field;
+    public NodePath FieldPath;
 
-    private Rect2 fieldSize;
     private Vector2 initialPosition;
     private bool initialize = false;
 
@@ -35,7 +34,11 @@ public partial class Player : IBonusCollector
 
         this.Connect(CommonSignals.BodyEntered, this, nameof(OnPlayerBodyEntered));
 
+        this.AddToGroup(Constants.DynamicGameObject);
+
         this.guns.ClearChildren();
+        this.Collect(BonusType.Weapon);
+        this.camera2D.Current = true;
     }
 
     public override void _Process(float delta)
@@ -65,16 +68,6 @@ public partial class Player : IBonusCollector
     {
         base._IntegrateForces(state);
 
-        if (initialize)
-        {
-            initialize = false;
-
-            state.Transform = new Transform2D(0, initialPosition);
-            state.LinearVelocity = Vector2.Zero;
-            this.guns.ClearChildren();
-            this.Collect(BonusType.Weapon);
-        }
-
         var vector = BugFixExt.InputGetVector("move_left", "move_right", "move_up", "move_down", 0.01f);
 
         if (vector != Vector2.Zero)
@@ -98,18 +91,12 @@ public partial class Player : IBonusCollector
         }
     }
 
-    public void Start(Vector2 pos, Rect2 fieldSize)
-    {
-        this.fieldSize = fieldSize;
-        this.initialPosition = pos;
-        this.initialize = true;
-        this.collisionShape2D.Disabled = false;
-    }
-
     private void OnPlayerBodyEntered(PhysicsBody2D body)
     {
         EmitSignal(nameof(Hit));
-        this.collisionShape2D.SetDeferred("disabled", true);
+        this.CollisionLayer = 0;
+        this.Layers = 0;
+        this.camera2D.Current = false;
     }
 
     private void AddGun(Vector2 position, float rotation = 0)
@@ -118,7 +105,7 @@ public partial class Player : IBonusCollector
         this.guns.AddChild(gun);
         gun.Position = position;
         gun.Rotation = rotation;
-        gun.Field = this.GetNode(this.Field).GetPath();
+        gun.Field = this.GetNode(this.FieldPath).GetPath();
     }
 
     public void Collect(BonusType bonus)

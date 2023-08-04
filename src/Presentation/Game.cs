@@ -13,6 +13,10 @@ public partial class Game
     [Export]
     public PackedScene blockScene;
 
+    [Export]
+    public PackedScene playerScene;
+    private Player player;
+
     private MazeGeneratorWrapper maze;
     private const int pathSize = 1;
     private Queue<MapEvent> UnitsList = new Queue<MapEvent>();
@@ -27,8 +31,9 @@ public partial class Game
         base._Ready();
         this.FillMembers();
 
-        this.player.Connect(nameof(Player.Hit), this, nameof(PlayerHit));
         this.Connect(CommonSignals.VisibilityChanged, this, nameof(VisibilityChanged));
+
+        this.GetTree().CallGroup(Constants.DynamicGameObject, "queue_free");
 
         GD.Randomize();
     }
@@ -70,15 +75,13 @@ public partial class Game
         this.music.Stop();
         this.deathSound.Play();
 
-        this.camera2D.Current = false;
-
         this.EmitSignal(nameof(GameOver), 0);
+     
+        this.GetTree().CallGroup(Constants.DynamicGameObject, "queue_free");
     }
 
     public void NewGame()
     {
-        this.GetTree().CallGroup(Constants.DynamicGameObject, "queue_free");
-
         this.hUD.Progress = 0;
         this.Progress = 0;
 
@@ -111,10 +114,14 @@ public partial class Game
 
         var startPosition = state.StartPosition * 100 * pathSize + Vector2.One * 50 * pathSize;
         var rect = new Rect2(Vector2.Zero, new Vector2(state.Map.GetLength(0) * 100 * pathSize + pathSize * 50, state.Map.GetLength(1) * 100 * pathSize + pathSize * 50));
-        this.player.Start(startPosition, rect);
+        
+        this.player = playerScene.Instance<Player>();
+        this.player.Connect(nameof(Player.Hit), this, nameof(PlayerHit));
+        this.player.Position = startPosition;
+        this.player.FieldPath = this.GetPath();
+        this.AddChild(player);
 
-        this.camera2D.Current = true;
-
+        this.hUD.PlayerPath = this.player.GetPath();
         this.hUD.Start(rect);
 
         //this.music.Play();

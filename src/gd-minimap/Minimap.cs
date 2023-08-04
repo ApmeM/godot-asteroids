@@ -28,7 +28,6 @@ public partial class Minimap
 
         if (PlayerPath == null)
         {
-            GD.PrintErr("PlayerPath is not set.");
             return;
         }
 

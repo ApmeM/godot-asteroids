@@ -28,11 +28,6 @@ public partial class HUD
 
         this.communicator = GetNode<Communicator>("/root/Main/Communicator");
         this.communicator.Connect(nameof(Communicator.ScoreAdded), this, nameof(UpdateScore));
-
-        if (this.PlayerPath != null)
-        {
-            this.minimap.PlayerPath = this.GetNode(this.PlayerPath).GetPath();
-        }
     }
 
     public void UpdateScore(int scoreAdded)
@@ -51,5 +46,6 @@ public partial class HUD
         this.minimap.SetMapSize(rect);
 
         this.timerLabel.ShowMessage("Get Ready!", 1);
+        this.minimap.PlayerPath = this.GetNode(this.PlayerPath).GetPath();
     }
 }

@@ -6,9 +6,10 @@ namespace GodotRts.Presentation.Utils
     {
         public static void ClearChildren(this Node node)
         {
-            foreach (Node item in node.GetChildren())
-            {
-                item.QueueFree();
+            while(node.GetChildCount() > 0){
+                var child = node.GetChild(0);
+                child.QueueFree();
+                node.RemoveChild(child);
             }
         }
     }
