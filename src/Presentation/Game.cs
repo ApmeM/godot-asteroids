@@ -15,10 +15,10 @@ public partial class Game
 
     [Export]
     public PackedScene playerScene;
-    private Player player;
 
     private MazeGeneratorWrapper maze;
-    private const int pathSize = 1;
+    public const int PathSize = 1;
+
     private Queue<MapEvent> UnitsList = new Queue<MapEvent>();
 
     public Game()
@@ -33,7 +33,7 @@ public partial class Game
 
         this.Connect(CommonSignals.VisibilityChanged, this, nameof(VisibilityChanged));
 
-        this.GetTree().CallGroup(Constants.DynamicGameObject, "queue_free");
+        this.GetTree().CallGroup(Groups.DynamicGameObject, "queue_free");
 
         GD.Randomize();
     }
@@ -65,19 +65,22 @@ public partial class Game
         while (this.UnitsList.Count > 0 && this.UnitsList.Peek().Condition.IsReady(this))
         {
             var unitItem = this.UnitsList.Dequeue();
-            unitItem.Action.Action(this.player.Position, pathSize, this);
-            this.hUD.Progress ++;
+            unitItem.Action.Action(this);
+            this.hUD.Progress++;
         }
+    }
+
+    public void FinishGame()
+    {
+        this.music.Stop();
+        this.EmitSignal(nameof(GameOver), this.hUD.Score);
+        this.GetTree().CallGroup(Groups.DynamicGameObject, "queue_free");
     }
 
     private void PlayerHit()
     {
-        this.music.Stop();
         this.deathSound.Play();
-
-        this.EmitSignal(nameof(GameOver), 0);
-     
-        this.GetTree().CallGroup(Constants.DynamicGameObject, "queue_free");
+        this.FinishGame();
     }
 
     public void NewGame()
@@ -95,11 +98,11 @@ public partial class Game
                     continue;
                 }
 
-                for (var x2 = 0; x2 < pathSize; x2++)
-                    for (var y2 = 0; y2 < pathSize; y2++)
+                for (var x2 = 0; x2 < PathSize; x2++)
+                    for (var y2 = 0; y2 < PathSize; y2++)
                     {
                         var block = (Block)blockScene.Instance();
-                        block.Position = new Vector2(x * 100 * pathSize + x2 * 100, y * 100 * pathSize + y2 * 100);
+                        block.Position = new Vector2(x * 100 * PathSize + x2 * 100, y * 100 * PathSize + y2 * 100);
                         this.AddChild(block);
                     }
             }
@@ -112,16 +115,17 @@ public partial class Game
 
         this.hUD.MaxProgress = state.UnitsList.Count;
 
-        var startPosition = state.StartPosition * 100 * pathSize + Vector2.One * 50 * pathSize;
-        var rect = new Rect2(Vector2.Zero, new Vector2(state.Map.GetLength(0) * 100 * pathSize + pathSize * 50, state.Map.GetLength(1) * 100 * pathSize + pathSize * 50));
-        
-        this.player = playerScene.Instance<Player>();
-        this.player.Connect(nameof(Player.Hit), this, nameof(PlayerHit));
-        this.player.Position = startPosition;
-        this.player.FieldPath = this.GetPath();
+        var startPosition = state.StartPosition * 100 * PathSize + Vector2.One * 50 * PathSize;
+        var rect = new Rect2(Vector2.Zero, new Vector2(state.Map.GetLength(0) * 100 * PathSize + PathSize * 50, state.Map.GetLength(1) * 100 * PathSize + PathSize * 50));
+
+        var player = playerScene.Instance<Player>();
+        player.Connect(nameof(Player.Hit), this, nameof(PlayerHit));
+        player.Position = startPosition;
+        player.FieldPath = this.GetPath();
+        player.AddToGroup(Groups.PlayerUnit);
         this.AddChild(player);
 
-        this.hUD.PlayerPath = this.player.GetPath();
+        this.hUD.PlayerPath = player.GetPath();
         this.hUD.Start(rect);
 
         //this.music.Play();

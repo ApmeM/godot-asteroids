@@ -13,7 +13,7 @@ public partial class MeteorGroup
         base._Ready();
         this.FillMembers();
 
-        this.AddToGroup(Constants.DynamicGameObject);
+        this.AddToGroup(Groups.DynamicGameObject);
         this.timer.Connect(CommonSignals.Timeout, this, nameof(NextSpawn));
     }
 

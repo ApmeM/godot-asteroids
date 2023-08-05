@@ -11,13 +11,16 @@ namespace DodgeTheCreeps.Presentation.Utils.MapEvents
             Position = position;
             BonusType = bonusTyoe;
         }
-        
+
         public Vector2 Position;
         public BonusType BonusType;
 
-        public void Action(Vector2 playerPosition, int pathSize, Node toAdd)
+        public void Action(Game game)
         {
-            var mobSpawnLocation = this.Position * 100 * pathSize + Vector2.One * 50 * pathSize;
+            var player = (Node2D)game.GetTree().GetNodesInGroup(Groups.PlayerUnit)[0];
+            var playerPosition = player.Position;
+
+            var mobSpawnLocation = this.Position * 100 * Game.PathSize + Vector2.One * 50 * Game.PathSize;
 
             if (mobSpawnLocation.DistanceSquaredTo(playerPosition) < 40000)
             {
@@ -29,7 +32,7 @@ namespace DodgeTheCreeps.Presentation.Utils.MapEvents
 
             var mob = this.BonusType.CreateBonus<Node2D>();
             mob.Position = mobSpawnLocation;
-            toAdd.AddChild(mob);
+            game.AddChild(mob);
         }
     }
 }

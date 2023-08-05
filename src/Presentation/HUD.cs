@@ -20,6 +20,7 @@ public partial class HUD
         get => this.gameProgressBar.Value;
         set => this.gameProgressBar.Value = value;
     }
+    public int Score => this.scoreLabel.Value;
 
     public override void _Ready()
     {

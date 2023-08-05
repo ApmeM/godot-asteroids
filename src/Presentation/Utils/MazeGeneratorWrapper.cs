@@ -69,6 +69,11 @@ namespace DodgeTheCreeps.Utils
                 }
             }
 
+            this.State.UnitsList.Add(new MapEvent
+            {
+                Condition = new NoUnitsCondition(),
+                Action = new GameOverMapEventAction()
+            });
             return this.State;
         }
     }

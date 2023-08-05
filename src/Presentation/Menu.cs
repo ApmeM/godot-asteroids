@@ -15,24 +15,16 @@ public partial class Menu
         this.FillMembers();
 
         this.startButton.Connect(CommonSignals.Pressed, this, nameof(OnStartButtonPressed));
-        this.messageTimer.Connect(CommonSignals.Timeout, this, nameof(OnMessageTimerTimeout));
     }
 
     public void GameOver(int score)
     {
         this.scoreLabel.Text = score.ToString();
-        this.messageLabel.Text = "Game Over";
-        this.messageTimer.Start();
+        this.timerLabel.ShowMessage("Game Over", 2);
     }
 
     private void OnStartButtonPressed()
     {
         EmitSignal(nameof(StartGame));
-    }
-
-    private void OnMessageTimerTimeout()
-    {
-        this.messageLabel.Text = "Dodge the\nCreeps!";
-        this.messageTimer.Stop();
     }
 }

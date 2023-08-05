@@ -15,9 +15,9 @@ public partial class BlackHole : IHitable
 
         this.communicator = GetNode<Communicator>("/root/Main/Communicator");
 
-        this.AddToGroup(Constants.MinimapIconEnemy);
-        this.AddToGroup(Constants.DynamicGameObject);
-        this.AddToGroup(Constants.EnemyUnit);
+        this.AddToGroup(Groups.MinimapIconEnemy);
+        this.AddToGroup(Groups.DynamicGameObject);
+        this.AddToGroup(Groups.EnemyUnit);
         this.timer.Connect(CommonSignals.Timeout, this, nameof(NextSpawn));
     }
 

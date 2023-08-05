@@ -15,9 +15,11 @@ namespace DodgeTheCreeps.Presentation.Utils.MapEvents
         public Vector2 Position;
         public UnitType UnitType;
 
-        public void Action(Vector2 playerPosition, int pathSize, Node toAdd)
+        public void Action(Game game)
         {
-            var mobSpawnLocation = this.Position * 100 * pathSize + Vector2.One * 50 * pathSize;
+            var player = (Node2D)game.GetTree().GetNodesInGroup(Groups.PlayerUnit)[0];
+            var playerPosition = player.Position;
+            var mobSpawnLocation = this.Position * 100 * Game.PathSize + Vector2.One * 50 * Game.PathSize;
 
             if (mobSpawnLocation.DistanceSquaredTo(playerPosition) < 40000)
             {
@@ -35,7 +37,7 @@ namespace DodgeTheCreeps.Presentation.Utils.MapEvents
                 body.LinearVelocity = velocity.Rotated(direction);
             }
 
-            toAdd.AddChild(mob);
+            game.AddChild(mob);
         }
     }
 }

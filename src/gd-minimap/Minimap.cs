@@ -34,7 +34,7 @@ public partial class Minimap
         var player = (Player)this.GetNode(PlayerPath);
         this.playerMarker.Rotation = player.Rotation;
 
-        var minimapEnemies = this.GetTree().GetNodesInGroup(Constants.MinimapIconEnemy);
+        var minimapEnemies = this.GetTree().GetNodesInGroup(Groups.MinimapIconEnemy);
 
         foreach (Node2D enemy in minimapEnemies)
         {
@@ -68,7 +68,7 @@ public partial class Minimap
             );
         }
 
-        var minimapBlocks = this.GetTree().GetNodesInGroup(Constants.MinimapIconBlock);
+        var minimapBlocks = this.GetTree().GetNodesInGroup(Groups.MinimapIconBlock);
         foreach (Node2D block in minimapBlocks)
         {
             if (!knownMarkers.ContainsKey(block))

@@ -34,7 +34,7 @@ public partial class Player : IBonusCollector
 
         this.Connect(CommonSignals.BodyEntered, this, nameof(OnPlayerBodyEntered));
 
-        this.AddToGroup(Constants.DynamicGameObject);
+        this.AddToGroup(Groups.DynamicGameObject);
 
         this.guns.ClearChildren();
         this.Collect(BonusType.Weapon);

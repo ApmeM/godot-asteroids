@@ -10,7 +10,7 @@ namespace DodgeTheCreeps.Presentation.Utils.MapEvents
 
         public bool IsReady(Game game)
         {
-            return game.GetTree().GetNodesInGroup(Constants.EnemyUnit).Count == 0;
+            return game.GetTree().GetNodesInGroup(Groups.EnemyUnit).Count == 0;
         }
     }
 }

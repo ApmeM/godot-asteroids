@@ -10,7 +10,7 @@ public partial class Block
         base._Ready();
         this.FillMembers();
 
-        this.AddToGroup(Constants.MinimapIconBlock);
-        this.AddToGroup(Constants.DynamicGameObject);
+        this.AddToGroup(Groups.MinimapIconBlock);
+        this.AddToGroup(Groups.DynamicGameObject);
     }
 }
