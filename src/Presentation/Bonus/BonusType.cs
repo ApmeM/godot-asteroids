@@ -11,9 +11,9 @@ namespace DodgeTheCreeps.Utils
 
     public static class BonusTypeCreator
     {
-        public static Node2D CreateBonus(this BonusType bonusType)
+        public static T CreateBonus<T>(this BonusType bonusType) where T : Node
         {
-            return (Node2D)ResourceLoader.Load<PackedScene>($"res://Presentation/Bonus/{bonusType}.tscn").Instance();
+            return (T)ResourceLoader.Load<PackedScene>($"res://Presentation/Bonus/{bonusType}.tscn").Instance();
         }
     }
 }

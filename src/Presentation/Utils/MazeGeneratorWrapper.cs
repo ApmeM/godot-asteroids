@@ -51,11 +51,22 @@ namespace DodgeTheCreeps.Utils
             {
                 this.State.UnitsList.Add(new MapEvent
                 {
-                    Condition = new TimeoutMapEventCondition(3 * i),
+                    Condition = new TimeoutMapEventCondition(3),
                     Action = new SpawnUnitMapEventAction(new Godot.Vector2(Fate.GlobalFate.NextInt(size - 4) + 2, Fate.GlobalFate.NextInt(size - 4) + 2),
                                                              Fate.GlobalFate.Choose(Enum.GetValues(typeof(UnitType)).Cast<UnitType>().Take(i + 1).ToArray())
                     )
                 });
+
+                if (i % 2 == 0)
+                {
+                    this.State.UnitsList.Add(new MapEvent
+                    {
+                        Condition = new TimeoutMapEventCondition(0),
+                        Action = new SpawnBonusMapEventAction(new Godot.Vector2(Fate.GlobalFate.NextInt(size - 4) + 2, Fate.GlobalFate.NextInt(size - 4) + 2),
+                                                                 Fate.GlobalFate.Choose(Enum.GetValues(typeof(BonusType)).Cast<BonusType>().Take(i + 1).ToArray())
+                        )
+                    });
+                }
             }
 
             return this.State;

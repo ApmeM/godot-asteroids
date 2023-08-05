@@ -50,7 +50,7 @@ public partial class Game
         }
     }
 
-    public float Progress = 0;
+    public float GameTime = 0;
 
     public override void _Process(float delta)
     {
@@ -61,7 +61,7 @@ public partial class Game
             return;
         }
 
-        Progress += delta;
+        GameTime += delta;
         while (this.UnitsList.Count > 0 && this.UnitsList.Peek().Condition.IsReady(this))
         {
             var unitItem = this.UnitsList.Dequeue();
@@ -83,7 +83,7 @@ public partial class Game
     public void NewGame()
     {
         this.hUD.Progress = 0;
-        this.Progress = 0;
+        this.GameTime = 0;
 
         var state = maze.GenerateLevel1();
 

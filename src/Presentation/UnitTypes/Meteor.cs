@@ -1,6 +1,5 @@
 using DodgeTheCreeps.UnitTypes;
 using DodgeTheCreeps.Utils;
-using FateRandom;
 using Godot;
 using GodotAnalysers;
 
@@ -8,7 +7,6 @@ using GodotAnalysers;
 public partial class Meteor : IHitable
 {
     private Communicator communicator;
-    private Fate fate = Fate.GlobalFate;
 
     public override void _Ready()
     {
@@ -45,13 +43,6 @@ public partial class Meteor : IHitable
         meteor.LinearVelocity = direction * (float)GD.RandRange(250.0, 350.0);
         meteor.Position = this.Position + direction * 50;
         this.GetParent().CallDeferred("add_child", meteor);
-
-        if (fate.Chance(20))
-        {
-            var bonus = fate.Choose<BonusType>(BonusType.Weapon, BonusType.RapidFire, BonusType.Power).CreateBonus();
-            bonus.Position = this.Position;
-            this.GetParent().CallDeferred("add_child", bonus);
-        }
 
         this.communicator.EmitSignal(nameof(Communicator.ScoreAdded), 20);
 

@@ -20,6 +20,11 @@ consider following the tutorial in the documentation."
 run/main_scene="res://Presentation/Main.tscn"
 config/icon="res://Presentation/icon.png"
 
+[display]
+
+window/size/fullscreen=true
+window/stretch/mode="2d"
+
 [editor_plugins]
 
 enabled=PoolStringArray( "res://addons/atlas_importer3/plugin.cfg" )

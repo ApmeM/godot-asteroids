@@ -2,16 +2,22 @@ namespace DodgeTheCreeps.Presentation.Utils.MapEvents
 {
     public class TimeoutMapEventCondition : IMapEventCondition
     {
-        public TimeoutMapEventCondition(float spawnTime)
+        public TimeoutMapEventCondition(float timeout)
         {
-            SpawnTime = spawnTime;
+            Timeout = timeout;
         }
 
-        public float SpawnTime;
+        public float Timeout;
+        private float StartTime = float.MinValue;
 
         public bool IsReady(Game game)
         {
-            return this.SpawnTime < game.Progress;
+            if (StartTime == float.MinValue)
+            {
+                StartTime = game.GameTime;
+            }
+
+            return this.Timeout <= game.GameTime - StartTime;
         }
     }
 }
