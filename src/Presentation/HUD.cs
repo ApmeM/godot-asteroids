@@ -4,9 +4,6 @@ using GodotAnalysers;
 [SceneReference("HUD.tscn")]
 public partial class HUD
 {
-    [Export]
-    public NodePath PlayerPath;
-
     private Communicator communicator;
 
     public double MaxProgress
@@ -41,12 +38,17 @@ public partial class HUD
         UpdateScore(score);
     }
 
-    internal void Start(Rect2 rect)
+    internal void Start(Rect2 rect, NodePath playerPath)
     {
         this.scoreLabel.Value = 0;
-        this.minimap.SetMapSize(rect);
-
         this.timerLabel.ShowMessage("Get Ready!", 1);
-        this.minimap.PlayerPath = this.GetNode(this.PlayerPath).GetPath();
+
+        this.minimap.SetMapSizeToNode(rect);
+        this.minimap.CenterNodePath = playerPath;
+    }
+
+    internal void Stop()
+    {
+        this.minimap.CenterNodePath = null;
     }
 }

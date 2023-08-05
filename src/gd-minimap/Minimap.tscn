@@ -1,61 +1,17 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://gd-minimap/Minimap.cs" type="Script" id=1]
-[ext_resource path="res://art/ships/ships.playerShip3_green.tres" type="Texture" id=2]
-[ext_resource path="res://art/ui/ui.glassPanel_cornerTL.tres" type="Texture" id=3]
-[ext_resource path="res://art/ui/ui.crossair_red.tres" type="Texture" id=4]
-[ext_resource path="res://art/ships/ships.meteorBrown_tiny2.tres" type="Texture" id=5]
+[ext_resource path="res://gd-minimap/Minimap.cs" type="Script" id=3]
 
 [node name="Minimap" type="MarginContainer"]
 margin_right = 150.0
 margin_bottom = 150.0
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource( 3 )
+CenterNodePath = NodePath("")
 
-[node name="Background" type="NinePatchRect" parent="."]
+[node name="Field" type="Control" parent="."]
 margin_right = 150.0
 margin_bottom = 150.0
-texture = ExtResource( 3 )
-patch_margin_left = 17
-patch_margin_top = 18
-patch_margin_right = 4
-patch_margin_bottom = 4
 
-[node name="MinimapContent" type="MarginContainer" parent="."]
-margin_right = 150.0
-margin_bottom = 150.0
-custom_constants/margin_right = 5
-custom_constants/margin_top = 5
-custom_constants/margin_left = 5
-custom_constants/margin_bottom = 5
+[node name="YSort" type="YSort" parent="Field"]
 
-[node name="Field" type="Control" parent="MinimapContent"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 145.0
-margin_bottom = 145.0
-
-[node name="EnemyMarker" type="Node2D" parent="MinimapContent/Field"]
-visible = false
-position = Vector2( 25, 25 )
-
-[node name="EnemySprite" type="Sprite" parent="MinimapContent/Field/EnemyMarker"]
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 4 )
-
-[node name="BlockMarker" type="Node2D" parent="MinimapContent/Field"]
-visible = false
-position = Vector2( 50, 25 )
-
-[node name="BlockSprite" type="Sprite" parent="MinimapContent/Field/BlockMarker"]
-texture = ExtResource( 5 )
-
-[node name="PlayerMarker" type="Node2D" parent="MinimapContent/Field"]
-position = Vector2( 70, 70 )
-
-[node name="PlayerSprite" type="Sprite" parent="MinimapContent/Field/PlayerMarker"]
-rotation = 1.5708
-scale = Vector2( 0.25, 0.25 )
-texture = ExtResource( 2 )
+[node name="Marker" type="Sprite" parent="Field/YSort"]

@@ -4,9 +4,11 @@ using Godot;
 using GodotAnalysers;
 
 [SceneReference("LargeMeteor.tscn")]
-public partial class LargeMeteor : IHitable
+public partial class LargeMeteor : IHitable, IMinimapElement
 {
     private Communicator communicator;
+    public bool VisibleOnBorder => true;
+    public Sprite Sprite => this.minimapTexture;
 
     public override void _Ready()
     {
@@ -15,7 +17,7 @@ public partial class LargeMeteor : IHitable
 
         this.communicator = GetNode<Communicator>("/root/Main/Communicator");
 
-        this.AddToGroup(Groups.MinimapIconEnemy);
+        this.AddToGroup(Groups.MinimapElement);
         this.AddToGroup(Groups.DynamicGameObject);
         this.AddToGroup(Groups.EnemyUnit);
     }

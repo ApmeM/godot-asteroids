@@ -4,8 +4,11 @@ using Godot;
 using GodotAnalysers;
 
 [SceneReference("RapidFire.tscn")]
-public partial class RapidFire
+public partial class RapidFire: IMinimapElement
 {
+    public bool VisibleOnBorder => true;
+    public Sprite Sprite => this.minimapTexture;
+
     [Export]
     public float RotationSpeed = Mathf.Pi / 2;
 
@@ -14,6 +17,8 @@ public partial class RapidFire
         this.FillMembers();
 
         this.Connect(CommonSignals.BodyEntered, this, nameof(Hit));
+        this.AddToGroup(Groups.DynamicGameObject);
+        this.AddToGroup(Groups.MinimapElement);
     }
 
     public override void _Process(float delta)

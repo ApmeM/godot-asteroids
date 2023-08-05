@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://art/ships/ships.turretBase_big.tres" type="Texture" id=1]
 [ext_resource path="res://art/ships/ships.laserBlue14.tres" type="Texture" id=2]
 [ext_resource path="res://Presentation/UnitTypes/BlackHole.cs" type="Script" id=3]
+[ext_resource path="res://art/ui/ui.crossair_red.tres" type="Texture" id=4]
 
 [sub_resource type="PhysicsMaterial" id=3]
 friction = 0.0
@@ -57,3 +58,8 @@ curve = SubResource( 4 )
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
 position = Vector2( -93, -11 )
 rotation = 1.19456
+
+[node name="MinimapTexture" type="Sprite" parent="."]
+visible = false
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 4 )

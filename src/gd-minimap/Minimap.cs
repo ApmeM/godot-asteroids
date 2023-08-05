@@ -1,15 +1,33 @@
-using DodgeTheCreeps.Utils;
 using Godot;
 using Godot.Collections;
 using GodotAnalysers;
 
 [SceneReference("Minimap.tscn")]
+[Tool]
 public partial class Minimap
 {
     [Export]
-    public NodePath PlayerPath;
-    
-    private Vector2 fieldScale;
+    public Vector2 WorldRectSize = new Vector2(480, 800);
+
+    [Export]
+    public Vector2 WorldRectPosition = Vector2.Zero;
+
+    [Export]
+    public NodePath CenterNodePath
+    {
+        get => centerNodePath;
+        set
+        {
+            centerNodePath = value;
+            centerNodePathDity = true;
+        }
+    }
+
+    private bool centerNodePathDity;
+    private NodePath centerNodePath;
+    private Node2D centerNode;
+
+    // Dictionaries to map world elements to minimap elements
     private Dictionary<Node2D, Node2D> knownMarkers = new Dictionary<Node2D, Node2D>();
     private Dictionary<Node2D, Node2D> newKnownMarkers = new Dictionary<Node2D, Node2D>();
 
@@ -17,83 +35,61 @@ public partial class Minimap
     {
         base._Ready();
         this.FillMembers();
-
-        this.playerMarker.Position = field.RectSize / 2;
-
     }
 
     public override void _Process(float delta)
     {
         base._Process(delta);
 
-        if (PlayerPath == null)
+        this.FillMembers();
+
+        if (centerNodePathDity)
         {
-            return;
+            if (centerNodePath == null || centerNodePath.IsEmpty())
+                centerNode = null;
+            else
+                centerNode = (Node2D)this.GetNode(centerNodePath);
         }
 
-        var player = (Player)this.GetNode(PlayerPath);
-        this.playerMarker.Rotation = player.Rotation;
-
-        var minimapEnemies = this.GetTree().GetNodesInGroup(Groups.MinimapIconEnemy);
-
-        foreach (Node2D enemy in minimapEnemies)
+        var minimapElements = this.GetTree().GetNodesInGroup(Groups.MinimapElement);
+        foreach (Node2D element in minimapElements)
         {
-            if (!knownMarkers.ContainsKey(enemy))
+            if (!(element is IMinimapElement) && !((element is Sprite)))
             {
-                var newEnemyMarker = (Node2D)this.enemyMarker.Duplicate();
-                this.field.AddChild(newEnemyMarker);
+                GD.PrintErr($"{element} is in {Groups.MinimapElement} group but do not implement {nameof(IMinimapElement)} and not {nameof(Sprite)}");
+                continue;
+            }
+
+            var minimapElement = element as IMinimapElement;
+            var minimapSprite = (element as Sprite) ?? (minimapElement?.Sprite);
+
+            if (!knownMarkers.ContainsKey(element))
+            {
+                var newEnemyMarker = (Sprite)this.marker.Duplicate();
+                newEnemyMarker.Texture = minimapSprite.Texture;
+                
+                this.ySort.AddChild(newEnemyMarker);
                 newEnemyMarker.Show();
-                newKnownMarkers[enemy] = newEnemyMarker;
+                newKnownMarkers[element] = newEnemyMarker;
             }
             else
             {
-                newKnownMarkers[enemy] = knownMarkers[enemy];
-                knownMarkers.Remove(enemy);
+                newKnownMarkers[element] = knownMarkers[element];
+                knownMarkers.Remove(element);
             }
 
-            var marker = newKnownMarkers[enemy];
-            marker.Position = (enemy.Position - player.Position) * this.fieldScale + this.field.RectSize / 2;
-            if (field.GetRect().HasPoint(marker.Position))
-            {
-                marker.Scale = Vector2.One;
-            }
-            else
-            {
-                marker.Scale = Vector2.One * 0.75f;
-            }
+            var markerPosition = GetMarkerPosition(element);
 
-            marker.Position = new Vector2(
-                x: Mathf.Clamp(marker.Position.x, 0, field.RectSize.x),
-                y: Mathf.Clamp(marker.Position.y, 0, field.RectSize.y)
+            var isWithinMap = field.GetRect().HasPoint(markerPosition);
+
+            var knownMarker = newKnownMarkers[element];
+            knownMarker.Rotation = element.Rotation + minimapSprite.Rotation;
+            knownMarker.Position = new Vector2(
+                x: Mathf.Clamp(markerPosition.x, 0, field.RectSize.x),
+                y: Mathf.Clamp(markerPosition.y, 0, field.RectSize.y)
             );
-        }
-
-        var minimapBlocks = this.GetTree().GetNodesInGroup(Groups.MinimapIconBlock);
-        foreach (Node2D block in minimapBlocks)
-        {
-            if (!knownMarkers.ContainsKey(block))
-            {
-                var newBlockMarker = (Node2D)this.blockMarker.Duplicate();
-                this.field.AddChild(newBlockMarker);
-                newBlockMarker.Show();
-                newKnownMarkers[block] = newBlockMarker;
-            }
-            else
-            {
-                newKnownMarkers[block] = knownMarkers[block];
-                knownMarkers.Remove(block);
-            }
-
-            var marker = newKnownMarkers[block];
-            marker.Position = (block.Position - player.Position) * this.fieldScale + this.field.RectSize / 2;
-            if (field.GetRect().HasPoint(marker.Position))
-            {
-                marker.Visible = true;
-            }
-            else
-            {
-                marker.Visible = false;
-            }
+            knownMarker.Scale = (isWithinMap) ? minimapSprite.Scale : minimapSprite.Scale * 0.75f;
+            knownMarker.Visible = isWithinMap || (minimapElement?.VisibleOnBorder ?? true);
         }
 
         foreach (var removedMarkers in knownMarkers.Values)
@@ -107,8 +103,25 @@ public partial class Minimap
         knownMarkers = tmpKnownMarkers;
     }
 
-    public void SetMapSize(Rect2 rect)
+    private Vector2 GetMarkerPosition(Node2D element)
     {
-        this.fieldScale = this.field.RectSize / rect.Size;
+        var fieldScale = this.field.RectSize / this.WorldRectSize;
+        var elementRelativePosition = element.Position - (centerNode?.Position ?? (this.WorldRectPosition + this.WorldRectSize / 2));
+        var markerPosition = elementRelativePosition * fieldScale + this.field.RectSize / 2;
+        return markerPosition;
+    }
+
+    public void SetMapSizeToNode(Node2D followNode, Vector2 distance)
+    {
+        this.centerNode = followNode;
+        this.WorldRectSize = distance;
+        this.WorldRectPosition = Vector2.Zero;
+    }
+
+    public void SetMapSizeToNode(Rect2 worldRect)
+    {
+        this.centerNode = null;
+        this.WorldRectSize = worldRect.Size;
+        this.WorldRectPosition = worldRect.Position;
     }
 }

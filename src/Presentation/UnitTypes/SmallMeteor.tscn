@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://art/ships/ships.meteorBrown_small1.tres" type="Texture" id=1]
 [ext_resource path="res://art/ships/ships.laserBlue14.tres" type="Texture" id=2]
 [ext_resource path="res://Presentation/UnitTypes/SmallMeteor.cs" type="Script" id=3]
+[ext_resource path="res://art/ui/ui.crossair_red.tres" type="Texture" id=4]
 
 [sub_resource type="PhysicsMaterial" id=3]
 friction = 0.0
@@ -41,3 +42,8 @@ max_value = 1.0
 value = 1.0
 texture_progress = ExtResource( 2 )
 fill_mode = 3
+
+[node name="MinimapTexture" type="Sprite" parent="."]
+visible = false
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 4 )

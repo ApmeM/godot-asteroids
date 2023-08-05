@@ -8,5 +8,5 @@ public interface IMinimapElement
     bool VisibleOnBorder { get; }
 
     // Minimap texture element
-    Texture Texture { get; }
+    Sprite Sprite { get; }
 }

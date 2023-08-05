@@ -5,8 +5,11 @@ using GodotAnalysers;
 using GodotRts.Presentation.Utils;
 
 [SceneReference("Player.tscn")]
-public partial class Player : IBonusCollector
+public partial class Player : IBonusCollector, IMinimapElement
 {
+    public bool VisibleOnBorder => true;
+    public Sprite Sprite => this.minimapTexture;
+
     [Signal]
     public delegate void Hit();
 
@@ -24,9 +27,6 @@ public partial class Player : IBonusCollector
     [Export]
     public NodePath FieldPath;
 
-    private Vector2 initialPosition;
-    private bool initialize = false;
-
     public override void _Ready()
     {
         base._Ready();
@@ -35,6 +35,7 @@ public partial class Player : IBonusCollector
         this.Connect(CommonSignals.BodyEntered, this, nameof(OnPlayerBodyEntered));
 
         this.AddToGroup(Groups.DynamicGameObject);
+        this.AddToGroup(Groups.MinimapElement);
 
         this.guns.ClearChildren();
         this.Collect(BonusType.Weapon);

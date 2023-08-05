@@ -17,7 +17,7 @@ public partial class Game
     public PackedScene playerScene;
 
     private MazeGeneratorWrapper maze;
-    public const int PathSize = 1;
+    public const int PathSize = 2;
 
     private Queue<MapEvent> UnitsList = new Queue<MapEvent>();
 
@@ -73,6 +73,7 @@ public partial class Game
     public void FinishGame()
     {
         this.music.Stop();
+        this.hUD.Stop();
         this.EmitSignal(nameof(GameOver), this.hUD.Score);
         this.GetTree().CallGroup(Groups.DynamicGameObject, "queue_free");
     }
@@ -125,9 +126,8 @@ public partial class Game
         player.AddToGroup(Groups.PlayerUnit);
         this.AddChild(player);
 
-        this.hUD.PlayerPath = player.GetPath();
-        this.hUD.Start(rect);
+        this.hUD.Start(rect, player.GetPath());
 
-        //this.music.Play();
+        this.music.Play();
     }
 }

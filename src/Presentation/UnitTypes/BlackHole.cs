@@ -4,9 +4,11 @@ using Godot;
 using GodotAnalysers;
 
 [SceneReference("BlackHole.tscn")]
-public partial class BlackHole : IHitable
+public partial class BlackHole : IHitable, IMinimapElement
 {
     private Communicator communicator;
+    public bool VisibleOnBorder => true;
+    public Sprite Sprite => this.minimapTexture;
 
     public override void _Ready()
     {
@@ -15,7 +17,7 @@ public partial class BlackHole : IHitable
 
         this.communicator = GetNode<Communicator>("/root/Main/Communicator");
 
-        this.AddToGroup(Groups.MinimapIconEnemy);
+        this.AddToGroup(Groups.MinimapElement);
         this.AddToGroup(Groups.DynamicGameObject);
         this.AddToGroup(Groups.EnemyUnit);
         this.timer.Connect(CommonSignals.Timeout, this, nameof(NextSpawn));

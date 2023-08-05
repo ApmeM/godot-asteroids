@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Presentation/Player.cs" type="Script" id=1]
 [ext_resource path="res://Presentation/Gun.tscn" type="PackedScene" id=2]
 [ext_resource path="res://art/ships/ships.enemyGreen2.tres" type="Texture" id=3]
+[ext_resource path="res://art/ships/ships.playerShip3_green.tres" type="Texture" id=4]
 
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 42.0
@@ -53,3 +54,9 @@ shape = SubResource( 2 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2( 2, 2 )
+
+[node name="MinimapTexture" type="Sprite" parent="."]
+visible = false
+rotation = 1.5708
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 4 )
