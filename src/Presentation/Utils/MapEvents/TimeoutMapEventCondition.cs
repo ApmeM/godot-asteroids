@@ -17,7 +17,14 @@ namespace DodgeTheCreeps.Presentation.Utils.MapEvents
                 StartTime = game.GameTime;
             }
 
-            return this.Timeout <= game.GameTime - StartTime;
+            var isReady = this.Timeout <= game.GameTime - StartTime;
+
+            if (isReady)
+            {
+                this.StartTime = float.MinValue;
+            }
+
+            return isReady;
         }
     }
 }

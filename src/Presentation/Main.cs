@@ -23,13 +23,13 @@ public partial class Main
     {
         this.game.Hide();
         this.menu.Show();
-        this.menu.GameOver(score);
+        this.menu.GameOver(this.game.GameId, score);
     }
 
-    private void NewGame()
+    private void NewGame(int gameId)
     {
         this.menu.Hide();
         this.game.Show();
-        this.game.NewGame();
+        this.game.NewGame(gameId);
     }
 }

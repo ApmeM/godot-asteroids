@@ -19,7 +19,7 @@ public partial class Game
     private MazeGeneratorWrapper maze;
     public const int PathSize = 2;
 
-    private Queue<MapEvent> UnitsList = new Queue<MapEvent>();
+    private readonly Queue<MapEvent> UnitsList = new Queue<MapEvent>();
 
     public Game()
     {
@@ -51,6 +51,7 @@ public partial class Game
     }
 
     public float GameTime = 0;
+    public int GameId;
 
     public override void _Process(float delta)
     {
@@ -84,12 +85,23 @@ public partial class Game
         this.FinishGame();
     }
 
-    public void NewGame()
+    public void AddActions(List<MapEvent> unitsList)
     {
+        foreach (var unit in unitsList)
+        {
+            this.UnitsList.Enqueue(unit);
+        }
+
         this.hUD.Progress = 0;
+        this.hUD.MaxProgress = unitsList.Count;
+    }
+
+    public void NewGame(int gameId)
+    {
+        this.GameId = gameId;
         this.GameTime = 0;
 
-        var state = maze.GenerateLevel1();
+        var state = maze.GenerateLevel(gameId);
 
         for (var x = 0; x < state.Map.GetLength(0); x++)
             for (var y = 0; y < state.Map.GetLength(1); y++)
@@ -109,12 +121,8 @@ public partial class Game
             }
 
         this.UnitsList.Clear();
-        foreach (var unit in state.UnitsList)
-        {
-            this.UnitsList.Enqueue(unit);
-        }
-
-        this.hUD.MaxProgress = state.UnitsList.Count;
+        this.hUD.MaxProgress = 0;
+        this.AddActions(state.UnitsList);
 
         var startPosition = state.StartPosition * 100 * PathSize + Vector2.One * 50 * PathSize;
         var rect = new Rect2(Vector2.Zero, new Vector2(state.Map.GetLength(0) * 100 * PathSize + PathSize * 50, state.Map.GetLength(1) * 100 * PathSize + PathSize * 50));
