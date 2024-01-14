@@ -47,6 +47,19 @@ namespace DodgeTheCreeps.Utils
             this.State.Map = generatorResult.Paths;
             this.State.StartPosition = new Godot.Vector2(3, 3);
             this.State.UnitsList.Clear();
+            this.State.UnitsList.Add(new MapEvent{
+                Condition = new TimeoutMapEventCondition(0.3f),
+                Action = new ShowDialogMapEventAction("Добро пожаловать!")
+            });
+            this.State.UnitsList.Add(new MapEvent{
+                Condition = new DialogVisibleMapEventCondition(),
+                Action = new ShowDialogMapEventAction("Разнеси астероиды.")
+            });
+            this.State.UnitsList.Add(new MapEvent{
+                Condition = new DialogVisibleMapEventCondition(),
+                Action = new DoNothingMapEventAction()
+            });
+
             for (var i = 0; i < 30; i++)
             {
                 this.State.UnitsList.Add(new MapEvent

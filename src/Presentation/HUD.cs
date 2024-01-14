@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using GodotAnalysers;
 
@@ -18,6 +19,8 @@ public partial class HUD
         set => this.gameProgressBar.Value = value;
     }
     public int Score => this.scoreLabel.Value;
+
+    public bool DialogVisible => this.dialog.Visible;
 
     public override void _Ready()
     {
@@ -50,5 +53,10 @@ public partial class HUD
     internal void Stop()
     {
         this.minimap.CenterNodePath = null;
+    }
+
+    internal void ShowDialog(string text)
+    {
+        this.dialog.Show(text);
     }
 }

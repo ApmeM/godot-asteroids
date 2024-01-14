@@ -2,6 +2,7 @@ using DodgeTheCreeps.Presentation.Utils.MapEvents;
 using DodgeTheCreeps.Utils;
 using Godot;
 using GodotAnalysers;
+using System;
 using System.Collections.Generic;
 
 [SceneReference("Game.tscn")]
@@ -52,6 +53,8 @@ public partial class Game
 
     public float GameTime = 0;
     public int GameId;
+
+    public bool DialogVisible => this.hUD.DialogVisible;
 
     public override void _Process(float delta)
     {
@@ -137,5 +140,10 @@ public partial class Game
         this.hUD.Start(rect, player.GetPath());
 
         this.music.Play();
+    }
+
+    internal void ShowDialog(string text)
+    {
+        this.hUD.ShowDialog(text);
     }
 }

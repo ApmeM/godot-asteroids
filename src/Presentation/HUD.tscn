@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://gd-joystick/Joystick.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Presentation/HUD.cs" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://art/ships/ships.laserRed06.tres" type="Texture" id=7]
 [ext_resource path="res://gd-theme/Fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=8]
 [ext_resource path="res://art/ui/ui.glassPanel_cornerTL.tres" type="Texture" id=9]
+[ext_resource path="res://gd-dialog/Dialog.tscn" type="PackedScene" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 size = 64
@@ -58,7 +59,6 @@ margin_top = 10.0
 margin_right = 110.0
 margin_bottom = 110.0
 rect_min_size = Vector2( 100, 100 )
-CenterNodePath = NodePath("")
 
 [node name="ScoreLabel" parent="VBoxContainer/TopContainer" instance=ExtResource( 5 )]
 anchor_right = 0.0
@@ -71,14 +71,26 @@ theme = ExtResource( 6 )
 AnimationTime = 1
 
 [node name="TimerLabel" parent="VBoxContainer" instance=ExtResource( 3 )]
-margin_top = 317.0
+margin_top = 315.0
 margin_right = 1024.0
-margin_bottom = 403.0
+margin_bottom = 401.0
 size_flags_vertical = 6
 theme = ExtResource( 6 )
 custom_fonts/font = SubResource( 1 )
 text = "Get Ready"
 align = 1
+
+[node name="DialogContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 596.0
+margin_right = 1024.0
+margin_bottom = 596.0
+
+[node name="Dialog" parent="VBoxContainer/DialogContainer" instance=ExtResource( 10 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 1024.0
+margin_bottom = 87.0
 
 [node name="BottomContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 600.0
