@@ -4,7 +4,7 @@ using Godot;
 using GodotAnalysers;
 
 [SceneReference("Bullet.tscn")]
-public partial class Bullet
+public partial class Bullet : IHitter
 {
     [Export]
     public float Speed = 1500;
@@ -12,7 +12,7 @@ public partial class Bullet
     [Export]
     public PackedScene Explosion;
 
-    public int Power;
+    public int Power { get; set; }
 
     public override void _Ready()
     {
@@ -23,6 +23,9 @@ public partial class Bullet
 
         this.lifetime.Connect(CommonSignals.Timeout, this, nameof(LifetimeTimeout));
         this.Connect(CommonSignals.BodyEntered, this, nameof(Hit));
+
+        this.CollisionLayer = 0;
+        this.CollisionMask = (int)CollisionLayers.Enemy;
     }
 
     private void Hit(Node body)

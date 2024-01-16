@@ -37,6 +37,9 @@ public partial class Player : IBonusCollector, IMinimapElement
         this.AddToGroup(Groups.DynamicGameObject);
         this.AddToGroup(Groups.MinimapElement);
 
+        this.CollisionLayer = (int)(CollisionLayers.Player | CollisionLayers.Bonus);
+        this.CollisionMask = (int)CollisionLayers.Player;
+
         this.guns.ClearChildren();
         this.Collect(BonusType.Weapon);
         this.camera2D.Current = true;

@@ -20,9 +20,12 @@ public partial class Meteor : IHitable, IMinimapElement
         this.AddToGroup(Groups.MinimapElement);
         this.AddToGroup(Groups.DynamicGameObject);
         this.AddToGroup(Groups.EnemyUnit);
+
+        this.CollisionLayer = (int)(CollisionLayers.Player | CollisionLayers.Enemy);
+        this.CollisionMask = (int)CollisionLayers.Player;
     }
 
-    public void Hit(Bullet byNode)
+    public void Hit(IHitter byNode)
     {
         this.lifeProgress.Value -= byNode.Power;
         if (this.lifeProgress.Value > 0)
@@ -31,7 +34,7 @@ public partial class Meteor : IHitable, IMinimapElement
         }
 
         this.CollisionLayer = 0;
-        this.Layers = 0;
+        this.CollisionMask = 0;
 
         Vector2 direction;
         var meteor = UnitType.SmallMeteor.CreateUnit<SmallMeteor>();

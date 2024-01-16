@@ -22,6 +22,11 @@ public partial class Game
 
     private readonly Queue<MapEvent> UnitsList = new Queue<MapEvent>();
 
+    public float GameTime = 0;
+    public int GameId;
+
+    public bool DialogVisible => this.hUD.DialogVisible;
+
     public Game()
     {
         maze = MazeGeneratorWrapper.DefaultInstance;
@@ -50,11 +55,6 @@ public partial class Game
             this.hUD.Hide();
         }
     }
-
-    public float GameTime = 0;
-    public int GameId;
-
-    public bool DialogVisible => this.hUD.DialogVisible;
 
     public override void _Process(float delta)
     {

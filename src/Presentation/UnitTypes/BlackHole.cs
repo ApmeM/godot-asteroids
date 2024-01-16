@@ -21,6 +21,9 @@ public partial class BlackHole : IHitable, IMinimapElement
         this.AddToGroup(Groups.DynamicGameObject);
         this.AddToGroup(Groups.EnemyUnit);
         this.timer.Connect(CommonSignals.Timeout, this, nameof(NextSpawn));
+
+        this.CollisionLayer = (int)(CollisionLayers.Player | CollisionLayers.Enemy);
+        this.CollisionMask = (int)CollisionLayers.Player;
     }
 
     private void NextSpawn()
@@ -46,7 +49,7 @@ public partial class BlackHole : IHitable, IMinimapElement
         mob.LinearVelocity = velocity.Rotated(direction);
     }
 
-    public void Hit(Bullet byNode)
+    public void Hit(IHitter byNode)
     {
         this.lifeProgress.Value -= byNode.Power;
         if (this.lifeProgress.Value > 0)
@@ -55,7 +58,7 @@ public partial class BlackHole : IHitable, IMinimapElement
         }
 
         this.CollisionLayer = 0;
-        this.Layers = 0;
+        this.CollisionMask = 0;
 
         this.communicator.EmitSignal(nameof(Communicator.ScoreAdded), 1000);
         this.QueueFree();
