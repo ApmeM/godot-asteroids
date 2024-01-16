@@ -4,6 +4,7 @@ namespace DodgeTheCreeps.Utils
 {
     public enum UnitType
     {
+        Planet,
         SmallMeteor,
         Meteor,
         LargeMeteor,

@@ -47,15 +47,24 @@ namespace DodgeTheCreeps.Utils
             this.State.Map = generatorResult.Paths;
             this.State.StartPosition = new Godot.Vector2(3, 3);
             this.State.UnitsList.Clear();
-            this.State.UnitsList.Add(new MapEvent{
+            this.State.UnitsList.Add(new MapEvent
+            {
+                Condition = new TimeoutMapEventCondition(0),
+                Action = new SpawnUnitMapEventAction(new Godot.Vector2(size / 2, size / 2), UnitType.Planet)
+            });
+
+            this.State.UnitsList.Add(new MapEvent
+            {
                 Condition = new TimeoutMapEventCondition(0.3f),
                 Action = new ShowDialogMapEventAction("Добро пожаловать!")
             });
-            this.State.UnitsList.Add(new MapEvent{
+            this.State.UnitsList.Add(new MapEvent
+            {
                 Condition = new DialogVisibleMapEventCondition(),
                 Action = new ShowDialogMapEventAction("Разнеси астероиды.")
             });
-            this.State.UnitsList.Add(new MapEvent{
+            this.State.UnitsList.Add(new MapEvent
+            {
                 Condition = new DialogVisibleMapEventCondition(),
                 Action = new DoNothingMapEventAction()
             });
@@ -66,7 +75,7 @@ namespace DodgeTheCreeps.Utils
                 {
                     Condition = new TimeoutMapEventCondition(3),
                     Action = new SpawnUnitMapEventAction(new Godot.Vector2(Fate.GlobalFate.NextInt(size - 4) + 2, Fate.GlobalFate.NextInt(size - 4) + 2),
-                                                             Fate.GlobalFate.Choose(Enum.GetValues(typeof(UnitType)).Cast<UnitType>().Take(i + 1).ToArray())
+                                                             Fate.GlobalFate.Choose(Enum.GetValues(typeof(UnitType)).Cast<UnitType>().Skip(1).Take(i + 1).ToArray())
                     )
                 });
 
