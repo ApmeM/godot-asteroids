@@ -69,7 +69,7 @@ namespace DodgeTheCreeps.Utils
                 Action = new DoNothingMapEventAction()
             });
 
-            for (var i = 0; i < 30; i++)
+            for (var i = 0; i < 10; i++)
             {
                 this.State.UnitsList.Add(new MapEvent
                 {
@@ -93,8 +93,8 @@ namespace DodgeTheCreeps.Utils
 
             this.State.UnitsList.Add(new MapEvent
             {
-                Condition = new NoUnitsCondition(),
-                Action = new GameOverMapEventAction()
+                Condition = new NoEnemyUnitsCondition(),
+                Action = new DoNothingMapEventAction()
             });
             return this.State;
         }

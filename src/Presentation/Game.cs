@@ -1,3 +1,4 @@
+using DodgeTheCreeps.Presentation.Utils.GameOver;
 using DodgeTheCreeps.Presentation.Utils.MapEvents;
 using DodgeTheCreeps.Utils;
 using Godot;
@@ -20,7 +21,8 @@ public partial class Game
     private MazeGeneratorWrapper maze;
     public const int PathSize = 2;
 
-    private readonly Queue<MapEvent> UnitsList = new Queue<MapEvent>();
+    private readonly Queue<MapEvent> MapEvents = new Queue<MapEvent>();
+    private IGameOver gameOverStatus = new NoMapEventsGameOver();
 
     public float GameTime = 0;
     public int GameId;
@@ -60,17 +62,22 @@ public partial class Game
     {
         base._Process(delta);
 
-        if (UnitsList == null)
+        if (MapEvents == null)
         {
             return;
         }
 
         GameTime += delta;
-        while (this.UnitsList.Count > 0 && this.UnitsList.Peek().Condition.IsReady(this))
+        while (this.MapEvents.Count > 0 && this.MapEvents.Peek().Condition.IsReady(this))
         {
-            var unitItem = this.UnitsList.Dequeue();
+            var unitItem = this.MapEvents.Dequeue();
             unitItem.Action.Action(this);
             this.hUD.Progress++;
+        }
+
+        if (gameOverStatus.CheckGameOver(this) != GameOverState.None)
+        {
+            FinishGame();
         }
     }
 
@@ -88,16 +95,19 @@ public partial class Game
         this.FinishGame();
     }
 
+    public int ActionsLeft => this.MapEvents.Count;
+
     public void AddActions(List<MapEvent> unitsList)
     {
         foreach (var unit in unitsList)
         {
-            this.UnitsList.Enqueue(unit);
+            this.MapEvents.Enqueue(unit);
         }
 
         this.hUD.Progress = 0;
         this.hUD.MaxProgress = unitsList.Count;
     }
+
 
     public void NewGame(int gameId)
     {
@@ -123,7 +133,7 @@ public partial class Game
                     }
             }
 
-        this.UnitsList.Clear();
+        this.MapEvents.Clear();
         this.hUD.MaxProgress = 0;
         this.AddActions(state.UnitsList);
 

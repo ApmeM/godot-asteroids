@@ -28,8 +28,8 @@ margin_top = -5.0
 margin_right = 37.0
 margin_bottom = 52.0
 rect_rotation = 90.0
-max_value = 3.0
-value = 3.0
+max_value = 10.0
+value = 10.0
 texture_progress = ExtResource( 2 )
 fill_mode = 3
 

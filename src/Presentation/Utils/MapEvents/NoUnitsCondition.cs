@@ -2,9 +2,9 @@ using DodgeTheCreeps.Utils;
 
 namespace DodgeTheCreeps.Presentation.Utils.MapEvents
 {
-    public class NoUnitsCondition : IMapEventCondition
+    public class NoEnemyUnitsCondition : IMapEventCondition
     {
-        public NoUnitsCondition()
+        public NoEnemyUnitsCondition()
         {
         }
 

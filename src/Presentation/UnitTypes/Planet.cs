@@ -22,7 +22,7 @@ public partial class Planet : IHitter, IMinimapElement
 
         this.AddToGroup(Groups.MinimapElement);
         this.AddToGroup(Groups.DynamicGameObject);
-        this.AddToGroup(Groups.EnemyUnit);
+        this.AddToGroup(Groups.PlanetUnit);
 
         this.CollisionLayer = 0;
         this.CollisionMask = (int)CollisionLayers.Enemy;
