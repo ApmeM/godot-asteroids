@@ -1,4 +1,5 @@
-﻿using DodgeTheCreeps.Presentation.Utils.MapEvents;
+﻿using DodgeTheCreeps.Presentation.Utils.GameOver;
+using DodgeTheCreeps.Presentation.Utils.MapEvents;
 using FateRandom;
 using MazeGenerators;
 using MazeGenerators.Utils;
@@ -52,7 +53,14 @@ namespace DodgeTheCreeps.Utils
                 Condition = new TimeoutMapEventCondition(0),
                 Action = new SpawnUnitMapEventAction(new Godot.Vector2(size / 2, size / 2), UnitType.Planet)
             });
-
+            this.State.UnitsList.Add(new MapEvent
+            {
+                Condition = new TimeoutMapEventCondition(0),
+                Action = new ChangeGameOverMapEventAction(
+                    new CombinedGameOver(
+                        new List<IGameOver> { new NoMapEventsGameOver() }, 
+                        new List<IGameOver> { new PlanetExistsGameOver() }))
+            });
             this.State.UnitsList.Add(new MapEvent
             {
                 Condition = new TimeoutMapEventCondition(0.3f),

@@ -22,7 +22,9 @@ public partial class Game
     public const int PathSize = 2;
 
     private readonly Queue<MapEvent> MapEvents = new Queue<MapEvent>();
-    private IGameOver gameOverStatus = new NoMapEventsGameOver();
+    public int MapEventsLeft => this.MapEvents.Count;
+
+    public IGameOver GameOverStatus { get; set; } = new NoMapEventsGameOver();
 
     public float GameTime = 0;
     public int GameId;
@@ -75,7 +77,7 @@ public partial class Game
             this.hUD.Progress++;
         }
 
-        if (gameOverStatus.CheckGameOver(this) != GameOverState.None)
+        if (GameOverStatus.CheckGameOver(this) != GameOverState.None)
         {
             FinishGame();
         }
@@ -95,9 +97,8 @@ public partial class Game
         this.FinishGame();
     }
 
-    public int ActionsLeft => this.MapEvents.Count;
 
-    public void AddActions(List<MapEvent> unitsList)
+    public void AddMapEvents(List<MapEvent> unitsList)
     {
         foreach (var unit in unitsList)
         {
@@ -107,7 +108,6 @@ public partial class Game
         this.hUD.Progress = 0;
         this.hUD.MaxProgress = unitsList.Count;
     }
-
 
     public void NewGame(int gameId)
     {
@@ -135,7 +135,7 @@ public partial class Game
 
         this.MapEvents.Clear();
         this.hUD.MaxProgress = 0;
-        this.AddActions(state.UnitsList);
+        this.AddMapEvents(state.UnitsList);
 
         var startPosition = state.StartPosition * 100 * PathSize + Vector2.One * 50 * PathSize;
         var rect = new Rect2(Vector2.Zero, new Vector2(state.Map.GetLength(0) * 100 * PathSize + PathSize * 50, state.Map.GetLength(1) * 100 * PathSize + PathSize * 50));

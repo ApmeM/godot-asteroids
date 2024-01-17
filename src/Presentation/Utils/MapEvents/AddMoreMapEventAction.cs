@@ -8,7 +8,7 @@ namespace DodgeTheCreeps.Presentation.Utils.MapEvents
 
         public void Action(Game game)
         {
-            game.AddActions(this.Actions);
+            game.AddMapEvents(this.Actions);
         }
     }
 }
