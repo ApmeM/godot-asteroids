@@ -33,5 +33,31 @@ namespace DodgeTheCreeps.Presentation.Utils.GameOver
 
             return GameOverState.None;
         }
+
+        public void InitializeStatus(HUD hUD)
+        {
+            foreach (var over in looseConditions)
+            {
+                over.InitializeStatus(hUD);
+            }
+
+            foreach (var over in winConditions)
+            {
+                over.InitializeStatus(hUD);
+            }
+        }
+
+        public void UpdateStatus(Game game)
+        {
+            foreach (var over in looseConditions)
+            {
+                over.UpdateStatus(game);
+            }
+
+            foreach (var over in winConditions)
+            {
+                over.UpdateStatus(game);
+            }
+        }
     }
 }

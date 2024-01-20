@@ -1,23 +1,13 @@
 using System;
 using Godot;
 using GodotAnalysers;
+using GodotRts.Presentation.Utils;
 
 [SceneReference("HUD.tscn")]
 public partial class HUD
 {
     private Communicator communicator;
 
-    public double MaxProgress
-    {
-        get => this.gameProgressBar.MaxValue;
-        set => this.gameProgressBar.MaxValue = value;
-    }
-
-    public double Progress
-    {
-        get => this.gameProgressBar.Value;
-        set => this.gameProgressBar.Value = value;
-    }
     public int Score => this.scoreLabel.Value;
 
     public bool DialogVisible => this.dialog.Visible;
@@ -58,5 +48,15 @@ public partial class HUD
     internal void ShowDialog(string text)
     {
         this.dialog.Show(text);
+    }
+
+    internal void ClearStatus()
+    {
+        this.statusContainer.ClearChildren();
+    }
+
+    internal void AddStatus(Control control)
+    {
+        this.statusContainer.AddChild(control);
     }
 }

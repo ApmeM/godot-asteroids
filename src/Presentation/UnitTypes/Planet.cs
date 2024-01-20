@@ -11,6 +11,9 @@ public partial class Planet : IHitter, IMinimapElement
     public Sprite Sprite => this.minimapTexture;
     public int Power => int.MaxValue;
 
+    public int TotalLife => (int)this.lifeProgress.MaxValue;
+    public int CurrentLife => (int)this.lifeProgress.Value;
+
     public override void _Ready()
     {
         base._Ready();

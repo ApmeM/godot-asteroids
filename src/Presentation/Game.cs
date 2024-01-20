@@ -23,9 +23,19 @@ public partial class Game
 
     private readonly Queue<MapEvent> MapEvents = new Queue<MapEvent>();
     public int MapEventsLeft => this.MapEvents.Count;
+    public int MapEventsTotal;
 
-    public IGameOver GameOverStatus { get; set; } = new NoMapEventsGameOver();
-
+    private IGameOver gameOverStatus = new InfinityGameOver();
+    public IGameOver GameOverStatus
+    {
+        get => gameOverStatus;
+        set
+        {
+            gameOverStatus = value;
+            this.hUD.ClearStatus();
+            gameOverStatus.InitializeStatus(this.hUD);
+        }
+    }
     public float GameTime = 0;
     public int GameId;
 
@@ -72,10 +82,10 @@ public partial class Game
         GameTime += delta;
         while (this.MapEvents.Count > 0 && this.MapEvents.Peek().Condition.IsReady(this))
         {
-            var unitItem = this.MapEvents.Dequeue();
-            unitItem.Action.Action(this);
-            this.hUD.Progress++;
+            this.MapEvents.Dequeue().Action.Action(this);
         }
+
+        GameOverStatus.UpdateStatus(this);
 
         if (GameOverStatus.CheckGameOver(this) != GameOverState.None)
         {
@@ -104,9 +114,8 @@ public partial class Game
         {
             this.MapEvents.Enqueue(unit);
         }
-
-        this.hUD.Progress = 0;
-        this.hUD.MaxProgress = unitsList.Count;
+        
+        MapEventsTotal = this.MapEvents.Count;
     }
 
     public void NewGame(int gameId)
@@ -134,7 +143,6 @@ public partial class Game
             }
 
         this.MapEvents.Clear();
-        this.hUD.MaxProgress = 0;
         this.AddMapEvents(state.UnitsList);
 
         var startPosition = state.StartPosition * 100 * PathSize + Vector2.One * 50 * PathSize;
