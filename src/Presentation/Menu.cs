@@ -1,6 +1,7 @@
 using DodgeTheCreeps.Utils;
 using Godot;
 using GodotAnalysers;
+using GodotRts.Presentation.Utils;
 using System;
 using System.Linq;
 
@@ -15,28 +16,29 @@ public partial class Menu
         base._Ready();
         this.FillMembers();
 
-        this.startLevel1.Connect(CommonSignals.Pressed, this, nameof(OnStartLevel1Pressed));
-        this.startInfinity.Connect(CommonSignals.Pressed, this, nameof(OnStartInfinityPressed));
+        this.levelContainer.ClearChildren();
+        for (int i = 0; i < MazeGeneratorWrapper.DefaultInstance.Levels.Count; i++)
+        {
+            var level = MazeGeneratorWrapper.DefaultInstance.Levels[i];
+            var button = new Button
+            {
+                Text = level.Name
+            };
+            button.Connect(CommonSignals.Pressed, this, nameof(OnLevelPressed), new Godot.Collections.Array { i });
+            this.levelContainer.AddChild(button);
+        }
     }
 
     public void GameOver(int gameId, int score)
     {
-        switch (gameId)
-        {
-            case 1:
-                this.startLevel1.Text = $"Level 1: {score}";
-                this.timerLabel.ShowMessage("Game Over", 2);
-                break;
-        }
+        var button = (Button)this.levelContainer.GetChild(gameId);
+        var level = MazeGeneratorWrapper.DefaultInstance.Levels[gameId];
+        button.Text = $"{level.Name}: {score}";
+        this.timerLabel.ShowMessage("Game Over", 2);
     }
 
-    private void OnStartLevel1Pressed()
+    private void OnLevelPressed(int gameId)
     {
-        EmitSignal(nameof(StartGame), 1);
-    }
-
-    private void OnStartInfinityPressed()
-    {
-        EmitSignal(nameof(StartGame), 2);
+        EmitSignal(nameof(StartGame), gameId);
     }
 }

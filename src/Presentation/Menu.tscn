@@ -34,33 +34,29 @@ Asteroids
 align = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 388.0
-margin_right = 1024.0
-margin_bottom = 492.0
-custom_constants/margin_right = 100
-custom_constants/margin_top = 20
-custom_constants/margin_left = 100
-
-[node name="StartLevel1" type="Button" parent="VBoxContainer/MarginContainer"]
-margin_left = 100.0
-margin_top = 20.0
-margin_right = 924.0
-margin_bottom = 104.0
-custom_fonts/font = SubResource( 3 )
-text = "Level 1"
-
-[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 496.0
+margin_top = 400.0
 margin_right = 1024.0
 margin_bottom = 600.0
 custom_constants/margin_right = 100
 custom_constants/margin_top = 20
 custom_constants/margin_left = 100
 
-[node name="StartInfinity" type="Button" parent="VBoxContainer/MarginContainer2"]
+[node name="LevelContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer"]
 margin_left = 100.0
 margin_top = 20.0
 margin_right = 924.0
-margin_bottom = 104.0
+margin_bottom = 200.0
+custom_constants/separation = 12
+
+[node name="TestLevel1" type="Button" parent="VBoxContainer/MarginContainer/LevelContainer"]
+margin_right = 824.0
+margin_bottom = 84.0
 custom_fonts/font = SubResource( 3 )
-text = "Infinity"
+text = "Level 1"
+
+[node name="TestLevel2" type="Button" parent="VBoxContainer/MarginContainer/LevelContainer"]
+margin_top = 96.0
+margin_right = 824.0
+margin_bottom = 180.0
+custom_fonts/font = SubResource( 3 )
+text = "Level 2"
