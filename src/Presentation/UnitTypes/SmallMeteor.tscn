@@ -16,6 +16,7 @@ height = 0.0
 [node name="SmallMeteor" type="RigidBody2D"]
 collision_layer = 0
 collision_mask = 0
+mass = 0.255102
 physics_material_override = SubResource( 3 )
 gravity_scale = 0.0
 script = ExtResource( 3 )

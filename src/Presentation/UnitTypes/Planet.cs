@@ -1,3 +1,4 @@
+using System;
 using DodgeTheCreeps.UnitTypes;
 using DodgeTheCreeps.Utils;
 using Godot;
@@ -48,6 +49,12 @@ public partial class Planet : IHitter, IMinimapElement
         this.CollisionLayer = 0;
         this.CollisionMask = 0;
 
+        this.animatedSprite.Play("boom");
+        this.animatedSprite.Connect(CommonSignals.AnimationFinished, this, nameof(LifetimeAnimationFinished));
+    }
+
+    private void LifetimeAnimationFinished()
+    {
         this.QueueFree();
     }
 }

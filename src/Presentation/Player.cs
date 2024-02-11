@@ -41,7 +41,6 @@ public partial class Player : IBonusCollector, IMinimapElement
         this.CollisionMask = (int)CollisionLayers.Player;
 
         this.guns.ClearChildren();
-        this.Collect(BonusType.Weapon);
         this.camera2D.Current = true;
     }
 
