@@ -48,7 +48,7 @@ namespace DodgeTheCreeps.Presentation.Utils.Levels
                 {
                     Condition = new TimeoutMapEventCondition(3),
                     Action = new SpawnUnitMapEventAction(new Godot.Vector2(Fate.GlobalFate.NextInt(size - 4) + 2, Fate.GlobalFate.NextInt(size - 4) + 2),
-                                                             Fate.GlobalFate.Choose(Enum.GetValues(typeof(UnitType)).Cast<UnitType>().Skip(1).Take(i + 1).ToArray())
+                                                             Fate.GlobalFate.Choose(Enum.GetValues(typeof(UnitType)).Cast<UnitType>().Skip(2).Take(i + 1).ToArray())
                     )
                 });
 

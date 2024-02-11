@@ -25,6 +25,7 @@ public partial class Game
     public int MapEventsLeft => this.MapEvents.Count;
     public int MapEventsTotal;
 
+    private bool gameOverStatusDirty = true;
     private IGameOver gameOverStatus = new InfinityGameOver();
     public IGameOver GameOverStatus
     {
@@ -32,8 +33,7 @@ public partial class Game
         set
         {
             gameOverStatus = value;
-            this.hUD.ClearStatus();
-            gameOverStatus.InitializeStatus(this.hUD);
+            this.gameOverStatusDirty = true;
         }
     }
     public float GameTime = 0;
@@ -74,15 +74,17 @@ public partial class Game
     {
         base._Process(delta);
 
-        if (MapEvents == null)
-        {
-            return;
-        }
-
         GameTime += delta;
         while (this.MapEvents.Count > 0 && this.MapEvents.Peek().Condition.IsReady(this))
         {
             this.MapEvents.Dequeue().Action.Action(this);
+        }
+
+        if (this.gameOverStatusDirty)
+        {
+            this.gameOverStatusDirty = false;
+            this.hUD.ClearStatus();
+            gameOverStatus.InitializeStatus(this.hUD);
         }
 
         GameOverStatus.UpdateStatus(this);
@@ -99,6 +101,8 @@ public partial class Game
         this.hUD.Stop();
         this.EmitSignal(nameof(GameOver), this.hUD.Score);
         this.GetTree().CallGroup(Groups.DynamicGameObject, "queue_free");
+        this.MapEvents.Clear();
+        this.GameOverStatus = new InfinityGameOver();
     }
 
     private void PlayerHit()
@@ -114,7 +118,7 @@ public partial class Game
         {
             this.MapEvents.Enqueue(unit);
         }
-        
+
         MapEventsTotal = this.MapEvents.Count;
     }
 
