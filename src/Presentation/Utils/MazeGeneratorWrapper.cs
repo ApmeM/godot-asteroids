@@ -23,9 +23,9 @@ namespace DodgeTheCreeps.Utils
         private readonly MaseGeneratorWrapperState State = new MaseGeneratorWrapperState();
         public static readonly MazeGeneratorWrapper DefaultInstance = new MazeGeneratorWrapper();
 
-        public MaseGeneratorWrapperState GenerateLevel1()
+        private MaseGeneratorWrapperState GenerateLevel1()
         {
-            const int size = 17;
+            const int size = 9;
 
             generatorSettings.Height = size;
             generatorSettings.Width = size;
@@ -64,17 +64,12 @@ namespace DodgeTheCreeps.Utils
                 Action = new ChangeGameOverMapEventAction(
                     new CombinedGameOver(
                         new List<IGameOver> { new NoMapEventsGameOver() },
-                        new List<IGameOver> { new PlanetExistsGameOver() }))
+                        new List<IGameOver> { new PlanetExistsGameOver(), new PlayerExistsGameOver() }))
             });
             this.State.UnitsList.Add(new MapEvent
             {
                 Condition = new TimeoutMapEventCondition(0.3f),
-                Action = new ShowDialogMapEventAction("Добро пожаловать!")
-            });
-            this.State.UnitsList.Add(new MapEvent
-            {
-                Condition = new DialogVisibleMapEventCondition(),
-                Action = new ShowDialogMapEventAction("Разнеси астероиды.")
+                Action = new ShowDialogMapEventAction("Добро пожаловать Пилот #123! На землю летит куча астероидов. Защити ее перетолкав все астероиды в ближайший портал.")
             });
             this.State.UnitsList.Add(new MapEvent
             {
@@ -88,7 +83,7 @@ namespace DodgeTheCreeps.Utils
                 {
                     Condition = new TimeoutMapEventCondition(1),
                     Action = new SpawnUnitMapEventAction(new Godot.Vector2(Fate.GlobalFate.NextInt(size - 4) + 2, Fate.GlobalFate.NextInt(size - 4) + 2),
-                                                             Fate.GlobalFate.Choose(Enum.GetValues(typeof(UnitType)).Cast<UnitType>().Skip(1).Take(i + 1).ToArray())
+                                                             UnitType.Meteor
                     )
                 });
             }
@@ -101,7 +96,7 @@ namespace DodgeTheCreeps.Utils
             return this.State;
         }
 
-        public MaseGeneratorWrapperState GenerateLevelInfinity()
+        private MaseGeneratorWrapperState GenerateLevelInfinity()
         {
             const int size = 17;
 
