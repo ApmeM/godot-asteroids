@@ -72,7 +72,6 @@ margin_bottom = 401.0
 size_flags_vertical = 6
 theme = ExtResource( 6 )
 custom_fonts/font = SubResource( 1 )
-text = "Get Ready"
 align = 1
 
 [node name="DialogContainer" type="HBoxContainer" parent="VBoxContainer"]

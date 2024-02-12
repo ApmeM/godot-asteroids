@@ -25,52 +25,32 @@ namespace DodgeTheCreeps.Presentation.Utils.Levels
                 {
                     if (x == 0 || y == 0 || x == size - 1 || y == size - 1)
                     {
-                        this.State.Add(new MapEvent
-                        {
-                            Condition = new TimeoutMapEventCondition(0),
-                            Action = new BuildBlockMapEventAction(new Godot.Vector2(x, y))
-                        });
+                        this.State.Add(new MapEvent(new BuildBlockMapEventAction(new Godot.Vector2(x, y))));
                     }
                 }
             }
 
-            this.State.Add(new MapEvent
-            {
-                Condition = new TimeoutMapEventCondition(0),
-                Action = new TeleportPlayerInMapEventAction(size, new Godot.Vector2(3, 3))
-            });
+            this.State.Add(new MapEvent(new TeleportPlayerInMapEventAction(size, new Godot.Vector2(3, 3))));
+
+            var lvl = new List<MapEvent>();
 
             for (var i = 0; i < 30; i++)
             {
-                this.State.Add(new MapEvent
-                {
-                    Condition = new TimeoutMapEventCondition(3),
-                    Action = new SpawnUnitMapEventAction(new Godot.Vector2(Fate.GlobalFate.NextInt(size - 4) + 2, Fate.GlobalFate.NextInt(size - 4) + 2),
-                                                             Fate.GlobalFate.Choose(Enum.GetValues(typeof(UnitType)).Cast<UnitType>().Skip(2).Take(i + 1).ToArray())
-                    )
-                });
+                lvl.Add(new MapEvent(new TimeoutMapEventCondition(3), new SpawnUnitMapEventAction(new Godot.Vector2(Fate.GlobalFate.NextInt(size - 4) + 2, Fate.GlobalFate.NextInt(size - 4) + 2),
+                                                             Fate.GlobalFate.Choose(Enum.GetValues(typeof(UnitType)).Cast<UnitType>().Skip(2).Take(i + 1).ToArray()))));
 
                 if (i % 2 == 0)
                 {
-                    this.State.Add(new MapEvent
-                    {
-                        Condition = new TimeoutMapEventCondition(0),
-                        Action = new SpawnBonusMapEventAction(new Godot.Vector2(Fate.GlobalFate.NextInt(size - 4) + 2, Fate.GlobalFate.NextInt(size - 4) + 2),
-                                                                 Fate.GlobalFate.Choose(Enum.GetValues(typeof(BonusType)).Cast<BonusType>().Take(i + 1).ToArray())
-                        )
-                    });
+                    lvl.Add(new MapEvent(new SpawnBonusMapEventAction(new Godot.Vector2(Fate.GlobalFate.NextInt(size - 4) + 2, Fate.GlobalFate.NextInt(size - 4) + 2),
+                                                                 Fate.GlobalFate.Choose(Enum.GetValues(typeof(BonusType)).Cast<BonusType>().Take(i + 1).ToArray()))));
                 }
             }
 
             var restartAction = new AddMoreMapEventAction();
+            lvl.Add(new MapEvent(restartAction));
+            restartAction.Actions.AddRange(lvl);
 
-            this.State.Add(new MapEvent
-            {
-                Condition = new TimeoutMapEventCondition(0),
-                Action = restartAction
-            });
-
-            restartAction.Actions.AddRange(this.State);
+            this.State.Add(new MapEvent(restartAction));
 
             return this.State;
         }

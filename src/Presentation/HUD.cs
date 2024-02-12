@@ -34,7 +34,6 @@ public partial class HUD
     internal void Start(Rect2 rect, NodePath playerPath)
     {
         this.scoreLabel.Value = 0;
-        this.timerLabel.ShowMessage("Get Ready!", 3);
 
         this.minimap.SetMapSizeToNode(rect);
         this.minimap.CenterNodePath = playerPath;
