@@ -12,16 +12,9 @@ namespace DodgeTheCreeps.Utils
             new LevelInfinity()
         };
 
-        public class MaseGeneratorWrapperState
-        {
-            public int[,] Map;
-            public readonly List<MapEvent> UnitsList = new List<MapEvent>();
-            public Godot.Vector2 StartPosition;
-        }
-
         public static readonly MazeGeneratorWrapper DefaultInstance = new MazeGeneratorWrapper();
 
-        public MaseGeneratorWrapperState GenerateLevel(int levelId)
+        public List<MapEvent> GenerateLevel(int levelId)
         {
             return Levels[levelId].GenerateField();
         }

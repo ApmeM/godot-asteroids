@@ -10,9 +10,6 @@ public partial class Player : IBonusCollector, IMinimapElement
     public bool VisibleOnBorder => true;
     public Sprite Sprite => this.minimapTexture;
 
-    [Signal]
-    public delegate void Hit();
-
     [Export]
     public int Force = 5000;
 
@@ -32,10 +29,9 @@ public partial class Player : IBonusCollector, IMinimapElement
         base._Ready();
         this.FillMembers();
 
-        this.Connect(CommonSignals.BodyEntered, this, nameof(OnPlayerBodyEntered));
-
         this.AddToGroup(Groups.DynamicGameObject);
         this.AddToGroup(Groups.MinimapElement);
+        this.AddToGroup(Groups.PlayerUnit);
 
         this.CollisionLayer = (int)(CollisionLayers.Player | CollisionLayers.Bonus);
         this.CollisionMask = (int)CollisionLayers.Player;
@@ -92,14 +88,6 @@ public partial class Player : IBonusCollector, IMinimapElement
         {
             state.AngularVelocity = -MaxAngularSpeed;
         }
-    }
-
-    private void OnPlayerBodyEntered(PhysicsBody2D body)
-    {
-        EmitSignal(nameof(Hit));
-        this.CollisionLayer = 0;
-        this.Layers = 0;
-        this.camera2D.Current = false;
     }
 
     private void AddGun(Vector2 position, float rotation = 0)
