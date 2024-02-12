@@ -131,8 +131,8 @@ public partial class Game
         this.hUD.Start(rect, playerPath);
     }
 
-    internal void ShowDialog(string text)
+    internal void ShowDialog(string text, bool left)
     {
-        this.hUD.ShowDialog(text);
+        this.hUD.ShowDialog(text, left);
     }
 }

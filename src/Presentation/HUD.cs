@@ -44,9 +44,9 @@ public partial class HUD
         this.minimap.CenterNodePath = null;
     }
 
-    internal void ShowDialog(string text)
+    internal void ShowDialog(string text, bool left)
     {
-        this.dialog.Show(text);
+        this.dialog.Show(text, left);
     }
 
     internal void ClearStatus()

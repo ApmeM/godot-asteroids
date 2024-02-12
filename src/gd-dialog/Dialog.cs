@@ -39,11 +39,21 @@ public partial class Dialog
         }
     }
 
-    public void Show(string text)
+    public void Show(string text, bool left)
     {
         this.Show();
         this.dialogTestLabel.Text = text;
         this.dialogTestLabel.VisibleCharacters = 0;
+        if (left)
+        {
+            this.rightFace.Hide();
+            this.leftFace.Show();
+        }
+        else
+        {
+            this.rightFace.Show();
+            this.leftFace.Hide();
+        }
         this.timer.Start();
     }
 

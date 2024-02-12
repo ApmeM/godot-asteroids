@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://gd-theme/UITheme.tres" type="Theme" id=1]
 [ext_resource path="res://gd-dialog/Dialog.cs" type="Script" id=2]
 [ext_resource path="res://art/ships/ships.buttonBlue.tres" type="Texture" id=3]
 [ext_resource path="res://art/ships/ships.cockpitRed_6.tres" type="Texture" id=4]
+[ext_resource path="res://art/ships/ships.cockpitGreen_6.tres" type="Texture" id=5]
 
 [node name="Dialog" type="MarginContainer"]
 anchor_right = 1.0
@@ -35,17 +36,24 @@ margin_right = 1014.0
 margin_bottom = 590.0
 custom_constants/separation = 30
 
-[node name="ShipscockpitRed6" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+[node name="LeftFace" type="TextureRect" parent="MarginContainer/HBoxContainer"]
 margin_right = 42.0
 margin_bottom = 580.0
+rect_pivot_offset = Vector2( -548, 103 )
 texture = ExtResource( 4 )
 
 [node name="DialogTestLabel" type="Label" parent="MarginContainer/HBoxContainer"]
 margin_left = 72.0
-margin_right = 1004.0
+margin_right = 933.0
 margin_bottom = 580.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
 theme = ExtResource( 1 )
 text = "Some dialog test"
 autowrap = true
+
+[node name="RightFace" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+margin_left = 963.0
+margin_right = 1004.0
+margin_bottom = 580.0
+texture = ExtResource( 5 )

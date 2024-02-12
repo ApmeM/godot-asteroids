@@ -37,7 +37,9 @@ namespace DodgeTheCreeps.Presentation.Utils.Levels
             this.State.Add(new MapEvent(new ShowDialogMapEventAction("Добро пожаловать Пилот №123! \nВ этом секторе космоса летает множество метеоритов, богатых полезными ископаемыми.")));
             this.State.Add(new MapEvent(new DialogVisibleMapEventCondition(), new ShowDialogMapEventAction("В твои задачи входит затолкать все пролетающие мимо метеориты в перерабатывающий портал. Будь осторожен и не свались туда сам.")));
             this.State.Add(new MapEvent(new SpawnUnitMapEventAction(new Godot.Vector2(size - 2, 0), UnitType.BlackHole)));
-            this.State.Add(new MapEvent(new DialogVisibleMapEventCondition(), new ShowDialogMapEventAction("Ты спросишь где же все это множество метеоритов. Очевидно они ждут, когда мы закончим болтать.")));
+            this.State.Add(new MapEvent(new DialogVisibleMapEventCondition(), new ShowDialogMapEventAction("А где все это 'множество' метеоритов? Ни одного не вижу.", false)));
+            this.State.Add(new MapEvent(new DialogVisibleMapEventCondition(), new ShowDialogMapEventAction("Как первый раз в подобной игре...  Очевидно они ждут, когда мы закончим болтать.")));
+            this.State.Add(new MapEvent(new DialogVisibleMapEventCondition(), new ShowDialogMapEventAction("Какой игре???", false)));
             this.State.Add(new MapEvent(new DialogVisibleMapEventCondition(), new DoNothingMapEventAction()));
 
             for (var i = 0; i < 10; i++)

@@ -40,7 +40,7 @@ namespace DodgeTheCreeps.Presentation.Utils.Levels
             ));
             this.State.Add(new MapEvent(new DialogVisibleMapEventCondition(), new ShowDialogMapEventAction("Оборона земли может принять на себя некоторое количество метеоритов, но их слишком много. Как лучший пилот планеты ты должен защитить нас - затолкай все метеориты в портал.")));
             this.State.Add(new MapEvent(new SpawnUnitMapEventAction(new Godot.Vector2(size - 2, size - 2), UnitType.BlackHole)));
-            this.State.Add(new MapEvent(new DialogVisibleMapEventCondition(), new ShowDialogMapEventAction("А где остальные пилоты?")));
+            this.State.Add(new MapEvent(new DialogVisibleMapEventCondition(), new ShowDialogMapEventAction("А где остальные пилоты?", false)));
             this.State.Add(new MapEvent(new DialogVisibleMapEventCondition(), new ShowDialogMapEventAction("Оу, тебе не сказали. Все пилоты это ты, потому и лучший. Не отвлекайся, они приближаются.")));
             this.State.Add(new MapEvent(new DialogVisibleMapEventCondition(), new DoNothingMapEventAction()));
 
