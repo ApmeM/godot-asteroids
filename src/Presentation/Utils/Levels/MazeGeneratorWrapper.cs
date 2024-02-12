@@ -8,6 +8,7 @@ namespace DodgeTheCreeps.Utils
     {
         public List<ILevel> Levels = new List<ILevel>{
             new Level1(),
+            new Level2(),
             new LevelInfinity()
         };
 
@@ -20,9 +21,9 @@ namespace DodgeTheCreeps.Utils
 
         public static readonly MazeGeneratorWrapper DefaultInstance = new MazeGeneratorWrapper();
 
-        public MaseGeneratorWrapperState GenerateLevel(int gameId)
+        public MaseGeneratorWrapperState GenerateLevel(int levelId)
         {
-            return Levels[gameId].GenerateField();
+            return Levels[levelId].GenerateField();
         }
     }
 }

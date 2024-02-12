@@ -9,13 +9,13 @@ using static DodgeTheCreeps.Utils.MazeGeneratorWrapper;
 
 namespace DodgeTheCreeps.Presentation.Utils.Levels
 {
-    public class Level1 : ILevel
+    public class Level2 : ILevel
     {
         private readonly MaseGeneratorWrapperState State = new MaseGeneratorWrapperState();
         private readonly GeneratorResult generatorResult = new GeneratorResult();
         private readonly GeneratorSettings generatorSettings = new GeneratorSettings();
 
-        public string Name => "Level 1";
+        public string Name => "Level 2";
 
         public MaseGeneratorWrapperState GenerateField()
         {
@@ -45,32 +45,51 @@ namespace DodgeTheCreeps.Presentation.Utils.Levels
             this.State.UnitsList.Clear();
             this.State.UnitsList.Add(new MapEvent
             {
+                Condition = new TimeoutMapEventCondition(0.3f),
+                Action = new ShowDialogMapEventAction("На этих метеоритах можно заработать кучу денег...")
+            });
+            this.State.UnitsList.Add(new MapEvent
+            {
+                Condition = new DialogVisibleMapEventCondition(),
+                Action = new ShowDialogMapEventAction("Пилота №123 просим срочно вернуться к земле. \nПовторяю: срочное распоряжение, всем пилотам вернуться к земле.")
+            });
+            this.State.UnitsList.Add(new MapEvent
+            {
+                Condition = new DialogVisibleMapEventCondition(),
+                Action = new SpawnUnitMapEventAction(new Godot.Vector2(1, 1), UnitType.Planet)
+            });
+            this.State.UnitsList.Add(new MapEvent
+            {
+                Condition = new DialogVisibleMapEventCondition(),
+                Action = new ShowDialogMapEventAction("Ты вовремя, на землю летит куча метеоритов неизвестного происхождения. Они могут уничтожить землю!")
+            });
+            this.State.UnitsList.Add(new MapEvent
+            {
                 Condition = new TimeoutMapEventCondition(0),
                 Action = new ChangeGameOverMapEventAction(
                     new CombinedGameOver(
                         new List<IGameOver> { new NoMapEventsGameOver() },
-                        new List<IGameOver> { new PlayerExistsGameOver() }))
-            });
-            this.State.UnitsList.Add(new MapEvent
-            {
-                Condition = new TimeoutMapEventCondition(0.3f),
-                Action = new ShowDialogMapEventAction("Добро пожаловать Пилот №123! \nВ этом секторе космоса летает множество метеоритов, богатых полезными ископаемыми.")
-            });
-
-            this.State.UnitsList.Add(new MapEvent
-            {
-                Condition = new TimeoutMapEventCondition(0),
-                Action = new SpawnUnitMapEventAction(new Godot.Vector2(size - 2, 0), UnitType.BlackHole)
+                        new List<IGameOver> { new PlanetExistsGameOver(), new PlayerExistsGameOver() }))
             });
             this.State.UnitsList.Add(new MapEvent
             {
                 Condition = new DialogVisibleMapEventCondition(),
-                Action = new ShowDialogMapEventAction("В твои задачи входит затолкать все пролетающие мимо метеориты в перерабатывающий портал. Будь осторожен и не свались туда сам.")
+                Action = new SpawnUnitMapEventAction(new Godot.Vector2(size - 2, size - 2), UnitType.BlackHole)
             });
             this.State.UnitsList.Add(new MapEvent
             {
                 Condition = new DialogVisibleMapEventCondition(),
-                Action = new ShowDialogMapEventAction("Ты спросишь где же все это множество метеоритов. Очевидно они ждут, когда мы закончим болтать.")
+                Action = new ShowDialogMapEventAction("Оборона земли может принять на себя некоторое количество метеоритов, но их слишком много. Как лучший пилот планеты ты должен защитить нас - затолкай все метеориты в портал.")
+            });
+            this.State.UnitsList.Add(new MapEvent
+            {
+                Condition = new DialogVisibleMapEventCondition(),
+                Action = new ShowDialogMapEventAction("А где остальные пилоты?")
+            });
+            this.State.UnitsList.Add(new MapEvent
+            {
+                Condition = new DialogVisibleMapEventCondition(),
+                Action = new ShowDialogMapEventAction("Оу, тебе не сказали. Все пилоты это ты, потому и лучший. Не отвлекайся, они приближаются.")
             });
             this.State.UnitsList.Add(new MapEvent
             {
