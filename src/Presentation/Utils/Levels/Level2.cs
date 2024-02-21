@@ -31,7 +31,9 @@ namespace DodgeTheCreeps.Presentation.Utils.Levels
             this.State.Add(new MapEvent(new TeleportPlayerInMapEventAction(size, new Godot.Vector2(3, 3))));
             this.State.Add(new MapEvent(new ShowDialogMapEventAction("На этих метеоритах можно заработать кучу денег...")));
             this.State.Add(new MapEvent(new DialogVisibleMapEventCondition(), new ShowDialogMapEventAction("Пилота №123 просим срочно вернуться к земле. \nПовторяю: срочное распоряжение, всем пилотам вернуться к земле.")));
-            this.State.Add(new MapEvent(new DialogVisibleMapEventCondition(), new SpawnUnitMapEventAction(new Godot.Vector2(1, 1), UnitType.Planet)));
+            this.State.Add(new MapEvent(new DialogVisibleMapEventCondition(), new TeleportPlayerOutMapEventAction(new Godot.Vector2(-1, -1))));
+            this.State.Add(new MapEvent(new PlayerExistsMapEventCondition(), new SpawnUnitMapEventAction(new Godot.Vector2(1, 1), UnitType.Planet)));
+            this.State.Add(new MapEvent(new TeleportPlayerInMapEventAction(size, new Godot.Vector2(3, 3))));
             this.State.Add(new MapEvent(new DialogVisibleMapEventCondition(), new ShowDialogMapEventAction("Ты вовремя. На землю летит куча метеоритов неизвестного происхождения. Они могут уничтожить землю!")));
             this.State.Add(new MapEvent(new ChangeGameOverMapEventAction(
                     new CombinedGameOver(

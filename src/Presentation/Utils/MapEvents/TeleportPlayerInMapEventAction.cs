@@ -16,6 +16,12 @@ namespace DodgeTheCreeps.Presentation.Utils.MapEvents
 
         public void Action(Game game)
         {
+            if (game.GetTree().GetNodesInGroup(Groups.PlayerUnit).Count != 0)
+            {
+                return;
+            }
+
+
             var mobSpawnLocation = this.Position * 100 * Game.PathSize + Vector2.One * 50 * Game.PathSize;
 
             var player = (Player)ResourceLoader.Load<PackedScene>($"res://Presentation/Player.tscn").Instance();

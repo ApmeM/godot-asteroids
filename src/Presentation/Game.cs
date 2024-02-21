@@ -3,7 +3,6 @@ using DodgeTheCreeps.Presentation.Utils.MapEvents;
 using DodgeTheCreeps.Utils;
 using Godot;
 using GodotAnalysers;
-using System;
 using System.Collections.Generic;
 
 [SceneReference("Game.tscn")]
@@ -25,14 +24,14 @@ public partial class Game
     public int MapEventsLeft => this.MapEvents.Count;
     public int MapEventsTotal;
 
-    private bool gameOverStatusDirty = true;
-    private IGameOver gameOverStatus = new InfinityGameOver();
+    private bool gameOverStatusDirty;
+    private IGameOver gameOverStatus;
     public IGameOver GameOverStatus
     {
-        get => gameOverStatus;
+        get => this.gameOverStatus;
         set
         {
-            gameOverStatus = value;
+            this.gameOverStatus = value;
             this.gameOverStatusDirty = true;
         }
     }
@@ -56,6 +55,8 @@ public partial class Game
         this.GetTree().CallGroup(Groups.DynamicGameObject, "queue_free");
 
         GD.Randomize();
+
+        this.GameOverStatus = new InfinityGameOver();
     }
 
     private void VisibilityChanged()
@@ -84,14 +85,22 @@ public partial class Game
         {
             this.gameOverStatusDirty = false;
             this.hUD.ClearStatus();
-            gameOverStatus.InitializeStatus(this.hUD);
+            GameOverStatus.InitializeStatus(this.hUD);
         }
 
         GameOverStatus.UpdateStatus(this);
-
-        if (GameOverStatus.CheckGameOver(this) != GameOverState.None)
+        switch (GameOverStatus.CheckGameOver(this))
         {
-            FinishGame();
+            case GameOverState.None:
+                break;
+            case GameOverState.Loose:
+                FinishGame();
+                this.EmitSignal(nameof(GameOver), this.hUD.Score);
+                break;
+            case GameOverState.Win:
+                FinishGame();
+                NewGame(this.GameId + 1);
+                break;
         }
     }
 
@@ -99,7 +108,6 @@ public partial class Game
     {
         this.music.Stop();
         this.hUD.Stop();
-        this.EmitSignal(nameof(GameOver), this.hUD.Score);
         this.GetTree().CallGroup(Groups.DynamicGameObject, "queue_free");
         this.MapEvents.Clear();
         this.GameOverStatus = new InfinityGameOver();

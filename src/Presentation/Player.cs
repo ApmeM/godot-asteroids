@@ -1,3 +1,4 @@
+using System;
 using DodgeTheCreeps.UnitTypes;
 using DodgeTheCreeps.Utils;
 using Godot;
@@ -141,5 +142,10 @@ public partial class Player : IBonusCollector, IMinimapElement
                 }
                 break;
         }
+    }
+
+    internal void Teleport(Vector2 teleportDirection)
+    {
+        this.QueueFree();
     }
 }
