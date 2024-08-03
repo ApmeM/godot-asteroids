@@ -48,7 +48,7 @@ public partial class Minimap
             if (centerNodePath == null || centerNodePath.IsEmpty())
                 centerNode = null;
             else
-                centerNode = (Node2D)this.GetNode(centerNodePath);
+                centerNode = (Node2D)this.GetNodeOrNull(centerNodePath);
         }
 
         var minimapElements = this.GetTree().GetNodesInGroup(Groups.MinimapElement);

@@ -18,7 +18,6 @@ public partial class Game
     public PackedScene playerScene;
 
     private MazeGeneratorWrapper maze;
-    public const int PathSize = 2;
 
     private readonly Queue<MapEvent> MapEvents = new Queue<MapEvent>();
     public int MapEventsLeft => this.MapEvents.Count;

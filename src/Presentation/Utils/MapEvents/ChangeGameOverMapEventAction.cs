@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DodgeTheCreeps.Presentation.Utils.GameOver;
+using Godot;
 
 namespace DodgeTheCreeps.Presentation.Utils.MapEvents
 {

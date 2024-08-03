@@ -4,19 +4,17 @@ namespace DodgeTheCreeps.Presentation.Utils.MapEvents
 {
     public class TeleportPlayerOutMapEventAction : IMapEventAction
     {
-        public TeleportPlayerOutMapEventAction(Vector2 position)
+        public TeleportPlayerOutMapEventAction(Vector2 teleportDirection)
         {
-            Position = position;
+            TeleportDirection = teleportDirection;
         }
 
-        public Vector2 Position;
+        public Vector2 TeleportDirection;
 
         public void Action(Game game)
         {
-            var teleportDirection = this.Position * 100 * Game.PathSize + Vector2.One * 50 * Game.PathSize;
-
             var player = (Player)game.GetTree().GetNodesInGroup(Groups.PlayerUnit)[0];
-            player.Teleport(teleportDirection);
+            player.Teleport(this.TeleportDirection);
         }
     }
 }

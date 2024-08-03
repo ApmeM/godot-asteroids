@@ -4,6 +4,7 @@ using System.Linq;
 using DodgeTheCreeps.Presentation.Utils.MapEvents;
 using DodgeTheCreeps.Utils;
 using FateRandom;
+using Godot;
 
 namespace DodgeTheCreeps.Presentation.Utils.Levels
 {
@@ -25,23 +26,23 @@ namespace DodgeTheCreeps.Presentation.Utils.Levels
                 {
                     if (x == 0 || y == 0 || x == size - 1 || y == size - 1)
                     {
-                        this.State.Add(new MapEvent(new BuildBlockMapEventAction(new Godot.Vector2(x, y))));
+                        this.State.Add(new MapEvent(new SpawnUnitMapEventAction(new Vector2(x * 100, y * 100), UnitType.Block)));
                     }
                 }
             }
 
-            this.State.Add(new MapEvent(new TeleportPlayerInMapEventAction(size, new Godot.Vector2(3, 3))));
+            this.State.Add(new MapEvent(new TeleportPlayerInMapEventAction(new Rect2(0, 0, size * 100, size * 100), new Vector2(300, 300))));
 
             var lvl = new List<MapEvent>();
 
             for (var i = 0; i < 30; i++)
             {
-                lvl.Add(new MapEvent(new TimeoutMapEventCondition(3), new SpawnUnitMapEventAction(new Godot.Vector2(Fate.GlobalFate.NextInt(size - 4) + 2, Fate.GlobalFate.NextInt(size - 4) + 2),
-                                                             Fate.GlobalFate.Choose(Enum.GetValues(typeof(UnitType)).Cast<UnitType>().Skip(2).Take(i + 1).ToArray()))));
+                lvl.Add(new MapEvent(new TimeoutMapEventCondition(3), new SpawnUnitMapEventAction(new Vector2(Fate.GlobalFate.NextInt(size * 100 - 400) + 200, Fate.GlobalFate.NextInt(size * 100 - 400) + 200),
+                                                             Fate.GlobalFate.Choose(Enum.GetValues(typeof(UnitType)).Cast<UnitType>().Skip(3).Take(i + 1).ToArray()))));
 
                 if (i % 2 == 0)
                 {
-                    lvl.Add(new MapEvent(new SpawnBonusMapEventAction(new Godot.Vector2(Fate.GlobalFate.NextInt(size - 4) + 2, Fate.GlobalFate.NextInt(size - 4) + 2),
+                    lvl.Add(new MapEvent(new SpawnBonusMapEventAction(new Vector2(Fate.GlobalFate.NextInt(size * 100 - 400) + 200, Fate.GlobalFate.NextInt(size * 100 - 400) + 200),
                                                                  Fate.GlobalFate.Choose(Enum.GetValues(typeof(BonusType)).Cast<BonusType>().Take(i + 1).ToArray()))));
                 }
             }

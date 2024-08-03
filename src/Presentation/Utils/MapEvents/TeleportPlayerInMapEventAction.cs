@@ -5,14 +5,14 @@ namespace DodgeTheCreeps.Presentation.Utils.MapEvents
 
     public class TeleportPlayerInMapEventAction : IMapEventAction
     {
-        public TeleportPlayerInMapEventAction(int gameSize, Vector2 position)
+        public TeleportPlayerInMapEventAction(Rect2 fieldSize, Vector2 spawnPosition)
         {
-            GameSize = gameSize;
-            Position = position;
+            FieldSize = fieldSize;
+            SpawnPosition = spawnPosition;
         }
 
-        public Vector2 Position;
-        public int GameSize;
+        public Vector2 SpawnPosition;
+        public Rect2 FieldSize;
 
         public void Action(Game game)
         {
@@ -21,15 +21,11 @@ namespace DodgeTheCreeps.Presentation.Utils.MapEvents
                 return;
             }
 
-
-            var mobSpawnLocation = this.Position * 100 * Game.PathSize + Vector2.One * 50 * Game.PathSize;
-
             var player = (Player)ResourceLoader.Load<PackedScene>($"res://Presentation/Player.tscn").Instance();
-            player.Position = mobSpawnLocation;
+            player.Position = this.SpawnPosition;
             player.FieldPath = game.GetPath();
             game.AddChild(player);
-            var rect = new Rect2(Vector2.Zero, new Vector2(GameSize * 100 * Game.PathSize + Game.PathSize * 50, GameSize * 100 * Game.PathSize + Game.PathSize * 50));
-            game.ShowMinimap(rect, player.GetPath());
+            game.ShowMinimap(FieldSize, player.GetPath());
         }
     }
 }
