@@ -3,6 +3,7 @@ using DodgeTheCreeps.Presentation.Utils.MapEvents;
 using DodgeTheCreeps.Utils;
 using Godot;
 using GodotAnalysers;
+using System;
 using System.Collections.Generic;
 
 [SceneReference("Game.tscn")]
@@ -94,11 +95,11 @@ public partial class Game
                 break;
             case GameOverState.Loose:
                 FinishGame();
-                this.EmitSignal(nameof(GameOver), this.hUD.Score);
+                this.EmitSignal(nameof(GameOver), 0);
                 break;
             case GameOverState.Win:
                 FinishGame();
-                NewGame(this.GameId + 1);
+                this.EmitSignal(nameof(GameOver), this.maze.Levels[this.GameId].GetScore(this));
                 break;
         }
     }
@@ -128,7 +129,7 @@ public partial class Game
         this.GameTime = 0;
 
         this.MapEvents.Clear();
-        this.AddMapEvents(maze.GenerateLevel(gameId));
+        this.AddMapEvents(maze.Levels[gameId].GenerateField());
 
         this.music.Play();
     }
@@ -141,5 +142,10 @@ public partial class Game
     internal void ShowDialog(string text, bool left)
     {
         this.hUD.ShowDialog(text, left);
+    }
+
+    internal int GetScore()
+    {
+        return this.hUD.Score;
     }
 }

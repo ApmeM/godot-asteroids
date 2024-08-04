@@ -16,7 +16,7 @@ public partial class Block : IMinimapElement
         this.AddToGroup(Groups.MinimapElement);
         this.AddToGroup(Groups.DynamicGameObject);
 
-        this.CollisionLayer = (int)(CollisionLayers.Player | CollisionLayers.Enemy);
+        this.CollisionLayer = (int)CollisionLayers.Block;
         this.CollisionMask = 0;
     }
 }

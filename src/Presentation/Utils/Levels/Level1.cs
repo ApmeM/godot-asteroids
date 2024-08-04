@@ -52,5 +52,10 @@ namespace DodgeTheCreeps.Presentation.Utils.Levels
 
             return this.State;
         }
+
+        public int GetScore(Game game)
+        {
+            return 3;
+        }
     }
 }

@@ -56,5 +56,15 @@ namespace DodgeTheCreeps.Presentation.Utils.Levels
             this.State.Add(new MapEvent(new NoEnemyUnitsCondition(), new DoNothingMapEventAction()));
             return this.State;
         }
+
+        public int GetScore(Game game)
+        {
+            var cur = ((Planet)game.GetTree().GetNodesInGroup(Groups.PlanetUnit)[0]).CurrentLife;
+            var max = ((Planet)game.GetTree().GetNodesInGroup(Groups.PlanetUnit)[0]).TotalLife;
+            GD.Print($"{cur}/{max}");
+            if (cur == max) return 3;
+            if (cur > max / 2) return 2;
+            return 1;
+        }
     }
 }

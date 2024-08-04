@@ -22,8 +22,8 @@ public partial class MeteorSpawner : IHitable, IMinimapElement
         this.AddToGroup(Groups.EnemyUnit);
         this.timer.Connect(CommonSignals.Timeout, this, nameof(NextSpawn));
 
-        this.CollisionLayer = (int)(CollisionLayers.Player | CollisionLayers.Enemy);
-        this.CollisionMask = (int)CollisionLayers.Player;
+        this.CollisionLayer = (int)(CollisionLayers.Player | CollisionLayers.Enemy | CollisionLayers.Block);
+        this.CollisionMask = (int)(CollisionLayers.Player | CollisionLayers.Block);
     }
 
     private void NextSpawn()

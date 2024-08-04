@@ -7,5 +7,6 @@ namespace DodgeTheCreeps.Presentation.Utils.Levels
     {
         string Name { get; }
         List<MapEvent> GenerateField();
+        int GetScore(Game game);
     }
 }

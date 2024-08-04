@@ -34,8 +34,8 @@ public partial class Player : IBonusCollector, IMinimapElement
         this.AddToGroup(Groups.MinimapElement);
         this.AddToGroup(Groups.PlayerUnit);
 
-        this.CollisionLayer = (int)(CollisionLayers.Player | CollisionLayers.Bonus);
-        this.CollisionMask = (int)CollisionLayers.Player;
+        this.CollisionLayer = (int)(CollisionLayers.Player | CollisionLayers.Bonus | CollisionLayers.Block);
+        this.CollisionMask = (int)(CollisionLayers.Player | CollisionLayers.Block);
 
         this.guns.ClearChildren();
         this.camera2D.Current = true;

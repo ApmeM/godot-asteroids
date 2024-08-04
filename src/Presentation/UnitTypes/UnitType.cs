@@ -11,6 +11,7 @@ namespace DodgeTheCreeps.Utils
         Meteor,
         LargeMeteor,
         MeteorGroup,
+        MeteorSpawner
     }
 
     public static class UnitTypeCreator

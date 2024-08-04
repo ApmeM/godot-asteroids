@@ -5,5 +5,6 @@ public enum CollisionLayers
 {
     Player = 1,
     Enemy = 2,
-    Bonus = 4
+    Bonus = 4,
+    Block = 8
 }

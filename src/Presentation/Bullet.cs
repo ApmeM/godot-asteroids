@@ -25,7 +25,7 @@ public partial class Bullet : IHitter
         this.Connect(CommonSignals.BodyEntered, this, nameof(Hit));
 
         this.CollisionLayer = 0;
-        this.CollisionMask = (int)CollisionLayers.Enemy;
+        this.CollisionMask = (int)(CollisionLayers.Enemy | CollisionLayers.Block);
     }
 
     private void Hit(Node body)

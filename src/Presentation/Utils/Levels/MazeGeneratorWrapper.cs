@@ -1,5 +1,4 @@
 ﻿using DodgeTheCreeps.Presentation.Utils.Levels;
-using DodgeTheCreeps.Presentation.Utils.MapEvents;
 using System.Collections.Generic;
 
 namespace DodgeTheCreeps.Utils
@@ -13,10 +12,5 @@ namespace DodgeTheCreeps.Utils
         };
 
         public static readonly MazeGeneratorWrapper DefaultInstance = new MazeGeneratorWrapper();
-
-        public List<MapEvent> GenerateLevel(int levelId)
-        {
-            return Levels[levelId].GenerateField();
-        }
     }
 }

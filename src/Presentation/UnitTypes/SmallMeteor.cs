@@ -20,8 +20,8 @@ public partial class SmallMeteor : IHitable, IMinimapElement
         this.AddToGroup(Groups.DynamicGameObject);
         this.AddToGroup(Groups.EnemyUnit);
 
-        this.CollisionLayer = (int)(CollisionLayers.Player | CollisionLayers.Enemy);
-        this.CollisionMask = (int)CollisionLayers.Player;
+        this.CollisionLayer = (int)(CollisionLayers.Player | CollisionLayers.Enemy | CollisionLayers.Block);
+        this.CollisionMask = (int)(CollisionLayers.Player | CollisionLayers.Block);
     }
 
     public void Hit(IHitter byNode)
